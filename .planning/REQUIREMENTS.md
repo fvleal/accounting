@@ -112,13 +112,62 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated during roadmap creation) | | |
+| SETP-01 | Phase 1 | Pending |
+| SETP-02 | Phase 1 | Pending |
+| SETP-03 | Phase 1 | Pending |
+| DOMN-01 | Phase 1 | Pending |
+| DOMN-02 | Phase 1 | Pending |
+| DOMN-03 | Phase 1 | Pending |
+| DOMN-04 | Phase 1 | Pending |
+| DOMN-05 | Phase 1 | Pending |
+| DOMN-06 | Phase 1 | Pending |
+| DOMN-07 | Phase 1 | Pending |
+| DOMN-08 | Phase 1 | Pending |
+| DOMN-09 | Phase 1 | Pending |
+| INFR-01 | Phase 2 | Pending |
+| INFR-02 | Phase 2 | Pending |
+| INFR-03 | Phase 2 | Pending |
+| INFR-04 | Phase 2 | Pending |
+| INFR-05 | Phase 2 | Pending |
+| INFR-06 | Phase 2 | Pending |
+| UCAS-01 | Phase 3 | Pending |
+| UCAS-02 | Phase 3 | Pending |
+| UCAS-03 | Phase 3 | Pending |
+| UCAS-04 | Phase 3 | Pending |
+| UCAS-05 | Phase 3 | Pending |
+| UCAS-06 | Phase 3 | Pending |
+| UCAS-07 | Phase 3 | Pending |
+| UCAS-08 | Phase 3 | Pending |
+| UCAS-09 | Phase 3 | Pending |
+| UCAS-10 | Phase 3 | Pending |
+| REST-01 | Phase 4 | Pending |
+| REST-02 | Phase 4 | Pending |
+| REST-03 | Phase 4 | Pending |
+| REST-04 | Phase 4 | Pending |
+| REST-05 | Phase 4 | Pending |
+| REST-06 | Phase 4 | Pending |
+| REST-07 | Phase 4 | Pending |
+| REST-08 | Phase 4 | Pending |
+| REST-09 | Phase 4 | Pending |
+| REST-10 | Phase 4 | Pending |
+| REST-11 | Phase 4 | Pending |
+| REST-12 | Phase 4 | Pending |
+| AUTH-01 | Phase 4 | Pending |
+| AUTH-02 | Phase 4 | Pending |
+| AUTH-03 | Phase 4 | Pending |
+| AUTH-04 | Phase 4 | Pending |
+| TEST-01 | Phase 5 | Pending |
+| TEST-02 | Phase 5 | Pending |
+| TEST-03 | Phase 5 | Pending |
+| TEST-04 | Phase 5 | Pending |
+| TEST-05 | Phase 5 | Pending |
+| TEST-06 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 42 total
-- Mapped to phases: 0
-- Unmapped: 42
+- v1 requirements: 50 total
+- Mapped to phases: 50
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-10*
-*Last updated: 2026-03-10 after initial definition*
+*Last updated: 2026-03-10 after roadmap creation*
