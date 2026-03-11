@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 01-foundation
 source: [01-01-SUMMARY.md, 01-02-SUMMARY.md]
 started: 2026-03-11T23:15:00Z
-updated: 2026-03-11T23:20:00Z
+updated: 2026-03-11T23:22:00Z
 ---
 
 ## Current Test
@@ -71,29 +71,53 @@ skipped: 4
   reason: "User reported: nao passa pois da erro no auth0: unauthorized_client: Grant type 'authorization_code' not allowed for the client."
   severity: blocker
   test: 1
-  artifacts: []
-  missing: []
+  root_cause: "Auth0 dashboard config: Authorization Code grant type not enabled for SPA application. Not a code bug."
+  artifacts:
+    - path: "src/auth/AuthProviderWithNavigate.tsx"
+      issue: "Auth0Provider config is correct, but Auth0 dashboard rejects the grant type"
+  missing:
+    - "Enable Authorization Code grant in Auth0 Dashboard > Applications > App > Settings > Advanced Settings > Grant Types"
+  debug_session: ""
 
 - truth: "Login page shows branded card with Entrar button, no auto-redirect"
   status: failed
   reason: "User reported: ao tentar acessar a pagina ele redireciona para a autenticacao do auth0, nao existe rota de /login"
   severity: major
   test: 2
-  artifacts: []
-  missing: []
+  root_cause: "ProtectedRoute uses withAuthenticationRequired which auto-redirects unauthenticated users to Auth0 when visiting /. The /login route exists (App.tsx:12) but users hit / first, triggering immediate Auth0 redirect before they see the login page."
+  artifacts:
+    - path: "src/auth/ProtectedRoute.tsx"
+      issue: "withAuthenticationRequired redirects to Auth0 instead of /login"
+    - path: "src/App.tsx"
+      issue: "Root route / is protected, redirects to Auth0 before user can see /login"
+  missing:
+    - "ProtectedRoute should redirect unauthenticated users to /login instead of Auth0"
+    - "Or: make / redirect to /login when not authenticated, only protect inner routes"
+  debug_session: ""
 
 - truth: "Clicking Entrar redirects to Auth0 Universal Login and back"
   status: failed
   reason: "User reported: ele ta redirecionando automaticamente para a pagina do auth0 e aparece unauthorized_client: Grant type 'authorization_code' not allowed for the client."
   severity: blocker
   test: 3
-  artifacts: []
-  missing: []
+  root_cause: "Same as test 1: Auth0 dashboard Authorization Code grant not enabled. Auto-redirect from withAuthenticationRequired compounds the issue."
+  artifacts:
+    - path: "src/auth/AuthProviderWithNavigate.tsx"
+      issue: "Auth0Provider config correct but dashboard rejects grant type"
+  missing:
+    - "Enable Authorization Code grant in Auth0 Dashboard"
+  debug_session: ""
 
 - truth: "After auth, user lands on home page with welcome message"
   status: failed
   reason: "User reported: nao esta autenticando, da erro, nao aparece nada na tela"
   severity: blocker
   test: 4
-  artifacts: []
-  missing: []
+  root_cause: "Auth0 rejects authentication due to missing Authorization Code grant. Blank screen is the error state with no error boundary to catch and display the failure."
+  artifacts:
+    - path: "src/App.tsx"
+      issue: "No error boundary to catch Auth0 failures gracefully"
+  missing:
+    - "Enable Authorization Code grant in Auth0 Dashboard"
+    - "Add error boundary or Auth0 error handling to show user-friendly error instead of blank screen"
+  debug_session: ""
