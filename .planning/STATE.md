@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-11T14:49:07.717Z"
-last_activity: 2026-03-11 -- Completed 03-03 Query use cases and ApplicationModule
+status: in-progress
+stopped_at: Completed 04-01 Auth Module
+last_updated: "2026-03-11T15:19:31Z"
+last_activity: 2026-03-11 -- Completed 04-01 Auth0 JWT module with guards and decorators
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_plans: 11
+  completed_plans: 9
+  percent: 82
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-10)
 
 **Core value:** Fornecer uma fonte unica e confiavel de identidade de conta (Account) que outros contextos possam consumir de forma desacoplada via API REST.
-**Current focus:** Phase 3: Application Layer
+**Current focus:** Phase 4: REST API and Security
 
 ## Current Position
 
-Phase: 3 of 5 (Application Layer)
-Plan: 3 of 3 in current phase
-Status: Phase 03 Complete
-Last activity: 2026-03-11 -- Completed 03-03 Query use cases and ApplicationModule
+Phase: 4 of 5 (REST API and Security)
+Plan: 1 of 3 in current phase
+Status: Plan 04-01 Complete
+Last activity: 2026-03-11 -- Completed 04-01 Auth0 JWT module with guards and decorators
 
-Progress: [██████████] 100%
+Progress: [████████░░] 82%
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Progress: [██████████] 100%
 | Phase 03 P01 | 6min | 2 tasks | 19 files |
 | Phase 03 P02 | 3min | 2 tasks | 10 files |
 | Phase 03 P03 | 3min | 2 tasks | 9 files |
+| Phase 04 P01 | 2min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,9 @@ Recent decisions affecting current work:
 - [03-03]: Each query has its own toOutput() -- intentional duplication matching command pattern
 - [03-03]: GetMeQuery is dedicated use case (not reusing FindAccountByFieldQuery) per CONTEXT.md
 - [03-03]: Single AccountApplicationModule registers all 9 use cases
+- [04-01]: RolesGuard checks user.permissions (Auth0 RBAC permissions claim), not user.roles
+- [04-01]: JwtAuthGuard registered before RolesGuard in APP_GUARD providers for correct execution order
+- [04-01]: JwtStrategy uses passportJwtSecret with cache and rate limiting for JWKS fetching
 
 ### Pending Todos
 
@@ -102,6 +106,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T14:49:07.711Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-rest-api-and-security/04-CONTEXT.md
+Last session: 2026-03-11T15:19:31Z
+Stopped at: Completed 04-01 Auth Module
+Resume file: .planning/phases/04-rest-api-and-security/04-01-SUMMARY.md

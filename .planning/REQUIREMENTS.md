@@ -58,10 +58,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Auth & Security
 
-- [ ] **AUTH-01**: Auth0 Guard que valida JWT token em todas as rotas protegidas
-- [ ] **AUTH-02**: Role-based access: rota getMe exige role "user" no token
-- [ ] **AUTH-03**: Role-based access: rota getAccountByCPF exige permissoes de admin/aplicacao (M2M)
-- [ ] **AUTH-04**: Decorators ou guards por rota para verificar roles/permissoes especificas
+- [x] **AUTH-01**: Auth0 Guard que valida JWT token em todas as rotas protegidas
+- [x] **AUTH-02**: Role-based access: rota getMe exige role "user" no token
+- [x] **AUTH-03**: Role-based access: rota getAccountByCPF exige permissoes de admin/aplicacao (M2M)
+- [x] **AUTH-04**: Decorators ou guards por rota para verificar roles/permissoes especificas
 
 ### Testing
 
@@ -152,10 +152,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REST-10 | Phase 4 | Pending |
 | REST-11 | Phase 4 | Pending |
 | REST-12 | Phase 4 | Pending |
-| AUTH-01 | Phase 4 | Pending |
-| AUTH-02 | Phase 4 | Pending |
-| AUTH-03 | Phase 4 | Pending |
-| AUTH-04 | Phase 4 | Pending |
+| AUTH-01 | Phase 4 | Complete |
+| AUTH-02 | Phase 4 | Complete |
+| AUTH-03 | Phase 4 | Complete |
+| AUTH-04 | Phase 4 | Complete |
 | TEST-01 | Phase 5 | Pending |
 | TEST-02 | Phase 5 | Pending |
 | TEST-03 | Phase 5 | Pending |
