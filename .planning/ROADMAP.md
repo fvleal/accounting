@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Project Setup and Domain Modeling** - Hexagonal folder structure, tooling, base classes, Value Objects, Account aggregate, domain events, and repository port
 - [ ] **Phase 2: Infrastructure and Persistence** - PostgreSQL adapter via Prisma implementing AccountRepositoryPort, migrations, mappers, storage and phone verification adapters
-- [ ] **Phase 3: Application Layer** - Command and Query use cases as orchestrators depending on ports, with explicit CQRS separation
+- [x] **Phase 3: Application Layer** - Command and Query use cases as orchestrators depending on ports, with explicit CQRS separation (completed 2026-03-11)
 - [ ] **Phase 4: REST API and Security** - Controllers, DTOs, Auth0 JWT guard, role-based access, error handling, and all HTTP endpoints
 - [ ] **Phase 5: Testing and Hardening** - Unit tests for domain and use cases, integration tests for adapters, E2E tests for endpoints
 
@@ -60,7 +60,7 @@ Plans:
   2. UpdateNameCommand, UpdatePhoneCommand, UpdateBirthDateCommand, and UploadAccountPhotoCommand modify account data through aggregate methods and persist changes; UpdatePhoneCommand sets phone without verification (phoneVerified=false) -- UCAS-08/UCAS-09 (SendPhoneVerificationCommand, VerifyPhoneCommand) are deferred to a future phase per user decision
   3. GetAccountByIdQuery, GetMeQuery, FindAccountByFieldQuery, and ListAccountsQuery return account data from the repository without modifying state
   4. All use cases inject port interfaces (not implementations), and Commands are structurally separated from Queries in the codebase
-**Plans:** 3 plans
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 03-01-PLAN.md — Add auth0Sub to Account entity/schema/port/adapter, create UseCase base interface, DomainException base, account domain exceptions, CQRS folder structure
@@ -107,6 +107,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Project Setup and Domain Modeling | 0/3 | Planning complete | - |
 | 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
-| 3. Application Layer | 0/3 | Planning complete | - |
+| 3. Application Layer | 3/3 | Complete   | 2026-03-11 |
 | 4. REST API and Security | 0/? | Not started | - |
 | 5. Testing and Hardening | 0/? | Not started | - |

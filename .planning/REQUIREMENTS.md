@@ -26,9 +26,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UCAS-10**: UploadAccountPhotoCommand — recebe imagem, chama StoragePort para salvar, persiste URL retornada no Account
 - [x] **UCAS-08**: SendPhoneVerificationCommand — envia codigo de verificacao para o telefone informado
 - [x] **UCAS-09**: VerifyPhoneCommand — verifica codigo recebido e, se valido, atualiza telefone na conta
-- [ ] **UCAS-03**: GetAccountByIdQuery — consulta conta por ID
-- [ ] **UCAS-04**: FindAccountByFieldQuery — consulta conta por campo especifico (CPF, email, etc.)
-- [ ] **UCAS-05**: ListAccountsQuery — lista contas
+- [x] **UCAS-03**: GetAccountByIdQuery — consulta conta por ID
+- [x] **UCAS-04**: FindAccountByFieldQuery — consulta conta por campo especifico (CPF, email, etc.)
+- [x] **UCAS-05**: ListAccountsQuery — lista contas
 - [x] **UCAS-06**: UseCases dependem de interfaces (ports), seguindo Dependency Inversion
 - [x] **UCAS-07**: Separacao explicita de Commands e Queries (CQRS leve)
 
@@ -132,9 +132,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-06 | Phase 2 | Complete |
 | UCAS-01 | Phase 3 | Complete |
 | UCAS-02 | Phase 3 | Complete |
-| UCAS-03 | Phase 3 | Pending |
-| UCAS-04 | Phase 3 | Pending |
-| UCAS-05 | Phase 3 | Pending |
+| UCAS-03 | Phase 3 | Complete |
+| UCAS-04 | Phase 3 | Complete |
+| UCAS-05 | Phase 3 | Complete |
 | UCAS-06 | Phase 3 | Complete |
 | UCAS-07 | Phase 3 | Complete |
 | UCAS-08 | Phase 3 | Complete |
