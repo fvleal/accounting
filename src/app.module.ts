@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
 import { AuthModule } from './shared/infrastructure/auth/index.js';
 import { AccountInterfaceModule } from './account/interface/account-interface.module.js';
+import { HealthModule } from './shared/infrastructure/health/health.module.js';
 import { envValidationSchema } from './shared/infrastructure/config/env.validation.js';
 
 @Module({
@@ -16,6 +17,7 @@ import { envValidationSchema } from './shared/infrastructure/config/env.validati
     PrismaModule,
     AuthModule,
     AccountInterfaceModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
