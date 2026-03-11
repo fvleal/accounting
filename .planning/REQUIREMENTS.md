@@ -155,7 +155,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-01 | Phase 4 | Complete |
 | AUTH-02 | Phase 4 | Complete |
 | AUTH-03 | Phase 4 | Complete |
-| AUTH-04 | Phase 4 → Phase 6 | Pending |
+| AUTH-04 | Phase 4 → Phase 6 | Complete |
 | TEST-01 | Phase 5 | Complete |
 | TEST-02 | Phase 5 | Complete |
 | TEST-03 | Phase 5 | Complete |
@@ -165,9 +165,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **Coverage:**
 - v1 requirements: 50 total
-- Satisfied: 46
+- Satisfied: 47
 - Deferred to v2: 4 (INFR-05, UCAS-08, UCAS-09, REST-11)
-- Pending (gap closure): 1 (AUTH-04 partial — Phase 6)
+- Pending: 0
 - Unmapped: 0
 
 ---
