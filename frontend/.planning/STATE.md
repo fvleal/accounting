@@ -3,29 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-11T23:13:46.170Z"
-last_activity: 2026-03-11 — Completed 01-02 (Auth, layout, API client)
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-03-11T23:40:00Z"
+last_activity: 2026-03-11 — Completed 01-03 (Auth routing gap closure)
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
----
-
----
-gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-11T23:09:10Z"
-last_activity: 2026-03-11 — Completed 01-02 (Auth, layout, API client)
-progress:
-  total_phases: 5
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 3
+  completed_plans: 3
   percent: 100
 ---
 
@@ -36,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-11)
 
 **Core value:** O usuario consegue manter suas informacoes pessoais atualizadas de forma simples e rapida
-**Current focus:** Phase 1 — Foundation (COMPLETE)
+**Current focus:** Phase 1 — Foundation (COMPLETE, gap closure done)
 
 ## Current Position
 
 Phase: 1 of 5 (Foundation) - COMPLETE
-Plan: 2 of 2 in current phase (all complete)
-Status: Phase 1 complete, ready for Phase 2
-Last activity: 2026-03-11 — Completed 01-02 (Auth, layout, API client)
+Plan: 3 of 3 in current phase (all complete)
+Status: Phase 1 complete (including gap closure), ready for Phase 2
+Last activity: 2026-03-11 — Completed 01-03 (Auth routing gap closure)
 
 Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3.5min
-- Total execution time: 7min
+- Total plans completed: 3
+- Average duration: 4min
+- Total execution time: 12min
 
 **By Phase:**
 
@@ -60,9 +45,10 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | Phase 01 P01 | 4min | 3 tasks | 15 files |
 | Phase 01 P02 | 3min | 3 tasks | 11 files |
+| Phase 01 P03 | 5min | 2 tasks | 3 files |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 3min
+- Last 5 plans: 4min, 3min, 5min
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -82,19 +68,21 @@ Recent decisions affecting current work:
 - [Phase 01]: TokenGetterInitializer child component wires setTokenGetter inside Auth0Provider
 - [Phase 01]: Auth0Provider in App.tsx (inside BrowserRouter) for useNavigate access
 - [Phase 01]: Container maxWidth="sm" for centered content matching Google Personal Info layout
+- [Phase 01]: Replaced withAuthenticationRequired HOC with custom useAuth0() guard to preserve branded /login page
+- [Phase 01]: ProtectedRoute renders Outlet as layout route wrapper instead of accepting component prop
 
 ### Pending Todos
 
-None yet.
+- Layout/styling improvements needed (user reported layout looks bad after login)
 
 ### Blockers/Concerns
 
-- [Phase 1]: Auth0 dashboard access must be confirmed — RBAC and Refresh Token Rotation require dashboard changes
+- [Phase 1]: Auth0 dashboard access confirmed — Authorization Code grant enabled, login flow works
 - [Phase 5]: Backend FormData field name and file size limit for photo upload endpoint not yet confirmed — must check NestJS controller before building upload mutation
 - [Phase 4]: Brazilian phone format expected by backend not yet confirmed — must verify before building EditPhoneModal
 
 ## Session Continuity
 
-Last session: 2026-03-11T23:09:10Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-11T23:40:00Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

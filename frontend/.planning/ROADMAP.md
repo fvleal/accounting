@@ -12,7 +12,7 @@ Five phases that follow the natural dependency chain of this SPA. Auth must be s
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client
+- [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
 - [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
 - [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
 - [ ] **Phase 4: Profile Editing** - Edit modals for name, date of birth, and phone with form validation and optimistic updates
@@ -30,7 +30,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Decoding the access token at jwt.io confirms it is a JWT (not opaque) with correct `audience` and `permissions` claims
   4. Token persists across page refresh in Safari and Brave (refresh token rotation active)
   5. The app renders in dark mode on all screen sizes with MUI components styled via Tailwind
-**Plans:** 3 plans (2 executed + 1 gap closure)
+**Plans:** 3/3 plans complete
 Plans:
 - [x] 01-01-PLAN.md — Scaffold Vite project, MUI dark theme + Tailwind CSS layers, Vitest setup
 - [x] 01-02-PLAN.md — Auth0 login/logout, API client, layout shell, pages, routing
@@ -87,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/3 | Gap closure pending | - |
+| 1. Foundation | 3/3 | Complete   | 2026-03-11 |
 | 2. Onboarding | 0/TBD | Not started | - |
 | 3. Profile Display | 0/TBD | Not started | - |
 | 4. Profile Editing | 0/TBD | Not started | - |
