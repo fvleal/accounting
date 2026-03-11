@@ -50,9 +50,7 @@ export class PrismaAccountRepository implements AccountRepositoryPort {
     return raw ? AccountMapper.toDomain(raw) : null;
   }
 
-  async findAll(
-    params: PaginationParams,
-  ): Promise<PaginatedResult<Account>> {
+  async findAll(params: PaginationParams): Promise<PaginatedResult<Account>> {
     const [rows, total] = await this.prisma.$transaction([
       this.prisma.account.findMany({
         skip: params.offset,
@@ -63,7 +61,7 @@ export class PrismaAccountRepository implements AccountRepositoryPort {
     ]);
 
     return {
-      data: rows.map(AccountMapper.toDomain),
+      data: rows.map((row) => AccountMapper.toDomain(row)),
       total,
     };
   }
