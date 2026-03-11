@@ -42,7 +42,9 @@ describe('GetMeQuery', () => {
 
   it('should return account output when found by auth0Sub', async () => {
     const account = createTestAccount();
-    (mockRepo.findByAuth0Sub as ReturnType<typeof vi.fn>).mockResolvedValue(account);
+    (mockRepo.findByAuth0Sub as ReturnType<typeof vi.fn>).mockResolvedValue(
+      account,
+    );
 
     const output = await query.execute({ auth0Sub: VALID_AUTH0_SUB });
 
@@ -61,10 +63,12 @@ describe('GetMeQuery', () => {
   });
 
   it('should throw AccountNotFoundError when auth0Sub has no account', async () => {
-    (mockRepo.findByAuth0Sub as ReturnType<typeof vi.fn>).mockResolvedValue(null);
+    (mockRepo.findByAuth0Sub as ReturnType<typeof vi.fn>).mockResolvedValue(
+      null,
+    );
 
-    await expect(
-      query.execute({ auth0Sub: 'auth0|unknown' }),
-    ).rejects.toThrow(AccountNotFoundError);
+    await expect(query.execute({ auth0Sub: 'auth0|unknown' })).rejects.toThrow(
+      AccountNotFoundError,
+    );
   });
 });

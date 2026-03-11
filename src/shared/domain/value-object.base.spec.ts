@@ -71,9 +71,7 @@ describe('ValueObject', () => {
   });
 
   it('should call validate during construction', () => {
-    expect(
-      TestValueObject.create({ value: 'test', count: 1 }),
-    ).toBeDefined();
+    expect(TestValueObject.create({ value: 'test', count: 1 })).toBeDefined();
   });
 
   it('should throw when subclass validation fails', () => {

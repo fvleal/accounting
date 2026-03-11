@@ -94,7 +94,9 @@ describe('CreateAccountCommand', () => {
     });
     (mockRepo.findByCpf as ReturnType<typeof vi.fn>).mockResolvedValue(other);
 
-    await expect(command.execute(validInput)).rejects.toThrow(DuplicateCpfError);
+    await expect(command.execute(validInput)).rejects.toThrow(
+      DuplicateCpfError,
+    );
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
 

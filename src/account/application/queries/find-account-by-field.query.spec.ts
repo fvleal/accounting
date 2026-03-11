@@ -42,7 +42,9 @@ describe('FindAccountByFieldQuery', () => {
 
   it('should find account by email field', async () => {
     const account = createTestAccount();
-    (mockRepo.findByEmail as ReturnType<typeof vi.fn>).mockResolvedValue(account);
+    (mockRepo.findByEmail as ReturnType<typeof vi.fn>).mockResolvedValue(
+      account,
+    );
 
     const output = await query.execute({ field: 'email', value: VALID_EMAIL });
 

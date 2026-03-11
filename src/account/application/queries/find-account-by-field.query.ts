@@ -24,9 +24,10 @@ export interface FindAccountByFieldOutput {
 }
 
 @Injectable()
-export class FindAccountByFieldQuery
-  implements UseCase<FindAccountByFieldInput, FindAccountByFieldOutput>
-{
+export class FindAccountByFieldQuery implements UseCase<
+  FindAccountByFieldInput,
+  FindAccountByFieldOutput
+> {
   constructor(
     @Inject(ACCOUNT_REPOSITORY_PORT)
     private readonly accountRepo: AccountRepositoryPort,

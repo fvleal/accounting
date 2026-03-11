@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaAccountRepository } from './adapters/prisma-account.repository';
 import { S3StorageAdapter } from './adapters/s3-storage.adapter';
 
@@ -6,6 +7,7 @@ export const ACCOUNT_REPOSITORY_PORT = 'ACCOUNT_REPOSITORY_PORT';
 export const STORAGE_PORT = 'STORAGE_PORT';
 
 @Module({
+  imports: [ConfigModule],
   providers: [
     {
       provide: ACCOUNT_REPOSITORY_PORT,
