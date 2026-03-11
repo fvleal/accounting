@@ -56,9 +56,9 @@ Plans:
 **Depends on**: Phase 2
 **Requirements**: UCAS-01, UCAS-02, UCAS-03, UCAS-04, UCAS-05, UCAS-06, UCAS-07, UCAS-08, UCAS-09, UCAS-10
 **Success Criteria** (what must be TRUE):
-  1. CreateAccountCommand extracts email from Auth0 token (via userinfo), enforces email/CPF uniqueness, creates an Account aggregate, persists it, and dispatches AccountCreated event
-  2. UpdateAccountCommand and UploadAccountPhotoCommand modify account data through aggregate methods and persist changes; phone update is blocked unless verification is completed first via SendPhoneVerificationCommand and VerifyPhoneCommand
-  3. GetAccountByIdQuery, FindAccountByFieldQuery, and ListAccountsQuery return account data from the repository without modifying state
+  1. CreateAccountCommand receives auth0Sub and email as plain strings (passed by controller from JWT), enforces email/CPF uniqueness, handles idempotency by auth0Sub (returns existing account if already linked), creates an Account aggregate, persists it, and dispatches AccountCreated event
+  2. UpdateNameCommand, UpdatePhoneCommand, UpdateBirthDateCommand, and UploadAccountPhotoCommand modify account data through aggregate methods and persist changes; UpdatePhoneCommand sets phone without verification (phoneVerified=false) -- UCAS-08/UCAS-09 (SendPhoneVerificationCommand, VerifyPhoneCommand) are deferred to a future phase per user decision
+  3. GetAccountByIdQuery, GetMeQuery, FindAccountByFieldQuery, and ListAccountsQuery return account data from the repository without modifying state
   4. All use cases inject port interfaces (not implementations), and Commands are structurally separated from Queries in the codebase
 **Plans:** 3 plans
 
