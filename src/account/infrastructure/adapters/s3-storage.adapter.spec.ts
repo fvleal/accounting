@@ -1,15 +1,5 @@
 import { S3StorageAdapter } from './s3-storage.adapter';
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
-
-vi.mock('@aws-sdk/client-s3', async () => {
-  const actual = await vi.importActual<typeof import('@aws-sdk/client-s3')>('@aws-sdk/client-s3');
-  return {
-    ...actual,
-    S3Client: vi.fn().mockImplementation(() => ({
-      send: vi.fn(),
-    })),
-  };
-});
+import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
 function createMockConfigService() {
   const config: Record<string, string> = {
@@ -34,9 +24,9 @@ describe('S3StorageAdapter', () => {
     configService = createMockConfigService();
     adapter = new S3StorageAdapter(configService as any);
 
-    // Access the internal s3Client.send mock
-    mockSend = (adapter as any).s3Client.send;
-    mockSend.mockResolvedValue({});
+    // Replace the internal s3Client.send with a mock
+    mockSend = vi.fn().mockResolvedValue({});
+    (adapter as any).s3Client.send = mockSend;
   });
 
   describe('upload', () => {
