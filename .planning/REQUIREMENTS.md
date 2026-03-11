@@ -35,10 +35,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Infrastructure (Adapters)
 
 - [ ] **INFR-01**: PostgreSQL adapter implementando AccountRepositoryPort
-- [ ] **INFR-02**: Prisma schema para tabela de accounts
+- [x] **INFR-02**: Prisma schema para tabela de accounts
 - [ ] **INFR-03**: Mapper entre domain aggregate e Prisma model
-- [ ] **INFR-04**: Database migrations via Prisma Migrate
-- [ ] **INFR-05**: Adapter para envio de codigo de verificacao de telefone (SMS/WhatsApp port)
+- [x] **INFR-04**: Database migrations via Prisma Migrate
+- [x] **INFR-05**: Adapter para envio de codigo de verificacao de telefone (SMS/WhatsApp port)
 - [ ] **INFR-06**: StoragePort no dominio (interface) + S3 adapter para upload de imagem
 
 ### API REST
@@ -125,10 +125,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOMN-08 | Phase 1 | Complete |
 | DOMN-09 | Phase 1 | Complete |
 | INFR-01 | Phase 2 | Pending |
-| INFR-02 | Phase 2 | Pending |
+| INFR-02 | Phase 2 | Complete |
 | INFR-03 | Phase 2 | Pending |
-| INFR-04 | Phase 2 | Pending |
-| INFR-05 | Phase 2 | Pending |
+| INFR-04 | Phase 2 | Complete |
+| INFR-05 | Phase 2 | Complete |
 | INFR-06 | Phase 2 | Pending |
 | UCAS-01 | Phase 3 | Pending |
 | UCAS-02 | Phase 3 | Pending |
