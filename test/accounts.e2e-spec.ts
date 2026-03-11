@@ -613,7 +613,7 @@ describe('Accounts API (e2e)', () => {
         .post(`/accounts/${created.data.id}/phone/send-code`)
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ phone: '11987654321' })
-        .expect(201);
+        .expect(200);
 
       expect(res.body.data.phone).toBe('11987654321');
 
@@ -674,6 +674,29 @@ describe('Accounts API (e2e)', () => {
       );
       expect(head.$metadata.httpStatusCode).toBe(200);
       expect(head.ContentType).toBe('image/jpeg');
+    });
+
+    it('returns 403 when caller lacks update:own-account permission', async () => {
+      const created = await createAccount();
+
+      const otherUser = {
+        sub: 'auth0|other-user',
+        email: 'other@example.com',
+        permissions: [] as string[],
+        iss: 'https://test.auth0.com/',
+        aud: 'test-api',
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 3600,
+      };
+
+      await request(app.getHttpServer())
+        .post(`/accounts/${created.data.id}/photo`)
+        .set('x-test-auth', authHeader(otherUser))
+        .attach('file', Buffer.from('fake-image-data'), {
+          filename: 'photo.jpg',
+          contentType: 'image/jpeg',
+        })
+        .expect(403);
     });
   });
 
