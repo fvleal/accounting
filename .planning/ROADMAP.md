@@ -111,6 +111,10 @@ Plans:
   3. POST /accounts/:id/phone/send-code returns 200 (not 201)
   4. DuplicateAuth0SubError class, its filter mapping, and its unit test are removed (dead code — never thrown)
   5. E2E test exists that verifies POST /accounts/:id/photo returns 403 when called by a different user (ownership enforcement)
+n**Plans:** 1 plan
+
+Plans:
+- [ ] 06-01-PLAN.md — Add @Roles to mutation endpoints, remove dead code, fix status code, add photo 403 E2E test
 
 ## Progress
 
