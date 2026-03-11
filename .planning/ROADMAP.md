@@ -17,6 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Application Layer** - Command and Query use cases as orchestrators depending on ports, with explicit CQRS separation (completed 2026-03-11)
 - [x] **Phase 4: REST API and Security** - Controllers, DTOs, Auth0 JWT guard, role-based access, error handling, and all HTTP endpoints (completed 2026-03-11)
 - [x] **Phase 5: Testing and Hardening** - Unit tests for domain and use cases, integration tests for adapters, E2E tests for endpoints (completed 2026-03-11)
+- [ ] **Phase 6: Gap Closure and Hardening** - Fix requirements tracking, add @Roles to mutation endpoints, remove dead code, fix status codes, add missing E2E test
 
 ## Phase Details
 
@@ -99,10 +100,22 @@ Plans:
 - [ ] 05-01-PLAN.md — Install deps, DuplicateAuth0SubError unit test, Joi env validation schema, graceful shutdown
 - [ ] 05-02-PLAN.md — Health check endpoint with Terminus (Postgres + MinIO indicators), E2E smoke test
 
+### Phase 6: Gap Closure and Hardening
+**Goal**: Close all tech debt and documentation gaps identified by the v1.0 milestone audit — fix requirements tracking for deferred phone verification, enforce permission-based access on mutation endpoints, remove dead code, correct status codes, and fill E2E test coverage gap
+**Depends on**: Phase 5
+**Requirements**: AUTH-04 (partial fix)
+**Gap Closure**: Closes gaps from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. REQUIREMENTS.md correctly marks INFR-05, UCAS-08, UCAS-09 as deferred (not complete), and traceability table reflects "Deferred to v2"
+  2. PATCH /accounts/:id, POST /accounts/:id/phone/send-code, and POST /accounts/:id/photo all have @Roles('update:own-account') decorator and RolesGuard enforces the permission
+  3. POST /accounts/:id/phone/send-code returns 200 (not 201)
+  4. DuplicateAuth0SubError class, its filter mapping, and its unit test are removed (dead code — never thrown)
+  5. E2E test exists that verifies POST /accounts/:id/photo returns 403 when called by a different user (ownership enforcement)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -111,3 +124,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 3. Application Layer | 3/3 | Complete   | 2026-03-11 |
 | 4. REST API and Security | 3/3 | Complete   | 2026-03-11 |
 | 5. Testing and Hardening | 2/2 | Complete   | 2026-03-11 |
+| 6. Gap Closure and Hardening | 0/1 | Pending    | - |

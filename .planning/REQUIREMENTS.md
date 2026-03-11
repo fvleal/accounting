@@ -24,8 +24,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UCAS-01**: CreateAccountCommand — recebe token Auth0 (extrai email via Auth0 userinfo), nome completo e CPF como dados obrigatorios
 - [x] **UCAS-02**: UpdateAccountCommand — atualiza dados opcionais (data de nascimento); telefone atualizado apenas apos verificacao
 - [x] **UCAS-10**: UploadAccountPhotoCommand — recebe imagem, chama StoragePort para salvar, persiste URL retornada no Account
-- [x] **UCAS-08**: SendPhoneVerificationCommand — envia codigo de verificacao para o telefone informado
-- [x] **UCAS-09**: VerifyPhoneCommand — verifica codigo recebido e, se valido, atualiza telefone na conta
+- [ ] **UCAS-08**: SendPhoneVerificationCommand — envia codigo de verificacao para o telefone informado *(deferred to v2)*
+- [ ] **UCAS-09**: VerifyPhoneCommand — verifica codigo recebido e, se valido, atualiza telefone na conta *(deferred to v2)*
 - [x] **UCAS-03**: GetAccountByIdQuery — consulta conta por ID
 - [x] **UCAS-04**: FindAccountByFieldQuery — consulta conta por campo especifico (CPF, email, etc.)
 - [x] **UCAS-05**: ListAccountsQuery — lista contas
@@ -38,7 +38,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INFR-02**: Prisma schema para tabela de accounts
 - [x] **INFR-03**: Mapper entre domain aggregate e Prisma model
 - [x] **INFR-04**: Database migrations via Prisma Migrate
-- [x] **INFR-05**: Adapter para envio de codigo de verificacao de telefone (SMS/WhatsApp port)
+- [ ] **INFR-05**: Adapter para envio de codigo de verificacao de telefone (SMS/WhatsApp port) *(deferred to v2)*
 - [x] **INFR-06**: StoragePort no dominio (interface) + S3 adapter para upload de imagem
 
 ### API REST
@@ -50,7 +50,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **REST-05**: Controller com endpoint PATCH /accounts/:id (atualizar dados opcionais — exceto telefone)
 - [x] **REST-06**: Controller com endpoint GET /accounts (listar contas)
 - [x] **REST-10**: Controller com endpoint POST /accounts/:id/phone/send-code (enviar codigo de verificacao)
-- [x] **REST-11**: Controller com endpoint POST /accounts/:id/phone/verify (verificar codigo e atualizar telefone)
+- [ ] **REST-11**: Controller com endpoint POST /accounts/:id/phone/verify (verificar codigo e atualizar telefone) *(returns 501 — deferred to v2)*
 - [x] **REST-12**: Controller com endpoint POST /accounts/:id/photo (upload de foto)
 - [x] **REST-07**: Request DTOs com class-validator e class-transformer decorators
 - [x] **REST-08**: Response DTOs retornando nome, email, CPF, data de nascimento, telefone, foto
@@ -128,7 +128,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-02 | Phase 2 | Complete |
 | INFR-03 | Phase 2 | Complete |
 | INFR-04 | Phase 2 | Complete |
-| INFR-05 | Phase 2 | Complete |
+| INFR-05 | Phase 2 | Deferred to v2 |
 | INFR-06 | Phase 2 | Complete |
 | UCAS-01 | Phase 3 | Complete |
 | UCAS-02 | Phase 3 | Complete |
@@ -137,8 +137,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UCAS-05 | Phase 3 | Complete |
 | UCAS-06 | Phase 3 | Complete |
 | UCAS-07 | Phase 3 | Complete |
-| UCAS-08 | Phase 3 | Complete |
-| UCAS-09 | Phase 3 | Complete |
+| UCAS-08 | Phase 3 | Deferred to v2 |
+| UCAS-09 | Phase 3 | Deferred to v2 |
 | UCAS-10 | Phase 3 | Complete |
 | REST-01 | Phase 4 | Complete |
 | REST-02 | Phase 4 | Complete |
@@ -150,12 +150,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REST-08 | Phase 4 | Complete |
 | REST-09 | Phase 4 | Complete |
 | REST-10 | Phase 4 | Complete |
-| REST-11 | Phase 4 | Complete |
+| REST-11 | Phase 4 | Deferred to v2 |
 | REST-12 | Phase 4 | Complete |
 | AUTH-01 | Phase 4 | Complete |
 | AUTH-02 | Phase 4 | Complete |
 | AUTH-03 | Phase 4 | Complete |
-| AUTH-04 | Phase 4 | Complete |
+| AUTH-04 | Phase 4 → Phase 6 | Pending |
 | TEST-01 | Phase 5 | Complete |
 | TEST-02 | Phase 5 | Complete |
 | TEST-03 | Phase 5 | Complete |
@@ -165,7 +165,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **Coverage:**
 - v1 requirements: 50 total
-- Mapped to phases: 50
+- Satisfied: 46
+- Deferred to v2: 4 (INFR-05, UCAS-08, UCAS-09, REST-11)
+- Pending (gap closure): 1 (AUTH-04 partial — Phase 6)
 - Unmapped: 0
 
 ---
