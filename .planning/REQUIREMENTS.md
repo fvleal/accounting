@@ -74,9 +74,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Project Setup
 
-- [ ] **SETP-01**: Estrutura de pastas hexagonal (domain/, application/, infrastructure/, interface/)
-- [ ] **SETP-02**: NestJS 11 + Prisma + Vitest 3 configurados
-- [ ] **SETP-03**: ESLint com regras de boundary entre camadas
+- [x] **SETP-01**: Estrutura de pastas hexagonal (domain/, application/, infrastructure/, interface/)
+- [x] **SETP-02**: NestJS 11 + Prisma + Vitest 3 configurados
+- [x] **SETP-03**: ESLint com regras de boundary entre camadas
 
 ## v2 Requirements
 
@@ -112,9 +112,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SETP-01 | Phase 1 | Pending |
-| SETP-02 | Phase 1 | Pending |
-| SETP-03 | Phase 1 | Pending |
+| SETP-01 | Phase 1 | Complete |
+| SETP-02 | Phase 1 | Complete |
+| SETP-03 | Phase 1 | Complete |
 | DOMN-01 | Phase 1 | Pending |
 | DOMN-02 | Phase 1 | Pending |
 | DOMN-03 | Phase 1 | Pending |
