@@ -45,11 +45,11 @@ Plans:
   2. AccountRepository adapter implements all AccountRepositoryPort methods (save, findById, findByCpf, findByEmail, findAll) using Prisma client
   3. Mapper correctly translates between domain Account aggregate and Prisma persistence model in both directions (toDomain reconstitutes without re-validating trusted DB data)
   4. StoragePort interface exists in domain with an S3 adapter, and a phone verification adapter (SMS/WhatsApp) implements its port
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — Docker Compose (PostgreSQL 17 + MinIO), Prisma schema with Account model, migration, PrismaService/Module, NestJS root module wiring
+- [ ] 02-02-PLAN.md — AccountRepositoryPort findAll, StoragePort, AccountMapper, PrismaAccountRepository with transactional events, S3StorageAdapter, infrastructure module
 
 ### Phase 3: Application Layer
 **Goal**: All use cases exist as thin orchestrators that load aggregates, invoke domain methods, persist results, and dispatch domain events -- depending only on port interfaces, never on concrete adapters
@@ -105,7 +105,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Setup and Domain Modeling | 0/3 | Planning complete | - |
-| 2. Infrastructure and Persistence | 0/? | Not started | - |
+| 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
 | 3. Application Layer | 0/? | Not started | - |
 | 4. REST API and Security | 0/? | Not started | - |
 | 5. Testing and Hardening | 0/? | Not started | - |
