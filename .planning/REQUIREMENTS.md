@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Domain Foundation
 
-- [ ] **DOMN-01**: Base classes reutilizaveis: AggregateRoot, ValueObject, Entity
-- [ ] **DOMN-02**: Value Object Email com validacao na construcao
-- [ ] **DOMN-03**: Value Object CPF com validacao na construcao
-- [ ] **DOMN-04**: Value Object PhoneNumber com validacao na construcao
-- [ ] **DOMN-05**: Value Object PersonName com validacao na construcao
-- [ ] **DOMN-06**: Value Object BirthDate com validacao na construcao
+- [x] **DOMN-01**: Base classes reutilizaveis: AggregateRoot, ValueObject, Entity
+- [x] **DOMN-02**: Value Object Email com validacao na construcao
+- [x] **DOMN-03**: Value Object CPF com validacao na construcao
+- [x] **DOMN-04**: Value Object PhoneNumber com validacao na construcao
+- [x] **DOMN-05**: Value Object PersonName com validacao na construcao
+- [x] **DOMN-06**: Value Object BirthDate com validacao na construcao
 - [ ] **DOMN-07**: Account Aggregate com campos obrigatorios (nome, email, CPF) e opcionais (data de nascimento, telefone, foto)
 - [ ] **DOMN-08**: Account Aggregate coleta domain events (AccountCreated, AccountUpdated)
 - [ ] **DOMN-09**: AccountRepositoryPort (interface) definida no dominio
@@ -115,12 +115,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SETP-01 | Phase 1 | Complete |
 | SETP-02 | Phase 1 | Complete |
 | SETP-03 | Phase 1 | Complete |
-| DOMN-01 | Phase 1 | Pending |
-| DOMN-02 | Phase 1 | Pending |
-| DOMN-03 | Phase 1 | Pending |
-| DOMN-04 | Phase 1 | Pending |
-| DOMN-05 | Phase 1 | Pending |
-| DOMN-06 | Phase 1 | Pending |
+| DOMN-01 | Phase 1 | Complete |
+| DOMN-02 | Phase 1 | Complete |
+| DOMN-03 | Phase 1 | Complete |
+| DOMN-04 | Phase 1 | Complete |
+| DOMN-05 | Phase 1 | Complete |
+| DOMN-06 | Phase 1 | Complete |
 | DOMN-07 | Phase 1 | Pending |
 | DOMN-08 | Phase 1 | Pending |
 | DOMN-09 | Phase 1 | Pending |
