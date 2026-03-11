@@ -21,9 +21,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Application (UseCases)
 
-- [ ] **UCAS-01**: CreateAccountCommand — recebe token Auth0 (extrai email via Auth0 userinfo), nome completo e CPF como dados obrigatorios
-- [ ] **UCAS-02**: UpdateAccountCommand — atualiza dados opcionais (data de nascimento); telefone atualizado apenas apos verificacao
-- [ ] **UCAS-10**: UploadAccountPhotoCommand — recebe imagem, chama StoragePort para salvar, persiste URL retornada no Account
+- [x] **UCAS-01**: CreateAccountCommand — recebe token Auth0 (extrai email via Auth0 userinfo), nome completo e CPF como dados obrigatorios
+- [x] **UCAS-02**: UpdateAccountCommand — atualiza dados opcionais (data de nascimento); telefone atualizado apenas apos verificacao
+- [x] **UCAS-10**: UploadAccountPhotoCommand — recebe imagem, chama StoragePort para salvar, persiste URL retornada no Account
 - [x] **UCAS-08**: SendPhoneVerificationCommand — envia codigo de verificacao para o telefone informado
 - [x] **UCAS-09**: VerifyPhoneCommand — verifica codigo recebido e, se valido, atualiza telefone na conta
 - [ ] **UCAS-03**: GetAccountByIdQuery — consulta conta por ID
@@ -130,8 +130,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-04 | Phase 2 | Complete |
 | INFR-05 | Phase 2 | Complete |
 | INFR-06 | Phase 2 | Complete |
-| UCAS-01 | Phase 3 | Pending |
-| UCAS-02 | Phase 3 | Pending |
+| UCAS-01 | Phase 3 | Complete |
+| UCAS-02 | Phase 3 | Complete |
 | UCAS-03 | Phase 3 | Pending |
 | UCAS-04 | Phase 3 | Pending |
 | UCAS-05 | Phase 3 | Pending |
@@ -139,7 +139,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UCAS-07 | Phase 3 | Complete |
 | UCAS-08 | Phase 3 | Complete |
 | UCAS-09 | Phase 3 | Complete |
-| UCAS-10 | Phase 3 | Pending |
+| UCAS-10 | Phase 3 | Complete |
 | REST-01 | Phase 4 | Pending |
 | REST-02 | Phase 4 | Pending |
 | REST-03 | Phase 4 | Pending |

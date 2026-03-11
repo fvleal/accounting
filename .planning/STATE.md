@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 status: in-progress
 stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-11T13:41:38Z"
-last_activity: 2026-03-11 -- Completed 03-01 Application layer prerequisites
+last_updated: "2026-03-11T13:47:44Z"
+last_activity: 2026-03-11 -- Completed 03-02 Command use cases
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 8
-  completed_plans: 6
-  percent: 75
+  completed_plans: 7
+  percent: 80
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-10)
 ## Current Position
 
 Phase: 3 of 5 (Application Layer)
-Plan: 1 of 3 in current phase
-Status: Plan 03-01 Complete
-Last activity: 2026-03-11 -- Completed 03-01 Application layer prerequisites
+Plan: 2 of 3 in current phase
+Status: Plan 03-02 Complete
+Last activity: 2026-03-11 -- Completed 03-02 Command use cases
 
-Progress: [████████░░] 75%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [████████░░] 75%
 | Phase 02 P01 | 6min | 2 tasks | 10 files |
 | Phase 02 P02 | 5min | 4 tasks | 11 files |
 | Phase 03 P01 | 6min | 2 tasks | 19 files |
+| Phase 03 P02 | 3min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [03-01]: auth0Sub stored as plain string on Account (not VO) -- external identity link, no domain validation
 - [03-01]: DomainException base class with abstract code + metadata record for structured error handling
 - [03-01]: UseCase<I, O> single execute method contract for all commands/queries
+- [03-02]: Each command has its own toOutput() -- intentional duplication since Output shapes may diverge per use case
+- [03-02]: UploadAccountPhotoCommand uses key pattern accounts/{id}/photo for S3 storage
 
 ### Pending Todos
 
@@ -95,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T13:41:38Z
-Stopped at: Completed 03-01-PLAN.md
-Resume file: .planning/phases/03-application-layer/03-01-SUMMARY.md
+Last session: 2026-03-11T13:47:44Z
+Stopped at: Completed 03-02-PLAN.md
+Resume file: .planning/phases/03-application-layer/03-02-SUMMARY.md
