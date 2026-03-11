@@ -50,8 +50,13 @@ export class PrismaAccountRepository implements AccountRepositoryPort {
     return raw ? AccountMapper.toDomain(raw) : null;
   }
 
+  async findByAuth0Sub(auth0Sub: string): Promise<Account | null> {
+    const raw = await this.prisma.account.findUnique({ where: { auth0Sub } });
+    return raw ? AccountMapper.toDomain(raw) : null;
+  }
+
   async findAll(params: PaginationParams): Promise<PaginatedResult<Account>> {
-    const [rows, total] = await this.prisma.$transaction([
+    const [rows, total] = await Promise.all([
       this.prisma.account.findMany({
         skip: params.offset,
         take: params.limit,

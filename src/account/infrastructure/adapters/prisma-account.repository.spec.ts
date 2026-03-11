@@ -5,6 +5,7 @@ import { AccountMapper } from '../mappers/account.mapper';
 const VALID_CPF = '529.982.247-25';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
+const VALID_AUTH0_SUB = 'auth0|abc123';
 
 function createMockPrisma() {
   return {
@@ -38,6 +39,7 @@ describe('PrismaAccountRepository', () => {
   describe('save', () => {
     it('should upsert account data and dispatch events inside transaction', async () => {
       const account = Account.create({
+        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -69,6 +71,7 @@ describe('PrismaAccountRepository', () => {
 
     it('should clear domain events after successful save', async () => {
       const account = Account.create({
+        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -88,6 +91,7 @@ describe('PrismaAccountRepository', () => {
       const now = new Date();
       const raw = {
         id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -115,12 +119,46 @@ describe('PrismaAccountRepository', () => {
     });
   });
 
+  describe('findByAuth0Sub', () => {
+    it('should return domain Account when found', async () => {
+      const now = new Date();
+      const raw = {
+        id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        auth0Sub: VALID_AUTH0_SUB,
+        name: VALID_NAME,
+        email: VALID_EMAIL,
+        cpf: VALID_CPF,
+        birthDate: null,
+        phone: null,
+        phoneVerified: false,
+        photoUrl: null,
+        createdAt: now,
+        updatedAt: now,
+      };
+      prisma.account.findUnique.mockResolvedValue(raw);
+
+      const result = await repo.findByAuth0Sub(VALID_AUTH0_SUB);
+
+      expect(result).toBeInstanceOf(Account);
+      expect(result!.auth0Sub).toBe(VALID_AUTH0_SUB);
+    });
+
+    it('should return null when not found', async () => {
+      prisma.account.findUnique.mockResolvedValue(null);
+
+      const result = await repo.findByAuth0Sub('auth0|nonexistent');
+
+      expect(result).toBeNull();
+    });
+  });
+
   describe('findAll', () => {
     it('should return paginated results', async () => {
       const now = new Date();
       const rows = [
         {
           id: 'id-1',
+          auth0Sub: VALID_AUTH0_SUB,
           name: VALID_NAME,
           email: VALID_EMAIL,
           cpf: VALID_CPF,
@@ -133,8 +171,8 @@ describe('PrismaAccountRepository', () => {
         },
       ];
 
-      // Batch transaction returns array of results
-      prisma.$transaction.mockResolvedValue([rows, 1]);
+      prisma.account.findMany.mockResolvedValue(rows);
+      prisma.account.count.mockResolvedValue(1);
 
       const result = await repo.findAll({ limit: 10, offset: 0 });
 
