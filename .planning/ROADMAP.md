@@ -84,7 +84,7 @@ Plans:
 - [ ] 04-03-PLAN.md — AccountController with all endpoints, AccountInterfaceModule, AppModule and main.ts global wiring
 
 ### Phase 5: Testing and Hardening
-**Goal**: The entire bounded context is covered by automated tests at every layer, confirming domain invariants, use case orchestration, adapter correctness, and API contract stability
+**Goal**: The entire bounded context is covered by automated tests at every layer with operational hardening (health check, graceful shutdown, config validation) for production readiness
 **Depends on**: Phase 4
 **Requirements**: TEST-01, TEST-02, TEST-03, TEST-04, TEST-05, TEST-06
 **Success Criteria** (what must be TRUE):
@@ -93,11 +93,11 @@ Plans:
   3. Command and Query use case tests verify correct orchestration behavior (uniqueness checks, aggregate method calls, event dispatch, error mapping) using mocked ports via Vitest
   4. Integration tests confirm the PostgreSQL adapter correctly persists and retrieves accounts against a real database
   5. E2E tests send HTTP requests to the running application and verify full request-to-database round trips for all endpoints, including auth enforcement
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md — Install deps, DuplicateAuth0SubError unit test, Joi env validation schema, graceful shutdown
+- [ ] 05-02-PLAN.md — Health check endpoint with Terminus (Postgres + MinIO indicators), E2E smoke test
 
 ## Progress
 
@@ -110,4 +110,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
 | 3. Application Layer | 3/3 | Complete   | 2026-03-11 |
 | 4. REST API and Security | 3/3 | Complete   | 2026-03-11 |
-| 5. Testing and Hardening | 0/? | Not started | - |
+| 5. Testing and Hardening | 0/2 | Planning complete | - |
