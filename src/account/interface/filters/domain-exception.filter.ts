@@ -11,6 +11,7 @@ import { DomainException } from '../../../shared/domain/exceptions/domain-except
 export class DomainExceptionFilter implements ExceptionFilter {
   private static readonly CODE_TO_STATUS: Record<string, number> = {
     ACCOUNT_NOT_FOUND: 404,
+    ACCOUNT_OWNERSHIP_VIOLATION: 403,
     DUPLICATE_EMAIL: 409,
     DUPLICATE_CPF: 409,
     DUPLICATE_AUTH0_SUB: 409,

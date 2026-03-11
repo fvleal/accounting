@@ -249,12 +249,12 @@ describe('Accounts API (e2e)', () => {
   // ═══════════════════════════════════════════════════════════
 
   describe('REST-02: GET /accounts/:id', () => {
-    it('returns 200 with account data from DB', async () => {
+    it('returns 200 with account data from DB for admin', async () => {
       const created = await createAccount();
 
       const res = await request(app.getHttpServer())
         .get(`/accounts/${created.data.id}`)
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
+        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
         .expect(200);
 
       expect(res.body.data.id).toBe(created.data.id);
@@ -262,10 +262,19 @@ describe('Accounts API (e2e)', () => {
       expect(res.body.meta).toHaveProperty('timestamp');
     });
 
+    it('returns 403 for user without read:accounts permission', async () => {
+      const created = await createAccount();
+
+      await request(app.getHttpServer())
+        .get(`/accounts/${created.data.id}`)
+        .set('x-test-auth', authHeader(USER_PAYLOAD))
+        .expect(403);
+    });
+
     it('returns 404 for non-existent account', async () => {
       const res = await request(app.getHttpServer())
         .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
+        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
         .expect(404);
 
       expect(res.body).toMatchObject({
@@ -277,7 +286,7 @@ describe('Accounts API (e2e)', () => {
     it('returns 400 for invalid UUID', async () => {
       await request(app.getHttpServer())
         .get('/accounts/not-a-uuid')
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
+        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
         .expect(400);
     });
   });
@@ -389,6 +398,24 @@ describe('Accounts API (e2e)', () => {
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({})
         .expect(400);
+    });
+
+    it('returns 403 when another user tries to update the account', async () => {
+      const created = await createAccount();
+
+      const otherUser = {
+        ...USER_PAYLOAD,
+        sub: 'auth0|other-user',
+        email: 'other@example.com',
+      };
+
+      const res = await request(app.getHttpServer())
+        .patch(`/accounts/${created.data.id}`)
+        .set('x-test-auth', authHeader(otherUser))
+        .send({ name: 'Hacker Name' })
+        .expect(403);
+
+      expect(res.body.error).toBe('ACCOUNT_OWNERSHIP_VIOLATION');
     });
   });
 
@@ -532,7 +559,7 @@ describe('Accounts API (e2e)', () => {
     it('maps ACCOUNT_NOT_FOUND to 404 with standardized format', async () => {
       const res = await request(app.getHttpServer())
         .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
+        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
         .expect(404);
 
       expect(res.body).toMatchObject({
@@ -656,9 +683,7 @@ describe('Accounts API (e2e)', () => {
 
   describe('Health Check', () => {
     it('GET /health returns 200 without auth', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/health')
-        .expect(200);
+      const res = await request(app.getHttpServer()).get('/health').expect(200);
 
       // Terminus response is wrapped by ResponseEnvelopeInterceptor
       const health = res.body.data;
@@ -698,7 +723,7 @@ describe('Accounts API (e2e)', () => {
     it('does NOT wrap error responses in envelope', async () => {
       const res = await request(app.getHttpServer())
         .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
+        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
         .expect(404);
 
       expect(res.body).toHaveProperty('statusCode');

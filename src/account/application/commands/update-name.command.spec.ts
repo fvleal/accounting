@@ -2,7 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UpdateNameCommand } from './update-name.command';
 import { AccountRepositoryPort } from '../../domain/ports';
 import { Account } from '../../domain/entities/account.entity';
-import { AccountNotFoundError } from '../../domain/exceptions';
+import {
+  AccountNotFoundError,
+  AccountOwnershipError,
+} from '../../domain/exceptions';
 
 const VALID_AUTH0_SUB = 'auth0|abc123';
 const VALID_EMAIL = 'john@example.com';
@@ -45,6 +48,7 @@ describe('UpdateNameCommand', () => {
 
     const output = await command.execute({
       accountId: account.id,
+      auth0Sub: VALID_AUTH0_SUB,
       name: 'Jane Smith',
     });
 
@@ -58,8 +62,26 @@ describe('UpdateNameCommand', () => {
     (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(null);
 
     await expect(
-      command.execute({ accountId: 'nonexistent-id', name: 'Jane Smith' }),
+      command.execute({
+        accountId: 'nonexistent-id',
+        auth0Sub: VALID_AUTH0_SUB,
+        name: 'Jane Smith',
+      }),
     ).rejects.toThrow(AccountNotFoundError);
+    expect(mockRepo.save).not.toHaveBeenCalled();
+  });
+
+  it('should throw AccountOwnershipError when auth0Sub does not match', async () => {
+    const account = createTestAccount();
+    (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(account);
+
+    await expect(
+      command.execute({
+        accountId: account.id,
+        auth0Sub: 'auth0|other-user',
+        name: 'Jane Smith',
+      }),
+    ).rejects.toThrow(AccountOwnershipError);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
 });

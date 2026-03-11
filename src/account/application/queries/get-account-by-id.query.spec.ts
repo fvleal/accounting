@@ -62,8 +62,8 @@ describe('GetAccountByIdQuery', () => {
   it('should throw AccountNotFoundError when ID not found', async () => {
     (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(null);
 
-    await expect(
-      query.execute({ id: 'nonexistent-id' }),
-    ).rejects.toThrow(AccountNotFoundError);
+    await expect(query.execute({ id: 'nonexistent-id' })).rejects.toThrow(
+      AccountNotFoundError,
+    );
   });
 });

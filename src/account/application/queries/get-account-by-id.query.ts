@@ -23,9 +23,10 @@ export interface GetAccountByIdOutput {
 }
 
 @Injectable()
-export class GetAccountByIdQuery
-  implements UseCase<GetAccountByIdInput, GetAccountByIdOutput>
-{
+export class GetAccountByIdQuery implements UseCase<
+  GetAccountByIdInput,
+  GetAccountByIdOutput
+> {
   constructor(
     @Inject(ACCOUNT_REPOSITORY_PORT)
     private readonly accountRepo: AccountRepositoryPort,

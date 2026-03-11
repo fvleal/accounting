@@ -17,7 +17,10 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CurrentUser, Roles } from '../../../shared/infrastructure/auth/index.js';
+import {
+  CurrentUser,
+  Roles,
+} from '../../../shared/infrastructure/auth/index.js';
 import type { JwtPayload } from '../../../shared/infrastructure/auth/index.js';
 import { CreateAccountDto } from '../dtos/create-account.dto.js';
 import { UpdateAccountDto } from '../dtos/update-account.dto.js';
@@ -73,6 +76,7 @@ export class AccountController {
   }
 
   @Get(':id')
+  @Roles('read:accounts')
   async findById(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<AccountResponseDto> {
@@ -106,6 +110,7 @@ export class AccountController {
 
   @Patch(':id')
   async update(
+    @CurrentUser() user: JwtPayload,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateAccountDto,
   ): Promise<AccountResponseDto> {
@@ -113,11 +118,24 @@ export class AccountController {
       throw new BadRequestException('At least one field must be provided');
     }
 
-    let lastOutput: { id: string; name: string; email: string; cpf: string; birthDate: Date | null; phone: string | null; photoUrl: string | null; createdAt: Date; updatedAt: Date } | undefined;
+    let lastOutput:
+      | {
+          id: string;
+          name: string;
+          email: string;
+          cpf: string;
+          birthDate: Date | null;
+          phone: string | null;
+          photoUrl: string | null;
+          createdAt: Date;
+          updatedAt: Date;
+        }
+      | undefined;
 
     if (dto.name) {
       lastOutput = await this.updateName.execute({
         accountId: id,
+        auth0Sub: user.sub,
         name: dto.name,
       });
     }
@@ -125,6 +143,7 @@ export class AccountController {
     if (dto.birthDate) {
       lastOutput = await this.updateBirthDate.execute({
         accountId: id,
+        auth0Sub: user.sub,
         birthDate: new Date(dto.birthDate),
       });
     }
@@ -134,21 +153,23 @@ export class AccountController {
 
   @Post(':id/phone/send-code')
   async sendPhoneCode(
+    @CurrentUser() user: JwtPayload,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: SendPhoneCodeDto,
   ): Promise<AccountResponseDto> {
     const output = await this.updatePhone.execute({
       accountId: id,
+      auth0Sub: user.sub,
       phone: dto.phone,
     });
     return AccountResponseDto.fromOutput(output);
   }
 
   @Post(':id/phone/verify')
-  async verifyPhone(
+  verifyPhone(
     @Param('id', ParseUUIDPipe) _id: string,
     @Body() _dto: VerifyPhoneDto,
-  ): Promise<never> {
+  ): never {
     throw new HttpException(
       'Phone verification not yet implemented',
       HttpStatus.NOT_IMPLEMENTED,
@@ -158,18 +179,18 @@ export class AccountController {
   @Post(':id/photo')
   @UseInterceptors(FileInterceptor('file'))
   async uploadAccountPhoto(
+    @CurrentUser() user: JwtPayload,
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
-        ],
+        validators: [new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 })],
       }),
     )
     file: Express.Multer.File,
   ): Promise<AccountResponseDto> {
     const output = await this.uploadPhoto.execute({
       accountId: id,
+      auth0Sub: user.sub,
       buffer: file.buffer,
       contentType: file.mimetype,
     });
