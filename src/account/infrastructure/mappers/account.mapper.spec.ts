@@ -5,6 +5,7 @@ const VALID_CPF = '529.982.247-25';
 const VALID_CPF_NORMALIZED = '52998224725';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
+const VALID_AUTH0_SUB = 'auth0|abc123';
 
 describe('AccountMapper', () => {
   describe('toDomain', () => {
@@ -13,6 +14,7 @@ describe('AccountMapper', () => {
       // DB stores CPF normalized (digits only)
       const raw = {
         id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF_NORMALIZED,
@@ -42,6 +44,7 @@ describe('AccountMapper', () => {
       const now = new Date();
       const raw = {
         id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF_NORMALIZED,
@@ -68,6 +71,7 @@ describe('AccountMapper', () => {
       const account = Account.reconstitute(
         'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
         {
+          auth0Sub: VALID_AUTH0_SUB,
           name: VALID_NAME,
           email: VALID_EMAIL,
           cpf: VALID_CPF,
@@ -98,6 +102,7 @@ describe('AccountMapper', () => {
       const account = Account.reconstitute(
         'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
         {
+          auth0Sub: VALID_AUTH0_SUB,
           name: VALID_NAME,
           email: VALID_EMAIL,
           cpf: VALID_CPF,
