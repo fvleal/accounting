@@ -15,9 +15,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DOMN-04**: Value Object PhoneNumber com validacao na construcao
 - [x] **DOMN-05**: Value Object PersonName com validacao na construcao
 - [x] **DOMN-06**: Value Object BirthDate com validacao na construcao
-- [ ] **DOMN-07**: Account Aggregate com campos obrigatorios (nome, email, CPF) e opcionais (data de nascimento, telefone, foto)
-- [ ] **DOMN-08**: Account Aggregate coleta domain events (AccountCreated, AccountUpdated)
-- [ ] **DOMN-09**: AccountRepositoryPort (interface) definida no dominio
+- [x] **DOMN-07**: Account Aggregate com campos obrigatorios (nome, email, CPF) e opcionais (data de nascimento, telefone, foto)
+- [x] **DOMN-08**: Account Aggregate coleta domain events (AccountCreated, AccountUpdated)
+- [x] **DOMN-09**: AccountRepositoryPort (interface) definida no dominio
 
 ### Application (UseCases)
 
@@ -121,9 +121,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOMN-04 | Phase 1 | Complete |
 | DOMN-05 | Phase 1 | Complete |
 | DOMN-06 | Phase 1 | Complete |
-| DOMN-07 | Phase 1 | Pending |
-| DOMN-08 | Phase 1 | Pending |
-| DOMN-09 | Phase 1 | Pending |
+| DOMN-07 | Phase 1 | Complete |
+| DOMN-08 | Phase 1 | Complete |
+| DOMN-09 | Phase 1 | Complete |
 | INFR-01 | Phase 2 | Pending |
 | INFR-02 | Phase 2 | Pending |
 | INFR-03 | Phase 2 | Pending |
