@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { UseCase } from '../../../shared/application/use-case.base';
 import { Account } from '../../domain/entities/account.entity';
-import { AccountRepositoryPort, StoragePort } from '../../domain/ports';
+import type { AccountRepositoryPort, StoragePort } from '../../domain/ports';
 import {
   ACCOUNT_REPOSITORY_PORT,
   STORAGE_PORT,
@@ -28,9 +28,10 @@ export interface UploadAccountPhotoOutput {
 }
 
 @Injectable()
-export class UploadAccountPhotoCommand
-  implements UseCase<UploadAccountPhotoInput, UploadAccountPhotoOutput>
-{
+export class UploadAccountPhotoCommand implements UseCase<
+  UploadAccountPhotoInput,
+  UploadAccountPhotoOutput
+> {
   constructor(
     @Inject(ACCOUNT_REPOSITORY_PORT)
     private readonly accountRepo: AccountRepositoryPort,

@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { UseCase } from '../../../shared/application/use-case.base';
 import { Account } from '../../domain/entities/account.entity';
-import { AccountRepositoryPort } from '../../domain/ports';
+import type { AccountRepositoryPort } from '../../domain/ports';
 import { ACCOUNT_REPOSITORY_PORT } from '../../infrastructure/account-infrastructure.module';
 import {
   DuplicateEmailError,
@@ -29,9 +29,10 @@ export interface CreateAccountOutput {
 }
 
 @Injectable()
-export class CreateAccountCommand
-  implements UseCase<CreateAccountInput, CreateAccountOutput>
-{
+export class CreateAccountCommand implements UseCase<
+  CreateAccountInput,
+  CreateAccountOutput
+> {
   constructor(
     @Inject(ACCOUNT_REPOSITORY_PORT)
     private readonly accountRepo: AccountRepositoryPort,

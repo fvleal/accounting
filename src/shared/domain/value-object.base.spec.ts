@@ -52,7 +52,9 @@ describe('ValueObject', () => {
 
   it('should return false when compared to undefined', () => {
     const vo = TestValueObject.create({ value: 'test', count: 1 });
-    expect(vo.equals(undefined as unknown as ValueObject<TestProps>)).toBe(false);
+    expect(vo.equals(undefined as unknown as ValueObject<TestProps>)).toBe(
+      false,
+    );
   });
 
   it('should return false when compared to different class', () => {
@@ -69,10 +71,14 @@ describe('ValueObject', () => {
   });
 
   it('should call validate during construction', () => {
-    expect(vo => TestValueObject.create({ value: 'test', count: 1 })).toBeDefined();
+    expect(
+      TestValueObject.create({ value: 'test', count: 1 }),
+    ).toBeDefined();
   });
 
   it('should throw when subclass validation fails', () => {
-    expect(() => TestValueObject.create({ value: '', count: 1 })).toThrow('Value is required');
+    expect(() => TestValueObject.create({ value: '', count: 1 })).toThrow(
+      'Value is required',
+    );
   });
 });
