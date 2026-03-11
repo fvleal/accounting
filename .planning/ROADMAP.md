@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Infrastructure and Persistence** - PostgreSQL adapter via Prisma implementing AccountRepositoryPort, migrations, mappers, storage and phone verification adapters
 - [x] **Phase 3: Application Layer** - Command and Query use cases as orchestrators depending on ports, with explicit CQRS separation (completed 2026-03-11)
 - [x] **Phase 4: REST API and Security** - Controllers, DTOs, Auth0 JWT guard, role-based access, error handling, and all HTTP endpoints (completed 2026-03-11)
-- [ ] **Phase 5: Testing and Hardening** - Unit tests for domain and use cases, integration tests for adapters, E2E tests for endpoints
+- [x] **Phase 5: Testing and Hardening** - Unit tests for domain and use cases, integration tests for adapters, E2E tests for endpoints (completed 2026-03-11)
 
 ## Phase Details
 
@@ -93,7 +93,7 @@ Plans:
   3. Command and Query use case tests verify correct orchestration behavior (uniqueness checks, aggregate method calls, event dispatch, error mapping) using mocked ports via Vitest
   4. Integration tests confirm the PostgreSQL adapter correctly persists and retrieves accounts against a real database
   5. E2E tests send HTTP requests to the running application and verify full request-to-database round trips for all endpoints, including auth enforcement
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 05-01-PLAN.md — Install deps, DuplicateAuth0SubError unit test, Joi env validation schema, graceful shutdown
@@ -110,4 +110,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
 | 3. Application Layer | 3/3 | Complete   | 2026-03-11 |
 | 4. REST API and Security | 3/3 | Complete   | 2026-03-11 |
-| 5. Testing and Hardening | 0/2 | Planning complete | - |
+| 5. Testing and Hardening | 2/2 | Complete   | 2026-03-11 |
