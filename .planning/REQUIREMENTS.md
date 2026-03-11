@@ -52,9 +52,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **REST-10**: Controller com endpoint POST /accounts/:id/phone/send-code (enviar codigo de verificacao)
 - [ ] **REST-11**: Controller com endpoint POST /accounts/:id/phone/verify (verificar codigo e atualizar telefone)
 - [ ] **REST-12**: Controller com endpoint POST /accounts/:id/photo (upload de foto)
-- [ ] **REST-07**: Request DTOs com class-validator e class-transformer decorators
-- [ ] **REST-08**: Response DTOs retornando nome, email, CPF, data de nascimento, telefone, foto
-- [ ] **REST-09**: Error handling padronizado (exception filters)
+- [x] **REST-07**: Request DTOs com class-validator e class-transformer decorators
+- [x] **REST-08**: Response DTOs retornando nome, email, CPF, data de nascimento, telefone, foto
+- [x] **REST-09**: Error handling padronizado (exception filters)
 
 ### Auth & Security
 
@@ -146,9 +146,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REST-04 | Phase 4 | Pending |
 | REST-05 | Phase 4 | Pending |
 | REST-06 | Phase 4 | Pending |
-| REST-07 | Phase 4 | Pending |
-| REST-08 | Phase 4 | Pending |
-| REST-09 | Phase 4 | Pending |
+| REST-07 | Phase 4 | Complete |
+| REST-08 | Phase 4 | Complete |
+| REST-09 | Phase 4 | Complete |
 | REST-10 | Phase 4 | Pending |
 | REST-11 | Phase 4 | Pending |
 | REST-12 | Phase 4 | Pending |

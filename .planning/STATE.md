@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-stopped_at: Completed 04-01 Auth Module
-last_updated: "2026-03-11T15:19:31Z"
-last_activity: 2026-03-11 -- Completed 04-01 Auth0 JWT module with guards and decorators
+stopped_at: Completed 04-02 DTOs, Exception Filter, and Response Envelope
+last_updated: "2026-03-11T15:25:00Z"
+last_activity: 2026-03-11 -- Completed 04-02 DTOs, exception filter, response envelope interceptor
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 11
-  completed_plans: 9
-  percent: 82
+  completed_plans: 10
+  percent: 91
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-10)
 ## Current Position
 
 Phase: 4 of 5 (REST API and Security)
-Plan: 1 of 3 in current phase
-Status: Plan 04-01 Complete
-Last activity: 2026-03-11 -- Completed 04-01 Auth0 JWT module with guards and decorators
+Plan: 2 of 3 in current phase
+Status: Plan 04-02 Complete
+Last activity: 2026-03-11 -- Completed 04-02 DTOs, exception filter, response envelope interceptor
 
-Progress: [████████░░] 82%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [████████░░] 82%
 | Phase 03 P02 | 3min | 2 tasks | 10 files |
 | Phase 03 P03 | 3min | 2 tasks | 9 files |
 | Phase 04 P01 | 2min | 2 tasks | 9 files |
+| Phase 04 P02 | 3min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,10 @@ Recent decisions affecting current work:
 - [04-01]: RolesGuard checks user.permissions (Auth0 RBAC permissions claim), not user.roles
 - [04-01]: JwtAuthGuard registered before RolesGuard in APP_GUARD providers for correct execution order
 - [04-01]: JwtStrategy uses passportJwtSecret with cache and rate limiting for JWKS fetching
+- [04-02]: Phone DTO regex matches PhoneNumber VO pattern exactly (DDD + 8-9 digits)
+- [04-02]: AccountResponseDto.phoneVerified hardcoded to false (verification not yet implemented)
+- [04-02]: DomainExceptionFilter catches all exceptions (@Catch()) for unified error handling
+- [04-02]: List response detection in interceptor uses duck-typing (data array + total number)
 
 ### Pending Todos
 
@@ -106,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T15:19:31Z
-Stopped at: Completed 04-01 Auth Module
-Resume file: .planning/phases/04-rest-api-and-security/04-01-SUMMARY.md
+Last session: 2026-03-11T15:25:00Z
+Stopped at: Completed 04-02 DTOs, Exception Filter, and Response Envelope
+Resume file: .planning/phases/04-rest-api-and-security/04-02-SUMMARY.md
