@@ -24,13 +24,13 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **UCAS-01**: CreateAccountCommand — recebe token Auth0 (extrai email via Auth0 userinfo), nome completo e CPF como dados obrigatorios
 - [ ] **UCAS-02**: UpdateAccountCommand — atualiza dados opcionais (data de nascimento); telefone atualizado apenas apos verificacao
 - [ ] **UCAS-10**: UploadAccountPhotoCommand — recebe imagem, chama StoragePort para salvar, persiste URL retornada no Account
-- [ ] **UCAS-08**: SendPhoneVerificationCommand — envia codigo de verificacao para o telefone informado
-- [ ] **UCAS-09**: VerifyPhoneCommand — verifica codigo recebido e, se valido, atualiza telefone na conta
+- [x] **UCAS-08**: SendPhoneVerificationCommand — envia codigo de verificacao para o telefone informado
+- [x] **UCAS-09**: VerifyPhoneCommand — verifica codigo recebido e, se valido, atualiza telefone na conta
 - [ ] **UCAS-03**: GetAccountByIdQuery — consulta conta por ID
 - [ ] **UCAS-04**: FindAccountByFieldQuery — consulta conta por campo especifico (CPF, email, etc.)
 - [ ] **UCAS-05**: ListAccountsQuery — lista contas
-- [ ] **UCAS-06**: UseCases dependem de interfaces (ports), seguindo Dependency Inversion
-- [ ] **UCAS-07**: Separacao explicita de Commands e Queries (CQRS leve)
+- [x] **UCAS-06**: UseCases dependem de interfaces (ports), seguindo Dependency Inversion
+- [x] **UCAS-07**: Separacao explicita de Commands e Queries (CQRS leve)
 
 ### Infrastructure (Adapters)
 
@@ -135,10 +135,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UCAS-03 | Phase 3 | Pending |
 | UCAS-04 | Phase 3 | Pending |
 | UCAS-05 | Phase 3 | Pending |
-| UCAS-06 | Phase 3 | Pending |
-| UCAS-07 | Phase 3 | Pending |
-| UCAS-08 | Phase 3 | Pending |
-| UCAS-09 | Phase 3 | Pending |
+| UCAS-06 | Phase 3 | Complete |
+| UCAS-07 | Phase 3 | Complete |
+| UCAS-08 | Phase 3 | Complete |
+| UCAS-09 | Phase 3 | Complete |
 | UCAS-10 | Phase 3 | Pending |
 | REST-01 | Phase 4 | Pending |
 | REST-02 | Phase 4 | Pending |
