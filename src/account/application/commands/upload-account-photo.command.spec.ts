@@ -21,7 +21,6 @@ function createMockRepo(): AccountRepositoryPort {
     findByCpf: vi.fn(),
     findByAuth0Sub: vi.fn(),
     findAll: vi.fn(),
-    exists: vi.fn(),
   } as unknown as AccountRepositoryPort;
 }
 
@@ -101,6 +100,45 @@ describe('UploadAccountPhotoCommand', () => {
     ).rejects.toThrow(AccountOwnershipError);
     expect(mockStorage.upload).not.toHaveBeenCalled();
     expect(mockRepo.save).not.toHaveBeenCalled();
+  });
+
+  it('should delete old photo before uploading when account already has a photo', async () => {
+    const account = createTestAccount();
+    account.updatePhoto('https://s3.example.com/accounts/old/photo');
+    (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(account);
+    const buffer = Buffer.from('fake-image-data');
+    const contentType = 'image/jpeg';
+
+    await command.execute({
+      accountId: account.id,
+      auth0Sub: VALID_AUTH0_SUB,
+      buffer,
+      contentType,
+    });
+
+    expect(mockStorage.delete).toHaveBeenCalledWith(
+      `accounts/${account.id}/photo`,
+    );
+    expect(mockStorage.delete).toHaveBeenCalledBefore(
+      mockStorage.upload as ReturnType<typeof vi.fn>,
+    );
+  });
+
+  it('should not delete when account has no existing photo', async () => {
+    const account = createTestAccount();
+    (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(account);
+    const buffer = Buffer.from('fake-image-data');
+    const contentType = 'image/jpeg';
+
+    await command.execute({
+      accountId: account.id,
+      auth0Sub: VALID_AUTH0_SUB,
+      buffer,
+      contentType,
+    });
+
+    expect(mockStorage.delete).not.toHaveBeenCalled();
+    expect(mockStorage.upload).toHaveBeenCalledOnce();
   });
 
   it('should call StoragePort.upload with correct key, buffer, and contentType', async () => {

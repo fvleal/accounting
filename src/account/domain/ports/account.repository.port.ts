@@ -17,5 +17,4 @@ export interface AccountRepositoryPort {
   findByCpf(cpf: string): Promise<Account | null>;
   findByAuth0Sub(auth0Sub: string): Promise<Account | null>;
   findAll(params: PaginationParams): Promise<PaginatedResult<Account>>;
-  exists(id: string): Promise<boolean>;
 }

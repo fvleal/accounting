@@ -14,7 +14,6 @@ export class DomainExceptionFilter implements ExceptionFilter {
     ACCOUNT_OWNERSHIP_VIOLATION: 403,
     DUPLICATE_EMAIL: 409,
     DUPLICATE_CPF: 409,
-
   };
 
   catch(exception: unknown, host: ArgumentsHost): void {

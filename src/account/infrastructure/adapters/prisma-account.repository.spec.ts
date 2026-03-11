@@ -181,22 +181,4 @@ describe('PrismaAccountRepository', () => {
       expect(result.total).toBe(1);
     });
   });
-
-  describe('exists', () => {
-    it('should return true when account exists', async () => {
-      prisma.account.count.mockResolvedValue(1);
-
-      const result = await repo.exists('some-id');
-
-      expect(result).toBe(true);
-    });
-
-    it('should return false when account does not exist', async () => {
-      prisma.account.count.mockResolvedValue(0);
-
-      const result = await repo.exists('some-id');
-
-      expect(result).toBe(false);
-    });
-  });
 });

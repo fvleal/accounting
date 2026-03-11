@@ -18,7 +18,6 @@ function createMockRepo(): AccountRepositoryPort {
     findByCpf: vi.fn(),
     findByAuth0Sub: vi.fn(),
     findAll: vi.fn(),
-    exists: vi.fn(),
   } as unknown as AccountRepositoryPort;
 }
 

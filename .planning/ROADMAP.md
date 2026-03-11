@@ -1,131 +1,32 @@
 # Roadmap: Account Bounded Context
 
-## Overview
+## Milestones
 
-This roadmap delivers an Account bounded context that serves as the central identity source for natural persons, consumed by other bounded contexts via REST API. The build order follows hexagonal architecture dependency direction: domain first (pure business rules), then infrastructure adapters, then application orchestration, then the REST interface, and finally systematic testing. Each phase produces a coherent, independently verifiable layer.
+- ✅ **v1.0 Account Bounded Context** — Phases 1-6 (shipped 2026-03-11)
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+<details>
+<summary>✅ v1.0 Account Bounded Context (Phases 1-6) — SHIPPED 2026-03-11</summary>
 
-Decimal phases appear between their surrounding integers in numeric order.
+- [x] Phase 1: Project Setup and Domain Modeling (3/3 plans) — completed 2026-03-11
+- [x] Phase 2: Infrastructure and Persistence (2/2 plans) — completed 2026-03-11
+- [x] Phase 3: Application Layer (3/3 plans) — completed 2026-03-11
+- [x] Phase 4: REST API and Security (3/3 plans) — completed 2026-03-11
+- [x] Phase 5: Testing and Hardening (2/2 plans) — completed 2026-03-11
+- [x] Phase 6: Gap Closure and Hardening (1/1 plan) — completed 2026-03-11
 
-- [ ] **Phase 1: Project Setup and Domain Modeling** - Hexagonal folder structure, tooling, base classes, Value Objects, Account aggregate, domain events, and repository port
-- [ ] **Phase 2: Infrastructure and Persistence** - PostgreSQL adapter via Prisma implementing AccountRepositoryPort, migrations, mappers, storage and phone verification adapters
-- [x] **Phase 3: Application Layer** - Command and Query use cases as orchestrators depending on ports, with explicit CQRS separation (completed 2026-03-11)
-- [x] **Phase 4: REST API and Security** - Controllers, DTOs, Auth0 JWT guard, role-based access, error handling, and all HTTP endpoints (completed 2026-03-11)
-- [x] **Phase 5: Testing and Hardening** - Unit tests for domain and use cases, integration tests for adapters, E2E tests for endpoints (completed 2026-03-11)
-- [ ] **Phase 6: Gap Closure and Hardening** - Fix requirements tracking, add @Roles to mutation endpoints, remove dead code, fix status codes, add missing E2E test
+Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
-## Phase Details
-
-### Phase 1: Project Setup and Domain Modeling
-**Goal**: A pure domain layer with enforced hexagonal boundaries exists, containing all Value Objects, the Account aggregate with domain event collection, and the repository port interface -- all without any framework or infrastructure dependencies
-**Depends on**: Nothing (first phase)
-**Requirements**: SETP-01, SETP-02, SETP-03, DOMN-01, DOMN-02, DOMN-03, DOMN-04, DOMN-05, DOMN-06, DOMN-07, DOMN-08, DOMN-09
-**Success Criteria** (what must be TRUE):
-  1. NestJS 11 project runs and Vitest executes a trivial test successfully
-  2. Folder structure follows hexagonal layers (domain/, application/, infrastructure/, interface/) and ESLint rejects any @nestjs/* import inside domain/
-  3. Each Value Object (Email, CPF, PhoneNumber, PersonName, BirthDate) rejects invalid input at construction time and enforces immutability
-  4. Account aggregate can be created with required fields (name, email, CPF), collects AccountCreated and AccountUpdated domain events, and exposes an AccountRepositoryPort interface with domain-named methods
-**Plans:** 3 plans
-
-Plans:
-- [ ] 01-01-PLAN.md — Scaffold NestJS 11 project, replace Jest with Vitest 3, create hexagonal folder structure, configure ESLint boundaries
-- [ ] 01-02-PLAN.md — Build DDD base classes (ValueObject, Entity, AggregateRoot, DomainEvent) and all 5 Value Objects via TDD
-- [ ] 01-03-PLAN.md — Build Account aggregate with factory methods, domain events (AccountCreated/AccountUpdated), and AccountRepositoryPort via TDD
-
-### Phase 2: Infrastructure and Persistence
-**Goal**: The domain's repository port has a working PostgreSQL adapter via Prisma that can persist and retrieve Account aggregates, with a clean mapper separating domain and persistence models
-**Depends on**: Phase 1
-**Requirements**: INFR-01, INFR-02, INFR-03, INFR-04, INFR-05, INFR-06
-**Success Criteria** (what must be TRUE):
-  1. Prisma schema defines the accounts table with appropriate columns and unique constraints, and migrations run successfully against PostgreSQL
-  2. AccountRepository adapter implements all AccountRepositoryPort methods (save, findById, findByCpf, findByEmail, findAll) using Prisma client
-  3. Mapper correctly translates between domain Account aggregate and Prisma persistence model in both directions (toDomain reconstitutes without re-validating trusted DB data)
-  4. StoragePort interface exists in domain with an S3 adapter, and a phone verification adapter (SMS/WhatsApp) implements its port
-**Plans:** 2 plans
-
-Plans:
-- [ ] 02-01-PLAN.md — Docker Compose (PostgreSQL 17 + MinIO), Prisma schema with Account model, migration, PrismaService/Module, NestJS root module wiring
-- [ ] 02-02-PLAN.md — AccountRepositoryPort findAll, StoragePort, AccountMapper, PrismaAccountRepository with transactional events, S3StorageAdapter, infrastructure module
-
-### Phase 3: Application Layer
-**Goal**: All use cases exist as thin orchestrators that load aggregates, invoke domain methods, persist results, and dispatch domain events -- depending only on port interfaces, never on concrete adapters
-**Depends on**: Phase 2
-**Requirements**: UCAS-01, UCAS-02, UCAS-03, UCAS-04, UCAS-05, UCAS-06, UCAS-07, UCAS-08, UCAS-09, UCAS-10
-**Success Criteria** (what must be TRUE):
-  1. CreateAccountCommand receives auth0Sub and email as plain strings (passed by controller from JWT), enforces email/CPF uniqueness, handles idempotency by auth0Sub (returns existing account if already linked), creates an Account aggregate, persists it, and dispatches AccountCreated event
-  2. UpdateNameCommand, UpdatePhoneCommand, UpdateBirthDateCommand, and UploadAccountPhotoCommand modify account data through aggregate methods and persist changes; UpdatePhoneCommand sets phone without verification (phoneVerified=false) -- UCAS-08/UCAS-09 (SendPhoneVerificationCommand, VerifyPhoneCommand) are deferred to a future phase per user decision
-  3. GetAccountByIdQuery, GetMeQuery, FindAccountByFieldQuery, and ListAccountsQuery return account data from the repository without modifying state
-  4. All use cases inject port interfaces (not implementations), and Commands are structurally separated from Queries in the codebase
-**Plans:** 3/3 plans complete
-
-Plans:
-- [ ] 03-01-PLAN.md — Add auth0Sub to Account entity/schema/port/adapter, create UseCase base interface, DomainException base, account domain exceptions, CQRS folder structure
-- [ ] 03-02-PLAN.md — Build 5 command use cases via TDD: CreateAccount (idempotent), UpdateName, UpdatePhone, UpdateBirthDate, UploadAccountPhoto
-- [ ] 03-03-PLAN.md — Build 4 query use cases via TDD: GetAccountById, GetMe, FindAccountByField, ListAccounts + AccountApplicationModule
-
-### Phase 4: REST API and Security
-**Goal**: A fully protected REST API exposes all account operations with proper Auth0 JWT validation, role-based access control, validated request DTOs, and standardized error responses
-**Depends on**: Phase 3
-**Requirements**: REST-01, REST-02, REST-03, REST-04, REST-05, REST-06, REST-07, REST-08, REST-09, REST-10, REST-11, REST-12, AUTH-01, AUTH-02, AUTH-03, AUTH-04
-**Success Criteria** (what must be TRUE):
-  1. All endpoints exist and return correct HTTP status codes: POST /accounts (201), GET /accounts/:id (200/404), GET /accounts/me (200/404), GET /accounts?cpf=X (200, admin only), PATCH /accounts/:id (200), GET /accounts (200), POST /accounts/:id/phone/send-code (200), POST /accounts/:id/phone/verify (200), POST /accounts/:id/photo (200)
-  2. Every route requires a valid Auth0 JWT token; requests without a token or with an invalid token receive 401; getMe requires role "user", getByCPF requires admin/M2M permissions
-  3. Request DTOs validate input via class-validator decorators and return 400 with structured error details on invalid input; response DTOs return a stable contract (name, email, CPF, birthDate, phone, photo) decoupled from the domain model
-  4. Domain errors (not found, duplicate, invalid) are mapped to appropriate HTTP status codes (404, 409, 422) via a global exception filter with a standardized error format
-**Plans:** 3/3 plans complete
-
-Plans:
-- [ ] 04-01-PLAN.md — Auth0 JWT module: JwtStrategy, JwtAuthGuard (global APP_GUARD), RolesGuard, @Roles/@Public/@CurrentUser decorators
-- [ ] 04-02-PLAN.md — Request/response DTOs with class-validator, DomainExceptionFilter, ResponseEnvelopeInterceptor
-- [ ] 04-03-PLAN.md — AccountController with all endpoints, AccountInterfaceModule, AppModule and main.ts global wiring
-
-### Phase 5: Testing and Hardening
-**Goal**: The entire bounded context is covered by automated tests at every layer with operational hardening (health check, graceful shutdown, config validation) for production readiness
-**Depends on**: Phase 4
-**Requirements**: TEST-01, TEST-02, TEST-03, TEST-04, TEST-05, TEST-06
-**Success Criteria** (what must be TRUE):
-  1. Value Object unit tests cover valid construction, invalid input rejection, and equality semantics for all five VOs (Email, CPF, PhoneNumber, PersonName, BirthDate) -- running without any database or framework dependency
-  2. Account aggregate unit tests verify creation with required fields, domain event emission, and invariant enforcement -- running without any database or framework dependency
-  3. Command and Query use case tests verify correct orchestration behavior (uniqueness checks, aggregate method calls, event dispatch, error mapping) using mocked ports via Vitest
-  4. Integration tests confirm the PostgreSQL adapter correctly persists and retrieves accounts against a real database
-  5. E2E tests send HTTP requests to the running application and verify full request-to-database round trips for all endpoints, including auth enforcement
-**Plans:** 2/2 plans complete
-
-Plans:
-- [ ] 05-01-PLAN.md — Install deps, DuplicateAuth0SubError unit test, Joi env validation schema, graceful shutdown
-- [ ] 05-02-PLAN.md — Health check endpoint with Terminus (Postgres + MinIO indicators), E2E smoke test
-
-### Phase 6: Gap Closure and Hardening
-**Goal**: Close all tech debt and documentation gaps identified by the v1.0 milestone audit — fix requirements tracking for deferred phone verification, enforce permission-based access on mutation endpoints, remove dead code, correct status codes, and fill E2E test coverage gap
-**Depends on**: Phase 5
-**Requirements**: AUTH-04 (partial fix)
-**Gap Closure**: Closes gaps from v1.0 audit
-**Success Criteria** (what must be TRUE):
-  1. REQUIREMENTS.md correctly marks INFR-05, UCAS-08, UCAS-09 as deferred (not complete), and traceability table reflects "Deferred to v2"
-  2. PATCH /accounts/:id, POST /accounts/:id/phone/send-code, and POST /accounts/:id/photo all have @Roles('update:own-account') decorator and RolesGuard enforces the permission
-  3. POST /accounts/:id/phone/send-code returns 200 (not 201)
-  4. DuplicateAuth0SubError class, its filter mapping, and its unit test are removed (dead code — never thrown)
-  5. E2E test exists that verifies POST /accounts/:id/photo returns 403 when called by a different user (ownership enforcement)
-n**Plans:** 1 plan
-
-Plans:
-- [ ] 06-01-PLAN.md — Add @Roles to mutation endpoints, remove dead code, fix status code, add photo 403 E2E test
+</details>
 
 ## Progress
 
-**Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Project Setup and Domain Modeling | 0/3 | Planning complete | - |
-| 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
-| 3. Application Layer | 3/3 | Complete   | 2026-03-11 |
-| 4. REST API and Security | 3/3 | Complete   | 2026-03-11 |
-| 5. Testing and Hardening | 2/2 | Complete   | 2026-03-11 |
-| 6. Gap Closure and Hardening | 0/1 | Pending    | - |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Project Setup and Domain Modeling | v1.0 | 3/3 | Complete | 2026-03-11 |
+| 2. Infrastructure and Persistence | v1.0 | 2/2 | Complete | 2026-03-11 |
+| 3. Application Layer | v1.0 | 3/3 | Complete | 2026-03-11 |
+| 4. REST API and Security | v1.0 | 3/3 | Complete | 2026-03-11 |
+| 5. Testing and Hardening | v1.0 | 2/2 | Complete | 2026-03-11 |
+| 6. Gap Closure and Hardening | v1.0 | 1/1 | Complete | 2026-03-11 |

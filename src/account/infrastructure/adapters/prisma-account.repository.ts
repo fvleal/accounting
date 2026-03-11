@@ -70,9 +70,4 @@ export class PrismaAccountRepository implements AccountRepositoryPort {
       total,
     };
   }
-
-  async exists(id: string): Promise<boolean> {
-    const count = await this.prisma.account.count({ where: { id } });
-    return count > 0;
-  }
 }

@@ -51,6 +51,11 @@ export class UploadAccountPhotoCommand implements UseCase<
     if (account.auth0Sub !== input.auth0Sub)
       throw new AccountOwnershipError(input.accountId);
 
+    if (account.photoUrl) {
+      const oldKey = `accounts/${account.id}/photo`;
+      await this.storage.delete(oldKey);
+    }
+
     const key = `accounts/${account.id}/photo`;
     const url = await this.storage.upload(key, input.buffer, input.contentType);
 
