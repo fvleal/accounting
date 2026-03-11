@@ -43,15 +43,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### API REST
 
-- [ ] **REST-01**: Controller com endpoint POST /accounts (criar conta — exige token Auth0 de user, extrai email do token)
-- [ ] **REST-02**: Controller com endpoint GET /accounts/:id (obter por ID)
-- [ ] **REST-03**: Controller com endpoint GET /accounts?cpf=X (obter por CPF — admin/M2M only)
-- [ ] **REST-04**: Controller com endpoint GET /accounts/me (obter conta do usuario autenticado; retorna 404 se conta nao existe — front redireciona para registro)
-- [ ] **REST-05**: Controller com endpoint PATCH /accounts/:id (atualizar dados opcionais — exceto telefone)
-- [ ] **REST-06**: Controller com endpoint GET /accounts (listar contas)
-- [ ] **REST-10**: Controller com endpoint POST /accounts/:id/phone/send-code (enviar codigo de verificacao)
-- [ ] **REST-11**: Controller com endpoint POST /accounts/:id/phone/verify (verificar codigo e atualizar telefone)
-- [ ] **REST-12**: Controller com endpoint POST /accounts/:id/photo (upload de foto)
+- [x] **REST-01**: Controller com endpoint POST /accounts (criar conta — exige token Auth0 de user, extrai email do token)
+- [x] **REST-02**: Controller com endpoint GET /accounts/:id (obter por ID)
+- [x] **REST-03**: Controller com endpoint GET /accounts?cpf=X (obter por CPF — admin/M2M only)
+- [x] **REST-04**: Controller com endpoint GET /accounts/me (obter conta do usuario autenticado; retorna 404 se conta nao existe — front redireciona para registro)
+- [x] **REST-05**: Controller com endpoint PATCH /accounts/:id (atualizar dados opcionais — exceto telefone)
+- [x] **REST-06**: Controller com endpoint GET /accounts (listar contas)
+- [x] **REST-10**: Controller com endpoint POST /accounts/:id/phone/send-code (enviar codigo de verificacao)
+- [x] **REST-11**: Controller com endpoint POST /accounts/:id/phone/verify (verificar codigo e atualizar telefone)
+- [x] **REST-12**: Controller com endpoint POST /accounts/:id/photo (upload de foto)
 - [x] **REST-07**: Request DTOs com class-validator e class-transformer decorators
 - [x] **REST-08**: Response DTOs retornando nome, email, CPF, data de nascimento, telefone, foto
 - [x] **REST-09**: Error handling padronizado (exception filters)
@@ -140,18 +140,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UCAS-08 | Phase 3 | Complete |
 | UCAS-09 | Phase 3 | Complete |
 | UCAS-10 | Phase 3 | Complete |
-| REST-01 | Phase 4 | Pending |
-| REST-02 | Phase 4 | Pending |
-| REST-03 | Phase 4 | Pending |
-| REST-04 | Phase 4 | Pending |
-| REST-05 | Phase 4 | Pending |
-| REST-06 | Phase 4 | Pending |
+| REST-01 | Phase 4 | Complete |
+| REST-02 | Phase 4 | Complete |
+| REST-03 | Phase 4 | Complete |
+| REST-04 | Phase 4 | Complete |
+| REST-05 | Phase 4 | Complete |
+| REST-06 | Phase 4 | Complete |
 | REST-07 | Phase 4 | Complete |
 | REST-08 | Phase 4 | Complete |
 | REST-09 | Phase 4 | Complete |
-| REST-10 | Phase 4 | Pending |
-| REST-11 | Phase 4 | Pending |
-| REST-12 | Phase 4 | Pending |
+| REST-10 | Phase 4 | Complete |
+| REST-11 | Phase 4 | Complete |
+| REST-12 | Phase 4 | Complete |
 | AUTH-01 | Phase 4 | Complete |
 | AUTH-02 | Phase 4 | Complete |
 | AUTH-03 | Phase 4 | Complete |

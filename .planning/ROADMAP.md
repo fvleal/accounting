@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Project Setup and Domain Modeling** - Hexagonal folder structure, tooling, base classes, Value Objects, Account aggregate, domain events, and repository port
 - [ ] **Phase 2: Infrastructure and Persistence** - PostgreSQL adapter via Prisma implementing AccountRepositoryPort, migrations, mappers, storage and phone verification adapters
 - [x] **Phase 3: Application Layer** - Command and Query use cases as orchestrators depending on ports, with explicit CQRS separation (completed 2026-03-11)
-- [ ] **Phase 4: REST API and Security** - Controllers, DTOs, Auth0 JWT guard, role-based access, error handling, and all HTTP endpoints
+- [x] **Phase 4: REST API and Security** - Controllers, DTOs, Auth0 JWT guard, role-based access, error handling, and all HTTP endpoints (completed 2026-03-11)
 - [ ] **Phase 5: Testing and Hardening** - Unit tests for domain and use cases, integration tests for adapters, E2E tests for endpoints
 
 ## Phase Details
@@ -76,7 +76,7 @@ Plans:
   2. Every route requires a valid Auth0 JWT token; requests without a token or with an invalid token receive 401; getMe requires role "user", getByCPF requires admin/M2M permissions
   3. Request DTOs validate input via class-validator decorators and return 400 with structured error details on invalid input; response DTOs return a stable contract (name, email, CPF, birthDate, phone, photo) decoupled from the domain model
   4. Domain errors (not found, duplicate, invalid) are mapped to appropriate HTTP status codes (404, 409, 422) via a global exception filter with a standardized error format
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 04-01-PLAN.md — Auth0 JWT module: JwtStrategy, JwtAuthGuard (global APP_GUARD), RolesGuard, @Roles/@Public/@CurrentUser decorators
@@ -109,5 +109,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Project Setup and Domain Modeling | 0/3 | Planning complete | - |
 | 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
 | 3. Application Layer | 3/3 | Complete   | 2026-03-11 |
-| 4. REST API and Security | 2/3 | In Progress|  |
+| 4. REST API and Security | 3/3 | Complete   | 2026-03-11 |
 | 5. Testing and Hardening | 0/? | Not started | - |
