@@ -60,11 +60,12 @@ Plans:
   2. UpdateAccountCommand and UploadAccountPhotoCommand modify account data through aggregate methods and persist changes; phone update is blocked unless verification is completed first via SendPhoneVerificationCommand and VerifyPhoneCommand
   3. GetAccountByIdQuery, FindAccountByFieldQuery, and ListAccountsQuery return account data from the repository without modifying state
   4. All use cases inject port interfaces (not implementations), and Commands are structurally separated from Queries in the codebase
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md — Add auth0Sub to Account entity/schema/port/adapter, create UseCase base interface, DomainException base, account domain exceptions, CQRS folder structure
+- [ ] 03-02-PLAN.md — Build 5 command use cases via TDD: CreateAccount (idempotent), UpdateName, UpdatePhone, UpdateBirthDate, UploadAccountPhoto
+- [ ] 03-03-PLAN.md — Build 4 query use cases via TDD: GetAccountById, GetMe, FindAccountByField, ListAccounts + AccountApplicationModule
 
 ### Phase 4: REST API and Security
 **Goal**: A fully protected REST API exposes all account operations with proper Auth0 JWT validation, role-based access control, validated request DTOs, and standardized error responses
@@ -106,6 +107,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Project Setup and Domain Modeling | 0/3 | Planning complete | - |
 | 2. Infrastructure and Persistence | 0/2 | Planning complete | - |
-| 3. Application Layer | 0/? | Not started | - |
+| 3. Application Layer | 0/3 | Planning complete | - |
 | 4. REST API and Security | 0/? | Not started | - |
 | 5. Testing and Hardening | 0/? | Not started | - |
