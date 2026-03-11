@@ -9,8 +9,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can log in via Auth0 redirect flow and access protected pages
-- [ ] **AUTH-02**: User can log out from any page and is redirected to login
+- [x] **AUTH-01**: User can log in via Auth0 redirect flow and access protected pages
+- [x] **AUTH-02**: User can log out from any page and is redirected to login
 - [ ] **AUTH-03**: User without an Account record is redirected to onboarding screen
 - [ ] **AUTH-04**: User can create an Account by submitting full name and CPF on onboarding screen
 
@@ -35,7 +35,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Layout & Theme
 
-- [ ] **LAYO-01**: Layout is responsive and usable on both mobile and desktop devices
+- [x] **LAYO-01**: Layout is responsive and usable on both mobile and desktop devices
 - [x] **LAYO-02**: App uses dark mode as the default theme with MUI theming
 - [x] **LAYO-03**: UI uses MUI component library with Tailwind CSS for custom styling
 
@@ -75,8 +75,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
 | AUTH-03 | Phase 2 | Pending |
 | AUTH-04 | Phase 2 | Pending |
 | PROF-01 | Phase 3 | Pending |
@@ -89,7 +89,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-04 | Phase 4 | Pending |
 | PHOT-01 | Phase 5 | Pending |
 | PHOT-02 | Phase 5 | Pending |
-| LAYO-01 | Phase 1 | Pending |
+| LAYO-01 | Phase 1 | Complete |
 | LAYO-02 | Phase 1 | Complete |
 | LAYO-03 | Phase 1 | Complete |
 
