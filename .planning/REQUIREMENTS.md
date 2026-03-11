@@ -65,12 +65,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Testing
 
-- [ ] **TEST-01**: Testes unitarios de Value Objects (Email, CPF, PhoneNumber, PersonName, BirthDate) — sem infra
-- [ ] **TEST-02**: Testes unitarios do Account Aggregate — sem infra
-- [ ] **TEST-03**: Testes unitarios de Commands (CreateAccount, UpdateAccount) — ports mockados pelo Vitest
-- [ ] **TEST-04**: Testes unitarios de Queries (GetAccountById, FindAccountByField, ListAccounts) — ports mockados pelo Vitest
-- [ ] **TEST-05**: Testes de integracao do PostgreSQL adapter contra banco real
-- [ ] **TEST-06**: Testes E2E dos endpoints REST
+- [x] **TEST-01**: Testes unitarios de Value Objects (Email, CPF, PhoneNumber, PersonName, BirthDate) — sem infra
+- [x] **TEST-02**: Testes unitarios do Account Aggregate — sem infra
+- [x] **TEST-03**: Testes unitarios de Commands (CreateAccount, UpdateAccount) — ports mockados pelo Vitest
+- [x] **TEST-04**: Testes unitarios de Queries (GetAccountById, FindAccountByField, ListAccounts) — ports mockados pelo Vitest
+- [x] **TEST-05**: Testes de integracao do PostgreSQL adapter contra banco real
+- [x] **TEST-06**: Testes E2E dos endpoints REST
 
 ### Project Setup
 
@@ -156,12 +156,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-02 | Phase 4 | Complete |
 | AUTH-03 | Phase 4 | Complete |
 | AUTH-04 | Phase 4 | Complete |
-| TEST-01 | Phase 5 | Pending |
-| TEST-02 | Phase 5 | Pending |
-| TEST-03 | Phase 5 | Pending |
-| TEST-04 | Phase 5 | Pending |
-| TEST-05 | Phase 5 | Pending |
-| TEST-06 | Phase 5 | Pending |
+| TEST-01 | Phase 5 | Complete |
+| TEST-02 | Phase 5 | Complete |
+| TEST-03 | Phase 5 | Complete |
+| TEST-04 | Phase 5 | Complete |
+| TEST-05 | Phase 5 | Complete |
+| TEST-06 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 50 total

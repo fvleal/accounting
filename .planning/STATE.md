@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-stopped_at: Completed 04-03 Controller and Module Wiring
-last_updated: "2026-03-11T15:30:00Z"
-last_activity: 2026-03-11 -- Completed 04-03 Controller and Module Wiring
+stopped_at: Completed 05-01 Hardening Fundamentals
+last_updated: "2026-03-11T17:17:47Z"
+last_activity: 2026-03-11 -- Completed 05-01 Hardening Fundamentals
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
-  percent: 100
+  total_plans: 13
+  completed_plans: 12
+  percent: 92
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-10)
 
 **Core value:** Fornecer uma fonte unica e confiavel de identidade de conta (Account) que outros contextos possam consumir de forma desacoplada via API REST.
-**Current focus:** Phase 4: REST API and Security
+**Current focus:** Phase 5: Testing and Hardening
 
 ## Current Position
 
-Phase: 4 of 5 (REST API and Security)
-Plan: 3 of 3 in current phase
-Status: Phase 04 Complete
-Last activity: 2026-03-11 -- Completed 04-03 Controller and Module Wiring
+Phase: 5 of 5 (Testing and Hardening)
+Plan: 1 of 2 in current phase
+Status: Plan 05-01 Complete
+Last activity: 2026-03-11 -- Completed 05-01 Hardening Fundamentals
 
-Progress: [██████████] 100%
+Progress: [█████████░] 92%
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [██████████] 100%
 | Phase 04 P01 | 2min | 2 tasks | 9 files |
 | Phase 04 P02 | 3min | 2 tasks | 8 files |
 | Phase 04 P03 | 3min | 2 tasks | 5 files |
+| Phase 05 P01 | 2min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,8 @@ Recent decisions affecting current work:
 - [04-03]: Route /me declared before /:id to avoid NestJS param route conflict
 - [04-03]: Added @types/multer and multer to tsconfig types for Express.Multer.File support
 - [04-03]: GET /accounts handles both cpf search and paginated list in single endpoint
+- [05-01]: Joi namespace import (import * as Joi) for CommonJS compatibility
+- [05-01]: enableShutdownHooks only in main.ts, not setup-app.ts, to avoid MaxListenersExceededWarning in tests
 
 ### Pending Todos
 
@@ -115,6 +118,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T15:30:00Z
-Stopped at: Completed 04-03 Controller and Module Wiring (Phase 04 Complete)
-Resume file: .planning/phases/04-rest-api-and-security/04-03-SUMMARY.md
+Last session: 2026-03-11T17:17:47Z
+Stopped at: Completed 05-01 Hardening Fundamentals
+Resume file: .planning/phases/05-testing-and-hardening/05-01-SUMMARY.md
