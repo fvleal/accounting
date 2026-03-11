@@ -30,7 +30,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Decoding the access token at jwt.io confirms it is a JWT (not opaque) with correct `audience` and `permissions` claims
   4. Token persists across page refresh in Safari and Brave (refresh token rotation active)
   5. The app renders in dark mode on all screen sizes with MUI components styled via Tailwind
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
 - [ ] 01-01-PLAN.md — Scaffold Vite project, MUI dark theme + Tailwind CSS layers, Vitest setup
 - [ ] 01-02-PLAN.md — Auth0 login/logout, API client, layout shell, pages, routing
@@ -86,7 +86,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Planning complete | - |
+| 1. Foundation | 1/2 | In Progress|  |
 | 2. Onboarding | 0/TBD | Not started | - |
 | 3. Profile Display | 0/TBD | Not started | - |
 | 4. Profile Editing | 0/TBD | Not started | - |
