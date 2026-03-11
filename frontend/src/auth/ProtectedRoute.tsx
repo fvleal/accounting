@@ -1,14 +1,14 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { ComponentType } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Navigate, Outlet } from 'react-router';
 import { LoadingScreen } from '../components/ui/LoadingScreen';
+import { AuthErrorFallback } from '../components/ui/AuthErrorFallback';
 
-interface Props {
-  component: ComponentType;
-}
+export function ProtectedRoute() {
+  const { isAuthenticated, isLoading, error } = useAuth0();
 
-export function ProtectedRoute({ component }: Props) {
-  const Component = withAuthenticationRequired(component, {
-    onRedirecting: () => <LoadingScreen />,
-  });
-  return <Component />;
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <AuthErrorFallback error={error} />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+
+  return <Outlet />;
 }

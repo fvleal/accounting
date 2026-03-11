@@ -10,8 +10,10 @@ function App() {
     <AuthProviderWithNavigate>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<ProtectedRoute component={HomePage} />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<HomePage />} />
+          </Route>
         </Route>
       </Routes>
     </AuthProviderWithNavigate>
