@@ -29,11 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Folder structure follows hexagonal layers (domain/, application/, infrastructure/, interface/) and ESLint rejects any @nestjs/* import inside domain/
   3. Each Value Object (Email, CPF, PhoneNumber, PersonName, BirthDate) rejects invalid input at construction time and enforces immutability
   4. Account aggregate can be created with required fields (name, email, CPF), collects AccountCreated and AccountUpdated domain events, and exposes an AccountRepositoryPort interface with domain-named methods
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Scaffold NestJS 11 project, replace Jest with Vitest 3, create hexagonal folder structure, configure ESLint boundaries
+- [ ] 01-02-PLAN.md — Build DDD base classes (ValueObject, Entity, AggregateRoot, DomainEvent) and all 5 Value Objects via TDD
+- [ ] 01-03-PLAN.md — Build Account aggregate with factory methods, domain events (AccountCreated/AccountUpdated), and AccountRepositoryPort via TDD
 
 ### Phase 2: Infrastructure and Persistence
 **Goal**: The domain's repository port has a working PostgreSQL adapter via Prisma that can persist and retrieve Account aggregates, with a clean mapper separating domain and persistence models
@@ -103,7 +104,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Setup and Domain Modeling | 0/? | Not started | - |
+| 1. Project Setup and Domain Modeling | 0/3 | Planning complete | - |
 | 2. Infrastructure and Persistence | 0/? | Not started | - |
 | 3. Application Layer | 0/? | Not started | - |
 | 4. REST API and Security | 0/? | Not started | - |
