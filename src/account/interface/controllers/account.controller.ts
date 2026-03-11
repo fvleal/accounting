@@ -109,6 +109,7 @@ export class AccountController {
   }
 
   @Patch(':id')
+  @Roles('update:own-account')
   async update(
     @CurrentUser() user: JwtPayload,
     @Param('id', ParseUUIDPipe) id: string,
@@ -152,6 +153,8 @@ export class AccountController {
   }
 
   @Post(':id/phone/send-code')
+  @Roles('update:own-account')
+  @HttpCode(200)
   async sendPhoneCode(
     @CurrentUser() user: JwtPayload,
     @Param('id', ParseUUIDPipe) id: string,
@@ -177,6 +180,7 @@ export class AccountController {
   }
 
   @Post(':id/photo')
+  @Roles('update:own-account')
   @UseInterceptors(FileInterceptor('file'))
   async uploadAccountPhoto(
     @CurrentUser() user: JwtPayload,
