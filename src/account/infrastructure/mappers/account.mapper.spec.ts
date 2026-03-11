@@ -2,6 +2,7 @@ import { AccountMapper } from './account.mapper';
 import { Account } from '../../domain/entities/account.entity';
 
 const VALID_CPF = '529.982.247-25';
+const VALID_CPF_NORMALIZED = '52998224725';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 
@@ -9,11 +10,12 @@ describe('AccountMapper', () => {
   describe('toDomain', () => {
     it('should convert a Prisma row to a domain Account', () => {
       const now = new Date();
+      // DB stores CPF normalized (digits only)
       const raw = {
         id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
         name: VALID_NAME,
         email: VALID_EMAIL,
-        cpf: VALID_CPF,
+        cpf: VALID_CPF_NORMALIZED,
         birthDate: new Date('1990-05-15'),
         phone: '11987654321',
         phoneVerified: false,
@@ -42,7 +44,7 @@ describe('AccountMapper', () => {
         id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
         name: VALID_NAME,
         email: VALID_EMAIL,
-        cpf: VALID_CPF,
+        cpf: VALID_CPF_NORMALIZED,
         birthDate: null,
         phone: null,
         phoneVerified: false,
