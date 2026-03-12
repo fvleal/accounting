@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Account Bounded Context
 status: completed
 stopped_at: "v1.0 milestone archived"
-last_updated: "2026-03-12T22:00:00Z"
-last_activity: 2026-03-12 - Completed quick task 11: Replace Promtail with pino-loki transport
+last_updated: "2026-03-12T22:44:00Z"
+last_activity: 2026-03-12 - Completed quick task 12: Remove all pino/loki observability infrastructure
 progress:
   total_phases: 6
   completed_phases: 6
@@ -58,9 +58,10 @@ None.
 | 9 | Configure Grafana + Loki via Docker Compose with structured logging | 2026-03-12 | 2fbfb09 | [9-configurar-grafana-loki-via-docker-compo](./quick/9-configurar-grafana-loki-via-docker-compo/) |
 | 10 | Refactor pino to global NestJS logger | 2026-03-12 | 8974f2b | [10-refatorar-pino-para-logger-global-do-nes](./quick/10-refatorar-pino-para-logger-global-do-nes/) |
 | 11 | Replace Promtail with pino-loki transport | 2026-03-12 | 7fc04a8 | [11-substituir-promtail-por-pino-loki-transp](./quick/11-substituir-promtail-por-pino-loki-transp/) |
+| 12 | Remove all pino/loki observability infrastructure | 2026-03-12 | b6029dd | [12-remova-tudo-sobre-pino-e-loki-vamos-deix](./quick/12-remova-tudo-sobre-pino-e-loki-vamos-deix/) |
 
 ## Session Continuity
 
 Last session: 2026-03-12
-Stopped at: Completed quick task 11
+Stopped at: Completed quick task 12
 Next step: /gsd:new-milestone for v2.0
