@@ -54,7 +54,6 @@ export class AccountController {
 
   @Post()
   @HttpCode(201)
-  @Roles('create:account')
   async create(
     @CurrentUser() user: JwtPayload,
     @Body() dto: CreateAccountDto,
@@ -68,7 +67,6 @@ export class AccountController {
   }
 
   @Get('me')
-  @Roles('read:own-account')
   async me(@CurrentUser() user: JwtPayload): Promise<AccountResponseDto> {
     const output = await this.getMe.execute({ email: user.email });
     return AccountResponseDto.fromOutput(output);
@@ -108,7 +106,6 @@ export class AccountController {
   }
 
   @Patch(':id')
-  @Roles('update:own-account')
   async update(
     @CurrentUser() user: JwtPayload,
     @Param('id', ParseUUIDPipe) id: string,
@@ -152,7 +149,6 @@ export class AccountController {
   }
 
   @Post(':id/phone/send-code')
-  @Roles('update:own-account')
   @HttpCode(200)
   async sendPhoneCode(
     @CurrentUser() user: JwtPayload,
@@ -179,7 +175,6 @@ export class AccountController {
   }
 
   @Post(':id/photo')
-  @Roles('update:own-account')
   @UseInterceptors(FileInterceptor('file'))
   async uploadAccountPhoto(
     @CurrentUser() user: JwtPayload,
