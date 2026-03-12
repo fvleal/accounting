@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import {
   HealthCheck,
+  HealthCheckError,
   HealthCheckService,
   HealthIndicatorResult,
 } from '@nestjs/terminus';
@@ -38,14 +39,34 @@ export class HealthController {
   check() {
     return this.health.check([
       async (): Promise<HealthIndicatorResult> => {
-        await this.prisma.$queryRaw`SELECT 1`;
-        return { database: { status: 'up' } };
+        try {
+          await this.prisma.$queryRaw`SELECT 1`;
+          return { database: { status: 'up' } };
+        } catch (error) {
+          throw new HealthCheckError('database check failed', {
+            database: {
+              status: 'down',
+              message:
+                error instanceof Error ? error.message : String(error),
+            },
+          });
+        }
       },
       async (): Promise<HealthIndicatorResult> => {
-        await this.s3Client.send(
-          new HeadBucketCommand({ Bucket: this.bucket }),
-        );
-        return { storage: { status: 'up' } };
+        try {
+          await this.s3Client.send(
+            new HeadBucketCommand({ Bucket: this.bucket }),
+          );
+          return { storage: { status: 'up' } };
+        } catch (error) {
+          throw new HealthCheckError('storage check failed', {
+            storage: {
+              status: 'down',
+              message:
+                error instanceof Error ? error.message : String(error),
+            },
+          });
+        }
       },
     ]);
   }
