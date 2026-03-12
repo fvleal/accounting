@@ -2,7 +2,6 @@ import { DomainEvent } from '../../../shared/domain/domain-event.base';
 
 export class AccountCreated extends DomainEvent {
   public readonly accountId: string;
-  public readonly auth0Sub: string;
   public readonly name: string;
   public readonly email: string;
   public readonly cpf: string;
@@ -13,7 +12,6 @@ export class AccountCreated extends DomainEvent {
 
   constructor(props: {
     accountId: string;
-    auth0Sub: string;
     name: string;
     email: string;
     cpf: string;
@@ -24,7 +22,6 @@ export class AccountCreated extends DomainEvent {
   }) {
     super();
     this.accountId = props.accountId;
-    this.auth0Sub = props.auth0Sub;
     this.name = props.name;
     this.email = props.email;
     this.cpf = props.cpf;

@@ -11,14 +11,12 @@ import { AccountCreated } from '../events/account-created.event';
 import { AccountUpdated } from '../events/account-updated.event';
 
 interface CreateAccountProps {
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
 }
 
 interface ReconstituteAccountProps {
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -30,7 +28,6 @@ interface ReconstituteAccountProps {
 }
 
 export class Account extends AggregateRoot<string> {
-  private _auth0Sub!: string;
   private _name!: PersonName;
   private _email!: Email;
   private _cpf!: CPF;
@@ -48,7 +45,6 @@ export class Account extends AggregateRoot<string> {
     const id = randomUUID();
     const account = new Account(id);
 
-    account._auth0Sub = props.auth0Sub;
     account.setName(props.name);
     account.setEmail(props.email);
     account.setCpf(props.cpf);
@@ -61,7 +57,6 @@ export class Account extends AggregateRoot<string> {
     account.addEvent(
       new AccountCreated({
         accountId: account.id,
-        auth0Sub: account.auth0Sub,
         name: account.name,
         email: account.email,
         cpf: account.cpf,
@@ -81,7 +76,6 @@ export class Account extends AggregateRoot<string> {
   ): Account {
     const account = new Account(id);
 
-    account._auth0Sub = props.auth0Sub;
     account.setName(props.name);
     account.setEmail(props.email);
     account.setCpf(props.cpf);
@@ -117,10 +111,6 @@ export class Account extends AggregateRoot<string> {
   }
 
   // Public getters
-  get auth0Sub(): string {
-    return this._auth0Sub;
-  }
-
   get name(): string {
     return this._name.value;
   }

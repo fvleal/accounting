@@ -4,7 +4,6 @@ import type { AccountModel } from '../../../generated/prisma/models/Account';
 export class AccountMapper {
   static toDomain(raw: AccountModel): Account {
     return Account.reconstitute(raw.id, {
-      auth0Sub: raw.auth0Sub,
       name: raw.name,
       email: raw.email,
       cpf: raw.cpf,
@@ -19,7 +18,6 @@ export class AccountMapper {
   static toPersistence(account: Account) {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

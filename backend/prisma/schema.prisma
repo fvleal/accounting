@@ -13,7 +13,6 @@ datasource db {
 
 model Account {
   id            String    @id @db.Uuid
-  auth0Sub      String    @unique @map("auth0_sub")
   name          String
   email         String    @unique
   cpf           String    @unique
