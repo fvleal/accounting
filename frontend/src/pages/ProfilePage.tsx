@@ -49,10 +49,14 @@ export function ProfilePage() {
 
   return (
     <>
-      <ProfileHero account={account} onFileSelect={setCropImageUrl} isCropOpen={!!cropImageUrl} />
+      <ProfileHero
+        account={account}
+        onFileSelect={setCropImageUrl}
+        isCropOpen={!!cropImageUrl}
+      />
       <ProfileSectionCard title="Informacões Básicas">
         <ProfileFieldRow
-          label="Nome"
+          label="Nome Completo"
           value={account.name}
           editable
           onClick={() => setEditModal("name")}
@@ -62,13 +66,13 @@ export function ProfilePage() {
       </ProfileSectionCard>
       <ProfileSectionCard title="Informações Adicionais">
         <ProfileFieldRow
-          label="Nascimento"
+          label="Data de Nascimento"
           value={formatBirthday(account.birthDate)}
           editable
           onClick={() => setEditModal("birthday")}
         />
         <ProfileFieldRow
-          label="Telefone"
+          label="Celular"
           value={account.phone ? formatPhone(account.phone) : null}
           editable
           onClick={() => setEditModal("phone")}

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ConfigService } from '@nestjs/config';
 import { UploadAccountPhotoCommand } from './upload-account-photo.command';
 import { AccountRepositoryPort, StoragePort } from '../../domain/ports';
 import { Account } from '../../domain/entities/account.entity';
@@ -7,7 +8,8 @@ import { AccountNotFoundError } from '../../domain/exceptions';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 const VALID_CPF = '529.982.247-25';
-const PHOTO_URL = 'https://s3.example.com/companies/default/accounts/some-id/photo';
+const COMPANY_SLUG = 'test-company';
+const PHOTO_URL = `https://s3.example.com/companies/${COMPANY_SLUG}/accounts/some-id/photo`;
 
 function createMockRepo(): AccountRepositoryPort {
   return {
@@ -38,11 +40,13 @@ describe('UploadAccountPhotoCommand', () => {
   let command: UploadAccountPhotoCommand;
   let mockRepo: AccountRepositoryPort;
   let mockStorage: StoragePort;
+  let mockConfig: ConfigService;
 
   beforeEach(() => {
     mockRepo = createMockRepo();
     mockStorage = createMockStorage();
-    command = new UploadAccountPhotoCommand(mockRepo, mockStorage);
+    mockConfig = { get: vi.fn().mockReturnValue(COMPANY_SLUG) } as unknown as ConfigService;
+    command = new UploadAccountPhotoCommand(mockRepo, mockStorage, mockConfig);
   });
 
   it('should load account, upload photo, update photo URL, save, and return output', async () => {
@@ -93,7 +97,7 @@ describe('UploadAccountPhotoCommand', () => {
     });
 
     expect(mockStorage.delete).toHaveBeenCalledWith(
-      `companies/default/accounts/${account.id}/photo`,
+      `companies/${COMPANY_SLUG}/accounts/${account.id}/photo`,
     );
     expect(mockStorage.delete).toHaveBeenCalledBefore(
       mockStorage.upload as ReturnType<typeof vi.fn>,
@@ -131,7 +135,7 @@ describe('UploadAccountPhotoCommand', () => {
     });
 
     expect(mockStorage.upload).toHaveBeenCalledWith(
-      `companies/default/accounts/${account.id}/photo`,
+      `companies/${COMPANY_SLUG}/accounts/${account.id}/photo`,
       buffer,
       contentType,
     );

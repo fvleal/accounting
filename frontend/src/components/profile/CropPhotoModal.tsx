@@ -1,17 +1,17 @@
-import { useRef, useState } from 'react';
-import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
-import type { Crop, PixelCrop } from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
+import { useRef, useState } from "react";
+import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
+import type { Crop, PixelCrop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 import {
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@mui/material';
-import { useSnackbar } from 'notistack';
-import { AppDialog } from '../common/AppDialog';
-import { getCroppedImg } from '../../utils/cropImage';
-import { useUploadPhoto } from '../../hooks/useUploadPhoto';
+} from "@mui/material";
+import { useSnackbar } from "notistack";
+import { AppDialog } from "../common/AppDialog";
+import { getCroppedImg } from "../../utils/cropImage";
+import { useUploadPhoto } from "../../hooks/useUploadPhoto";
 
 interface CropPhotoModalProps {
   open: boolean;
@@ -36,7 +36,7 @@ export function CropPhotoModal({
     const { naturalWidth, naturalHeight } = e.currentTarget;
     const initialCrop = centerCrop(
       makeAspectCrop(
-        { unit: '%', width: 70 },
+        { unit: "%", width: 70 },
         3 / 4,
         naturalWidth,
         naturalHeight,
@@ -47,7 +47,7 @@ export function CropPhotoModal({
     setCrop(initialCrop);
     // Convert percentage crop to pixel crop so Salvar works immediately
     const pixelCrop: PixelCrop = {
-      unit: 'px',
+      unit: "px",
       x: (initialCrop.x / 100) * naturalWidth,
       y: (initialCrop.y / 100) * naturalHeight,
       width: (initialCrop.width / 100) * naturalWidth,
@@ -62,16 +62,16 @@ export function CropPhotoModal({
     if (!completedCrop) return;
 
     const blob = await getCroppedImg(imageUrl, completedCrop);
-    const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+    const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
 
     mutation.mutate(file, {
       onSuccess: () => {
-        enqueueSnackbar('Foto atualizada!', { variant: 'success' });
+        enqueueSnackbar("Foto atualizada!", { variant: "success" });
         onClose();
         onUploaded();
       },
       onError: () => {
-        enqueueSnackbar('Erro ao enviar foto.', { variant: 'error' });
+        enqueueSnackbar("Erro ao enviar foto.", { variant: "error" });
       },
     });
   };
@@ -91,7 +91,7 @@ export function CropPhotoModal({
             src={imageUrl}
             alt="Crop preview"
             onLoad={onImageLoad}
-            style={{ maxHeight: 400, width: '100%', objectFit: 'contain' }}
+            style={{ maxHeight: 400, width: "100%", objectFit: "contain" }}
           />
         </ReactCrop>
       </DialogContent>

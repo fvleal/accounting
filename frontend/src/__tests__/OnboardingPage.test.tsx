@@ -137,11 +137,12 @@ describe('OnboardingPage', () => {
       (data: { name: string; cpf: string }, options?: { onSuccess?: (account: any) => void; onError?: (error: any) => void }) => {
         const account = {
           id: '1',
-          fullName: data.name,
+          name: data.name,
           email: 'test@example.com',
           cpf: data.cpf,
-          dateOfBirth: null,
+          birthDate: null,
           phone: null,
+          phoneVerified: false,
           photoUrl: null,
           createdAt: '2026-01-01',
           updatedAt: '2026-01-01',
@@ -178,7 +179,7 @@ describe('OnboardingPage', () => {
   it('shows toast on success', async () => {
     mockMutate.mockImplementation(
       (_data: { name: string; cpf: string }, options?: { onSuccess?: (account: any) => void }) => {
-        const account = { id: '1', fullName: 'Fulano Silva', email: 'test@example.com', cpf: '52998224725', dateOfBirth: null, phone: null, photoUrl: null, createdAt: '2026-01-01', updatedAt: '2026-01-01' };
+        const account = { id: '1', name: 'Fulano Silva', email: 'test@example.com', cpf: '52998224725', birthDate: null, phone: null, phoneVerified: false, photoUrl: null, createdAt: '2026-01-01', updatedAt: '2026-01-01' };
         options?.onSuccess?.(account);
       },
     );

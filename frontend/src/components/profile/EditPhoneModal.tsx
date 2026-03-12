@@ -1,15 +1,16 @@
-import { useForm, Controller } from 'react-hook-form';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useForm, Controller } from "react-hook-form";
 import {
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
   Button,
-} from '@mui/material';
-import { AppDialog } from '../common/AppDialog';
-import { useSnackbar } from 'notistack';
-import { useSendPhoneCode } from '../../hooks/useSendPhoneCode';
-import type { Account } from '../../types/account';
+} from "@mui/material";
+import { AppDialog } from "../common/AppDialog";
+import { useSnackbar } from "notistack";
+import { useSendPhoneCode } from "../../hooks/useSendPhoneCode";
+import type { Account } from "../../types/account";
 
 interface EditPhoneModalProps {
   open: boolean;
@@ -23,13 +24,17 @@ interface EditPhoneFormData {
 
 const phonePattern = /^[1-9]{2}[2-9]\d{7,8}$/;
 
-export function EditPhoneModal({ open, onClose, account }: EditPhoneModalProps) {
+export function EditPhoneModal({
+  open,
+  onClose,
+  account,
+}: EditPhoneModalProps) {
   const mutation = useSendPhoneCode();
   const { enqueueSnackbar } = useSnackbar();
 
   const { control, handleSubmit } = useForm<EditPhoneFormData>({
-    defaultValues: { phone: account.phone ?? '' },
-    mode: 'onBlur',
+    defaultValues: { phone: account.phone ?? "" },
+    mode: "onBlur",
   });
 
   if (!open) return null;
@@ -38,14 +43,13 @@ export function EditPhoneModal({ open, onClose, account }: EditPhoneModalProps) 
     mutation.mutate(values.phone, {
       onSuccess: () => {
         onClose();
-        enqueueSnackbar('Codigo enviado! Telefone salvo como nao verificado.', {
-          variant: 'success',
+        enqueueSnackbar("Codigo enviado! Telefone salvo como nao verificado.", {
+          variant: "success",
         });
       },
       onError: (error: any) => {
-        const msg =
-          error?.response?.data?.message || 'Erro ao enviar codigo.';
-        enqueueSnackbar(msg, { variant: 'error' });
+        const msg = error?.response?.data?.message || "Erro ao enviar codigo.";
+        enqueueSnackbar(msg, { variant: "error" });
       },
     });
   };
@@ -58,11 +62,11 @@ export function EditPhoneModal({ open, onClose, account }: EditPhoneModalProps) 
           name="phone"
           control={control}
           rules={{
-            required: 'Telefone e obrigatorio',
+            required: "Telefone e obrigatorio",
             pattern: {
               value: phonePattern,
               message:
-                'Telefone invalido. Use DDD + 8 ou 9 digitos (ex: 11987654321)',
+                "Telefone invalido. Use DDD + 8 ou 9 digitos (ex: 11987654321)",
             },
           }}
           render={({ field, fieldState }) => (

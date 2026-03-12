@@ -1,4 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { UseCase } from '../../../shared/application/use-case.base';
 import { Account } from '../../domain/entities/account.entity';
 import type { AccountRepositoryPort, StoragePort } from '../../domain/ports';
@@ -31,12 +32,17 @@ export class UploadAccountPhotoCommand implements UseCase<
   UploadAccountPhotoInput,
   UploadAccountPhotoOutput
 > {
+  private readonly companySlug: string;
+
   constructor(
     @Inject(ACCOUNT_REPOSITORY_PORT)
     private readonly accountRepo: AccountRepositoryPort,
     @Inject(STORAGE_PORT)
     private readonly storage: StoragePort,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.companySlug = this.configService.get<string>('COMPANY_SLUG')!;
+  }
 
   async execute(
     input: UploadAccountPhotoInput,
@@ -44,15 +50,12 @@ export class UploadAccountPhotoCommand implements UseCase<
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
 
-    // TODO: Replace hardcoded companyId once Company entity is created and Account has a company relation
-    const companyId = 'default';
-
     if (account.photoUrl) {
-      const oldKey = `companies/${companyId}/accounts/${account.id}/photo`;
+      const oldKey = `companies/${this.companySlug}/accounts/${account.id}/photo`;
       await this.storage.delete(oldKey);
     }
 
-    const key = `companies/${companyId}/accounts/${account.id}/photo`;
+    const key = `companies/${this.companySlug}/accounts/${account.id}/photo`;
     const url = await this.storage.upload(key, input.buffer, input.contentType);
 
     account.updatePhoto(url);

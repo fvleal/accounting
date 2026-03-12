@@ -56,7 +56,7 @@ describe('AccountGuard', () => {
 
   it('renders Outlet when account exists', () => {
     mockUseAccount.mockReturnValue({
-      data: { id: '1', fullName: 'Test User' },
+      data: { id: '1', name: 'Test User' },
       isLoading: false,
       error: null,
       refetch: vi.fn(),

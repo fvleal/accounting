@@ -15,6 +15,7 @@ import { useAccount } from '../../hooks/useAccount';
 import { getAvatarColor, getInitials } from '../../utils/initials';
 
 const logoUrl = import.meta.env.VITE_LOGO_URL;
+const companyName = import.meta.env.VITE_COMPANY_NAME || 'Minha Conta';
 
 export function Header() {
   const { logout } = useAuth0();
@@ -51,7 +52,7 @@ export function Header() {
           component="div"
           sx={{ flexGrow: 1, fontSize: { xs: '1rem', sm: '1.25rem' } }}
         >
-          Minha Conta
+          {companyName}
         </Typography>
 
         <Box>

@@ -12,5 +12,7 @@ export default defineConfig({
   test: {
     globals: true,
     root: './',
+    include: ['**/*.{test,spec,e2e-spec}.?(c|m)[jt]s?(x)'],
+    fileParallelism: false,
   },
 });

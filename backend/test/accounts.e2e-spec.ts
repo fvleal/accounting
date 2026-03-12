@@ -26,6 +26,7 @@ const CPF_1 = '17663758803';
 const CPF_2 = '53887317823';
 
 const S3_BUCKET = process.env.S3_BUCKET ?? 'account';
+const COMPANY_SLUG = process.env.COMPANY_SLUG ?? 'test';
 
 describe('Accounts API (e2e)', () => {
   let app: INestApplication<App>;
@@ -609,7 +610,7 @@ describe('Accounts API (e2e)', () => {
       expect(dbRecord!.photoUrl).toBe(res.body.data.photoUrl);
 
       // Verify file actually exists in S3/MinIO
-      const s3Key = `companies/default/accounts/${created.data.id}/photo`;
+      const s3Key = `companies/${COMPANY_SLUG}/accounts/${created.data.id}/photo`;
       const head = await s3Client.send(
         new HeadObjectCommand({ Bucket: S3_BUCKET, Key: s3Key }),
       );

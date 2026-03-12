@@ -9,5 +9,6 @@ export const envValidationSchema = Joi.object({
   S3_REGION: Joi.string().required(),
   S3_ACCESS_KEY: Joi.string().required(),
   S3_SECRET_KEY: Joi.string().required(),
+  COMPANY_SLUG: Joi.string().required(),
   PORT: Joi.number().default(3000),
 });

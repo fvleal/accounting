@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AccountInfrastructureModule } from '../infrastructure/account-infrastructure.module';
 // Commands
 import { CreateAccountCommand } from './commands/create-account.command';
@@ -10,7 +11,7 @@ import { UploadAccountPhotoCommand } from './commands/upload-account-photo.comma
 import { GetMeQuery } from './queries/get-me.query';
 
 @Module({
-  imports: [AccountInfrastructureModule],
+  imports: [ConfigModule, AccountInfrastructureModule],
   providers: [
     CreateAccountCommand,
     UpdateNameCommand,
