@@ -17,8 +17,6 @@ import { PrismaService } from '../src/shared/infrastructure/prisma/prisma.servic
 import { MockJwtAuthGuard } from './helpers/mock-auth.guard.js';
 import {
   USER_PAYLOAD,
-  ADMIN_PAYLOAD,
-  M2M_PAYLOAD,
   NO_PERMISSIONS_PAYLOAD,
   authHeader,
 } from './helpers/test-fixtures.js';
@@ -86,7 +84,7 @@ describe('Accounts API (e2e)', () => {
     }
   });
 
-  // ── Helper: create an account via the API ─────────────────
+  // -- Helper: create an account via the API -----------------
 
   async function createAccount(
     overrides: {
@@ -107,9 +105,9 @@ describe('Accounts API (e2e)', () => {
     return res.body;
   }
 
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // AUTH: JWT Guard (AUTH-01)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('AUTH-01: JWT Guard enforcement', () => {
     it('returns 403 when no auth header is provided', async () => {
@@ -120,9 +118,9 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // AUTH: Roles Guard (AUTH-02, AUTH-03, AUTH-04)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // AUTH: getMe requires only valid JWT (AUTH-02)
+  // ===========================================================
 
   describe('AUTH-02: getMe requires only valid JWT', () => {
     it('returns 404 when no account exists for user (no permissions needed)', async () => {
@@ -144,37 +142,9 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  describe('AUTH-03: GET /accounts requires admin/M2M permissions', () => {
-    it('returns 403 when user lacks read:accounts permission', async () => {
-      await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
-        .expect(403);
-    });
-
-    it('allows admin with read:accounts permission', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(res.body).toHaveProperty('data');
-      expect(res.body).toHaveProperty('meta');
-    });
-
-    it('allows M2M with read:accounts permission', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(M2M_PAYLOAD))
-        .expect(200);
-
-      expect(res.body).toHaveProperty('data');
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // REST-01: POST /accounts (create)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('REST-01: POST /accounts', () => {
     it('creates account, persists in DB, returns 201 with envelope', async () => {
@@ -199,7 +169,7 @@ describe('Accounts API (e2e)', () => {
       expect(dbRecord!.name).toBe('John Doe');
     });
 
-    it('is idempotent — returns existing account on duplicate email', async () => {
+    it('is idempotent -- returns existing account on duplicate email', async () => {
       const first = await createAccount();
       const second = await createAccount();
 
@@ -210,7 +180,7 @@ describe('Accounts API (e2e)', () => {
       expect(count).toBe(1);
     });
 
-    it('is idempotent — returns existing account when same email from different provider', async () => {
+    it('is idempotent -- returns existing account when same email from different provider', async () => {
       const first = await createAccount();
 
       const otherUser = {
@@ -244,80 +214,9 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REST-02: GET /accounts/:id
-  // ═══════════════════════════════════════════════════════════
-
-  describe('REST-02: GET /accounts/:id', () => {
-    it('returns 200 with account data from DB for admin', async () => {
-      const created = await createAccount();
-
-      const res = await request(app.getHttpServer())
-        .get(`/accounts/${created.data.id}`)
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(res.body.data.id).toBe(created.data.id);
-      expect(res.body.data.name).toBe('John Doe');
-      expect(res.body.meta).toHaveProperty('timestamp');
-    });
-
-    it('returns 403 for user without read:accounts permission', async () => {
-      const created = await createAccount();
-
-      await request(app.getHttpServer())
-        .get(`/accounts/${created.data.id}`)
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
-        .expect(403);
-    });
-
-    it('returns 404 for non-existent account', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(404);
-
-      expect(res.body).toMatchObject({
-        statusCode: 404,
-        error: 'ACCOUNT_NOT_FOUND',
-      });
-    });
-
-    it('returns 400 for invalid UUID', async () => {
-      await request(app.getHttpServer())
-        .get('/accounts/not-a-uuid')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(400);
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
-  // REST-03: GET /accounts?cpf=X (admin only)
-  // ═══════════════════════════════════════════════════════════
-
-  describe('REST-03: GET /accounts?cpf=X', () => {
-    it('finds account by CPF for admin', async () => {
-      await createAccount();
-
-      const res = await request(app.getHttpServer())
-        .get(`/accounts?cpf=${CPF_1}`)
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(res.body.data).toHaveProperty('cpf', CPF_1);
-    });
-
-    it('returns 403 for non-admin trying to query by CPF', async () => {
-      await request(app.getHttpServer())
-        .get(`/accounts?cpf=${CPF_1}`)
-        .set('x-test-auth', authHeader(USER_PAYLOAD))
-        .expect(403);
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // REST-04: GET /accounts/me
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('REST-04: GET /accounts/me', () => {
     it('returns own account when found', async () => {
@@ -342,9 +241,9 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // IDENTITY: Multiple providers, same email → same account
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // IDENTITY: Multiple providers, same email -> same account
+  // ===========================================================
 
   describe('IDENTITY: different subs with same verified email resolve to same account', () => {
     const googleUser: typeof USER_PAYLOAD = {
@@ -411,10 +310,10 @@ describe('Accounts API (e2e)', () => {
     });
 
     it('allows update from any provider sub as long as email matches', async () => {
-      const created = await createAccount({ user: googleUser });
+      await createAccount({ user: googleUser });
 
       const res = await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(emailCodeUser))
         .send({ name: 'John Updated' })
         .expect(200);
@@ -423,7 +322,7 @@ describe('Accounts API (e2e)', () => {
     });
 
     it('blocks update when email does not match account owner', async () => {
-      const created = await createAccount({ user: googleUser });
+      await createAccount({ user: googleUser });
 
       const attackerUser: typeof USER_PAYLOAD = {
         ...USER_PAYLOAD,
@@ -431,29 +330,30 @@ describe('Accounts API (e2e)', () => {
         email: 'attacker@example.com',
       };
 
+      // Attacker has no account, so PATCH /me returns 404 (no account for this email)
       await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(attackerUser))
         .send({ name: 'Hacked' })
-        .expect(403);
+        .expect(404);
 
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: created.data.id },
+      const dbRecord = await prisma.account.findFirst({
+        where: { email: 'john@example.com' },
       });
       expect(dbRecord!.name).toBe('John Doe');
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REST-05: PATCH /accounts/:id (update)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // REST-05: PATCH /accounts/me (update)
+  // ===========================================================
 
-  describe('REST-05: PATCH /accounts/:id', () => {
+  describe('REST-05: PATCH /accounts/me', () => {
     it('updates name, persists in DB, returns 200', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       const res = await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ name: 'Jane Doe' })
         .expect(200);
@@ -461,17 +361,17 @@ describe('Accounts API (e2e)', () => {
       expect(res.body.data.name).toBe('Jane Doe');
 
       // Verify persisted
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: created.data.id },
+      const dbRecord = await prisma.account.findFirst({
+        where: { email: USER_PAYLOAD.email },
       });
       expect(dbRecord!.name).toBe('Jane Doe');
     });
 
     it('updates birthDate and returns 200', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       const res = await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ birthDate: '1990-05-15' })
         .expect(200);
@@ -480,10 +380,10 @@ describe('Accounts API (e2e)', () => {
     });
 
     it('updates both name and birthDate', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       const res = await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ name: 'Jane Doe', birthDate: '1990-05-15' })
         .expect(200);
@@ -493,94 +393,33 @@ describe('Accounts API (e2e)', () => {
     });
 
     it('returns 400 when no fields provided', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({})
         .expect(400);
     });
 
-    it('returns 403 when another user tries to update the account', async () => {
-      const created = await createAccount();
-
+    it('returns 404 when user has no account', async () => {
       const otherUser = {
         ...USER_PAYLOAD,
         sub: 'auth0|other-user',
         email: 'other@example.com',
       };
 
-      const res = await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+      await request(app.getHttpServer())
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(otherUser))
         .send({ name: 'Hacker Name' })
-        .expect(403);
-
-      expect(res.body.error).toBe('ACCOUNT_OWNERSHIP_VIOLATION');
+        .expect(404);
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REST-06: GET /accounts (list)
-  // ═══════════════════════════════════════════════════════════
-
-  describe('REST-06: GET /accounts (list)', () => {
-    it('returns paginated list with meta for admin', async () => {
-      await createAccount({ name: 'User 1', cpf: CPF_1 });
-
-      const otherUser = {
-        ...USER_PAYLOAD,
-        sub: 'auth0|user-2',
-        email: 'user2@example.com',
-      };
-      await createAccount({
-        name: 'User 2',
-        cpf: CPF_2,
-        user: otherUser,
-      });
-
-      const res = await request(app.getHttpServer())
-        .get('/accounts?limit=10&offset=0')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(res.body.data).toHaveLength(2);
-      expect(res.body.meta).toMatchObject({
-        total: 2,
-        offset: 0,
-        limit: 10,
-      });
-      expect(res.body.meta).toHaveProperty('timestamp');
-    });
-
-    it('respects pagination params', async () => {
-      await createAccount({ name: 'User 1', cpf: CPF_1 });
-
-      const otherUser = {
-        ...USER_PAYLOAD,
-        sub: 'auth0|user-2',
-        email: 'user2@example.com',
-      };
-      await createAccount({
-        name: 'User 2',
-        cpf: CPF_2,
-        user: otherUser,
-      });
-
-      const res = await request(app.getHttpServer())
-        .get('/accounts?limit=1&offset=0')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(res.body.data).toHaveLength(1);
-      expect(res.body.meta.total).toBe(2);
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // REST-07: Request DTO validation
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('REST-07: Request DTO validation', () => {
     it('returns 422 with structured field errors on invalid input', async () => {
@@ -607,29 +446,29 @@ describe('Accounts API (e2e)', () => {
     });
 
     it('validates PATCH birthDate format', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       await request(app.getHttpServer())
-        .patch(`/accounts/${created.data.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ birthDate: 'not-a-date' })
         .expect(422);
     });
 
     it('validates phone format on send-code', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       await request(app.getHttpServer())
-        .post(`/accounts/${created.data.id}/phone/send-code`)
+        .post('/accounts/me/phone/send-code')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ phone: '123' })
         .expect(422);
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // REST-08: Response DTO contract
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('REST-08: Response DTO contract', () => {
     it('returns all 10 fields in stable contract', async () => {
@@ -653,15 +492,15 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // REST-09: Domain exception filter
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('REST-09: Domain error mapping', () => {
     it('maps ACCOUNT_NOT_FOUND to 404 with standardized format', async () => {
       const res = await request(app.getHttpServer())
-        .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
+        .get('/accounts/me')
+        .set('x-test-auth', authHeader(USER_PAYLOAD))
         .expect(404);
 
       expect(res.body).toMatchObject({
@@ -703,16 +542,16 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REST-10: POST /accounts/:id/phone/send-code
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // REST-10: POST /accounts/me/phone/send-code
+  // ===========================================================
 
-  describe('REST-10: POST /accounts/:id/phone/send-code', () => {
+  describe('REST-10: POST /accounts/me/phone/send-code', () => {
     it('updates phone in DB and returns account', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       const res = await request(app.getHttpServer())
-        .post(`/accounts/${created.data.id}/phone/send-code`)
+        .post('/accounts/me/phone/send-code')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ phone: '11987654321' })
         .expect(200);
@@ -720,39 +559,39 @@ describe('Accounts API (e2e)', () => {
       expect(res.body.data.phone).toBe('11987654321');
 
       // Verify persisted in DB
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: created.data.id },
+      const dbRecord = await prisma.account.findFirst({
+        where: { email: USER_PAYLOAD.email },
       });
       expect(dbRecord!.phone).toBe('11987654321');
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REST-11: POST /accounts/:id/phone/verify (deferred)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // REST-11: POST /accounts/me/phone/verify (deferred)
+  // ===========================================================
 
-  describe('REST-11: POST /accounts/:id/phone/verify', () => {
+  describe('REST-11: POST /accounts/me/phone/verify', () => {
     it('returns 501 Not Implemented', async () => {
-      const created = await createAccount();
+      await createAccount();
 
       await request(app.getHttpServer())
-        .post(`/accounts/${created.data.id}/phone/verify`)
+        .post('/accounts/me/phone/verify')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ code: '123456' })
         .expect(501);
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REST-12: POST /accounts/:id/photo (real S3/MinIO)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // REST-12: POST /accounts/me/photo (real S3/MinIO)
+  // ===========================================================
 
-  describe('REST-12: POST /accounts/:id/photo', () => {
+  describe('REST-12: POST /accounts/me/photo', () => {
     it('uploads photo to S3/MinIO and returns account with photoUrl', async () => {
       const created = await createAccount();
 
       const res = await request(app.getHttpServer())
-        .post(`/accounts/${created.data.id}/photo`)
+        .post('/accounts/me/photo')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .attach('file', Buffer.from('fake-image-data'), {
           filename: 'photo.jpg',
@@ -778,9 +617,7 @@ describe('Accounts API (e2e)', () => {
       expect(head.ContentType).toBe('image/jpeg');
     });
 
-    it('returns 403 when caller is not the account owner', async () => {
-      const created = await createAccount();
-
+    it('returns 404 when caller has no account', async () => {
       const otherUser = {
         sub: 'auth0|other-user',
         email: 'other@example.com',
@@ -792,19 +629,19 @@ describe('Accounts API (e2e)', () => {
       };
 
       await request(app.getHttpServer())
-        .post(`/accounts/${created.data.id}/photo`)
+        .post('/accounts/me/photo')
         .set('x-test-auth', authHeader(otherUser))
         .attach('file', Buffer.from('fake-image-data'), {
           filename: 'photo.jpg',
           contentType: 'image/jpeg',
         })
-        .expect(403);
+        .expect(404);
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // Health Check (TEST-06)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('Health Check', () => {
     it('GET /health returns 200 without auth', async () => {
@@ -818,9 +655,9 @@ describe('Accounts API (e2e)', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // Response envelope (cross-cutting)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('Response envelope', () => {
     it('wraps single resource in { data, meta: { timestamp } }', async () => {
@@ -832,23 +669,10 @@ describe('Accounts API (e2e)', () => {
       expect(typeof body.meta.timestamp).toBe('string');
     });
 
-    it('wraps list in { data, meta: { total, offset, limit, timestamp } }', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(Array.isArray(res.body.data)).toBe(true);
-      expect(res.body.meta).toHaveProperty('total');
-      expect(res.body.meta).toHaveProperty('offset');
-      expect(res.body.meta).toHaveProperty('limit');
-      expect(res.body.meta).toHaveProperty('timestamp');
-    });
-
     it('does NOT wrap error responses in envelope', async () => {
       const res = await request(app.getHttpServer())
-        .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
+        .get('/accounts/me')
+        .set('x-test-auth', authHeader(USER_PAYLOAD))
         .expect(404);
 
       expect(res.body).toHaveProperty('statusCode');

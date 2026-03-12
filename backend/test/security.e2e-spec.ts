@@ -11,7 +11,6 @@ import { PrismaService } from '../src/shared/infrastructure/prisma/prisma.servic
 import { MockJwtAuthGuard } from './helpers/mock-auth.guard.js';
 import {
   USER_PAYLOAD,
-  ADMIN_PAYLOAD,
   M2M_PAYLOAD,
   NO_PERMISSIONS_PAYLOAD,
   authHeader,
@@ -21,14 +20,14 @@ import {
 const CPF_1 = '17663758803';
 const CPF_2 = '53887317823';
 
-// ── Attacker: a second regular user ────────────────────────
+// -- Attacker: a second regular user -------------------------
 const ATTACKER_PAYLOAD = {
   ...USER_PAYLOAD,
   sub: 'auth0|attacker-999',
   email: 'attacker@example.com',
 };
 
-describe('Security E2E — IDOR & Access Control', () => {
+describe('Security E2E -- IDOR & Access Control', () => {
   let app: INestApplication<App>;
   let prisma: PrismaService;
 
@@ -55,7 +54,7 @@ describe('Security E2E — IDOR & Access Control', () => {
     await prisma.account.deleteMany();
   });
 
-  // ── Helper: create an account via the API ─────────────────
+  // -- Helper: create an account via the API -----------------
 
   async function createAccountAs(
     user: typeof USER_PAYLOAD,
@@ -72,232 +71,121 @@ describe('Security E2E — IDOR & Access Control', () => {
     return res.body.data;
   }
 
-  // ═══════════════════════════════════════════════════════════
-  // IDOR-01: PATCH /accounts/:id — outro usuário tenta alterar nome
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // ME-ISOLATION-01: /me routes only operate on caller's own account
+  // ===========================================================
 
-  describe('IDOR-01: PATCH name — attacker cannot update victim name', () => {
-    it('returns 403 ACCOUNT_OWNERSHIP_VIOLATION', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .patch(`/accounts/${victim.id}`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ name: 'Hacked Name' })
-        .expect(403);
-
-      expect(res.body.error).toBe('ACCOUNT_OWNERSHIP_VIOLATION');
-    });
-
-    it('does NOT modify victim data in the database', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      await request(app.getHttpServer())
-        .patch(`/accounts/${victim.id}`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ name: 'Hacked Name' })
-        .expect(403);
-
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: victim.id },
+  describe('ME-ISOLATION-01: PATCH /accounts/me only modifies caller account', () => {
+    it('attacker PATCH /me modifies only attacker account, not victim', async () => {
+      await createAccountAs(USER_PAYLOAD);
+      await createAccountAs(ATTACKER_PAYLOAD, {
+        name: 'Attacker User',
+        cpf: CPF_2,
       });
-      expect(dbRecord!.name).toBe('Victim User');
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
-  // IDOR-02: PATCH /accounts/:id — outro usuário tenta alterar birthDate
-  // ═══════════════════════════════════════════════════════════
-
-  describe('IDOR-02: PATCH birthDate — attacker cannot update victim birthDate', () => {
-    it('returns 403 ACCOUNT_OWNERSHIP_VIOLATION', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .patch(`/accounts/${victim.id}`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ birthDate: '2000-01-01' })
-        .expect(403);
-
-      expect(res.body.error).toBe('ACCOUNT_OWNERSHIP_VIOLATION');
-    });
-
-    it('does NOT modify victim birthDate in the database', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
 
       await request(app.getHttpServer())
-        .patch(`/accounts/${victim.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ birthDate: '2000-01-01' })
-        .expect(403);
+        .send({ name: 'New Name' })
+        .expect(200);
 
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: victim.id },
+      // Victim account is unchanged
+      const victim = await prisma.account.findFirst({
+        where: { email: USER_PAYLOAD.email },
       });
-      expect(dbRecord!.birthDate).toBeNull();
-    });
-  });
+      expect(victim!.name).toBe('Victim User');
 
-  // ═══════════════════════════════════════════════════════════
-  // IDOR-03: POST /accounts/:id/phone/send-code — outro usuário tenta alterar phone
-  // ═══════════════════════════════════════════════════════════
-
-  describe('IDOR-03: send-code — attacker cannot change victim phone', () => {
-    it('returns 403 ACCOUNT_OWNERSHIP_VIOLATION', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .post(`/accounts/${victim.id}/phone/send-code`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ phone: '11999999999' })
-        .expect(403);
-
-      expect(res.body.error).toBe('ACCOUNT_OWNERSHIP_VIOLATION');
-    });
-
-    it('does NOT modify victim phone in the database', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      await request(app.getHttpServer())
-        .post(`/accounts/${victim.id}/phone/send-code`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ phone: '11999999999' })
-        .expect(403);
-
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: victim.id },
+      // Attacker account was updated
+      const attacker = await prisma.account.findFirst({
+        where: { email: ATTACKER_PAYLOAD.email },
       });
-      expect(dbRecord!.phone).toBeNull();
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
-  // IDOR-04: POST /accounts/:id/photo — outro usuário tenta fazer upload de foto
-  // ═══════════════════════════════════════════════════════════
-
-  describe('IDOR-04: photo upload — attacker cannot upload to victim account', () => {
-    it('returns 403 ACCOUNT_OWNERSHIP_VIOLATION', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .post(`/accounts/${victim.id}/photo`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .attach('file', Buffer.from('malicious-image'), {
-          filename: 'hack.jpg',
-          contentType: 'image/jpeg',
-        })
-        .expect(403);
-
-      expect(res.body.error).toBe('ACCOUNT_OWNERSHIP_VIOLATION');
+      expect(attacker!.name).toBe('New Name');
     });
 
-    it('does NOT modify victim photoUrl in the database', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      await request(app.getHttpServer())
-        .post(`/accounts/${victim.id}/photo`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .attach('file', Buffer.from('malicious-image'), {
-          filename: 'hack.jpg',
-          contentType: 'image/jpeg',
-        })
-        .expect(403);
-
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: victim.id },
-      });
-      expect(dbRecord!.photoUrl).toBeNull();
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
-  // IDOR-05: PATCH com name + birthDate — ownership check no primeiro campo já bloqueia
-  // ═══════════════════════════════════════════════════════════
-
-  describe('IDOR-05: PATCH name+birthDate — blocked on first field, neither is modified', () => {
-    it('returns 403 and neither field is modified', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      await request(app.getHttpServer())
-        .patch(`/accounts/${victim.id}`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ name: 'Hacked', birthDate: '1999-12-31' })
-        .expect(403);
-
-      const dbRecord = await prisma.account.findUnique({
-        where: { id: victim.id },
-      });
-      expect(dbRecord!.name).toBe('Victim User');
-      expect(dbRecord!.birthDate).toBeNull();
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
-  // RBAC-01: Regular user cannot access admin-only read endpoints
-  // ═══════════════════════════════════════════════════════════
-
-  describe('RBAC-01: regular user cannot read other accounts', () => {
-    it('GET /accounts/:id — returns 403 for regular user', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      await request(app.getHttpServer())
-        .get(`/accounts/${victim.id}`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .expect(403);
-    });
-
-    it('GET /accounts — returns 403 for regular user', async () => {
-      await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .expect(403);
-    });
-
-    it('GET /accounts?cpf=X — returns 403 for regular user', async () => {
+    it('returns 404 when caller has no account', async () => {
       await createAccountAs(USER_PAYLOAD);
 
       await request(app.getHttpServer())
-        .get(`/accounts?cpf=${CPF_1}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .expect(403);
+        .send({ name: 'Hacked Name' })
+        .expect(404);
+
+      // Victim data unchanged
+      const victim = await prisma.account.findFirst({
+        where: { email: USER_PAYLOAD.email },
+      });
+      expect(victim!.name).toBe('Victim User');
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // RBAC-02: M2M service (read-only) cannot mutate data
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // ME-ISOLATION-02: send-code /me only modifies caller phone
+  // ===========================================================
+
+  describe('ME-ISOLATION-02: send-code -- only modifies caller phone', () => {
+    it('returns 404 when caller has no account', async () => {
+      await createAccountAs(USER_PAYLOAD);
+
+      await request(app.getHttpServer())
+        .post('/accounts/me/phone/send-code')
+        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
+        .send({ phone: '11999999999' })
+        .expect(404);
+
+      // Victim phone unchanged
+      const victim = await prisma.account.findFirst({
+        where: { email: USER_PAYLOAD.email },
+      });
+      expect(victim!.phone).toBeNull();
+    });
+  });
+
+  // ===========================================================
+  // ME-ISOLATION-03: photo upload /me only modifies caller photo
+  // ===========================================================
+
+  describe('ME-ISOLATION-03: photo upload -- only modifies caller photo', () => {
+    it('returns 404 when caller has no account', async () => {
+      await createAccountAs(USER_PAYLOAD);
+
+      await request(app.getHttpServer())
+        .post('/accounts/me/photo')
+        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
+        .attach('file', Buffer.from('malicious-image'), {
+          filename: 'hack.jpg',
+          contentType: 'image/jpeg',
+        })
+        .expect(404);
+
+      // Victim photo unchanged
+      const victim = await prisma.account.findFirst({
+        where: { email: USER_PAYLOAD.email },
+      });
+      expect(victim!.photoUrl).toBeNull();
+    });
+  });
+
+  // ===========================================================
+  // RBAC-02: M2M service (read-only) can create accounts
+  // ===========================================================
 
   describe('RBAC-02: M2M service access control', () => {
-    it('POST /accounts — M2M can create accounts (only JWT required)', async () => {
+    it('POST /accounts -- M2M can create accounts (only JWT required)', async () => {
       await request(app.getHttpServer())
         .post('/accounts')
         .set('x-test-auth', authHeader(M2M_PAYLOAD))
         .send({ name: 'Service Account', cpf: CPF_1 })
         .expect(201);
     });
-
-    it('GET /accounts — M2M with read:accounts can list accounts', async () => {
-      await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(M2M_PAYLOAD))
-        .expect(200);
-    });
-
-    it('GET /accounts — M2M without read:accounts cannot list accounts', async () => {
-      const m2mNoPerms = { ...M2M_PAYLOAD, permissions: [] as string[] };
-      await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(m2mNoPerms))
-        .expect(403);
-    });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // RBAC-03: No permissions at all — blocked on every endpoint
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // RBAC-03: No permissions -- user routes still accessible
+  // ===========================================================
 
-  describe('RBAC-03: user with no permissions — user routes accessible, admin routes blocked', () => {
-    it('POST /accounts — returns 201 (only JWT required)', async () => {
+  describe('RBAC-03: user with no permissions -- user routes accessible', () => {
+    it('POST /accounts -- returns 201 (only JWT required)', async () => {
       await request(app.getHttpServer())
         .post('/accounts')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
@@ -305,61 +193,47 @@ describe('Security E2E — IDOR & Access Control', () => {
         .expect(201);
     });
 
-    it('GET /accounts/me — returns 404 (no account for this email, but not 403)', async () => {
+    it('GET /accounts/me -- returns 404 (no account for this email, but not 403)', async () => {
       await request(app.getHttpServer())
         .get('/accounts/me')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
         .expect(404);
     });
-
-    it('GET /accounts — returns 403 (admin route)', async () => {
-      await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
-        .expect(403);
-    });
-
-    it('GET /accounts/:id — returns 403 (admin route)', async () => {
-      await request(app.getHttpServer())
-        .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
-        .expect(403);
-    });
   });
 
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   // AUTH-BYPASS-01: requests without auth header
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
 
   describe('AUTH-BYPASS-01: unauthenticated requests are blocked', () => {
-    it('POST /accounts — returns 403', async () => {
+    it('POST /accounts -- returns 403', async () => {
       await request(app.getHttpServer())
         .post('/accounts')
         .send({ name: 'Anon', cpf: CPF_1 })
         .expect(403);
     });
 
-    it('GET /accounts/me — returns 403', async () => {
+    it('GET /accounts/me -- returns 403', async () => {
       await request(app.getHttpServer()).get('/accounts/me').expect(403);
     });
 
-    it('PATCH /accounts/:id — returns 403', async () => {
+    it('PATCH /accounts/me -- returns 403', async () => {
       await request(app.getHttpServer())
-        .patch('/accounts/00000000-0000-0000-0000-000000000000')
+        .patch('/accounts/me')
         .send({ name: 'Anon' })
         .expect(403);
     });
 
-    it('POST /accounts/:id/phone/send-code — returns 403', async () => {
+    it('POST /accounts/me/phone/send-code -- returns 403', async () => {
       await request(app.getHttpServer())
-        .post('/accounts/00000000-0000-0000-0000-000000000000/phone/send-code')
+        .post('/accounts/me/phone/send-code')
         .send({ phone: '11999999999' })
         .expect(403);
     });
 
-    it('POST /accounts/:id/photo — returns 403', async () => {
+    it('POST /accounts/me/photo -- returns 403', async () => {
       await request(app.getHttpServer())
-        .post('/accounts/00000000-0000-0000-0000-000000000000/photo')
+        .post('/accounts/me/photo')
         .attach('file', Buffer.from('data'), {
           filename: 'photo.jpg',
           contentType: 'image/jpeg',
@@ -368,9 +242,9 @@ describe('Security E2E — IDOR & Access Control', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // DATA-LEAK-01: auth0Sub nunca é exposto nas respostas
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // DATA-LEAK-01: auth0Sub is never leaked in responses
+  // ===========================================================
 
   describe('DATA-LEAK-01: auth0Sub is never leaked in responses', () => {
     it('POST /accounts response does not contain auth0Sub', async () => {
@@ -389,35 +263,11 @@ describe('Security E2E — IDOR & Access Control', () => {
       expect(res.body.data).not.toHaveProperty('auth0Sub');
     });
 
-    it('GET /accounts/:id (admin) response does not contain auth0Sub', async () => {
-      const account = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .get(`/accounts/${account.id}`)
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      expect(res.body.data).not.toHaveProperty('auth0Sub');
-    });
-
-    it('GET /accounts (admin list) responses do not contain auth0Sub', async () => {
+    it('PATCH response does not contain auth0Sub', async () => {
       await createAccountAs(USER_PAYLOAD);
 
       const res = await request(app.getHttpServer())
-        .get('/accounts')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
-        .expect(200);
-
-      for (const account of res.body.data) {
-        expect(account).not.toHaveProperty('auth0Sub');
-      }
-    });
-
-    it('PATCH response does not contain auth0Sub', async () => {
-      const account = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .patch(`/accounts/${account.id}`)
+        .patch('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .send({ name: 'Updated Name' })
         .expect(200);
@@ -426,29 +276,15 @@ describe('Security E2E — IDOR & Access Control', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // DATA-LEAK-02: error responses não vazam dados internos
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // DATA-LEAK-02: error responses do not leak internal data
+  // ===========================================================
 
   describe('DATA-LEAK-02: error responses do not leak internal data', () => {
-    it('ownership error does not leak victim auth0Sub', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      const res = await request(app.getHttpServer())
-        .patch(`/accounts/${victim.id}`)
-        .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
-        .send({ name: 'Hacked' })
-        .expect(403);
-
-      const body = JSON.stringify(res.body);
-      expect(body).not.toContain(USER_PAYLOAD.sub);
-      expect(body).not.toContain('auth0|user-123');
-    });
-
     it('404 error does not leak stack trace or internal paths', async () => {
       const res = await request(app.getHttpServer())
-        .get('/accounts/00000000-0000-0000-0000-000000000000')
-        .set('x-test-auth', authHeader(ADMIN_PAYLOAD))
+        .get('/accounts/me')
+        .set('x-test-auth', authHeader(USER_PAYLOAD))
         .expect(404);
 
       const body = JSON.stringify(res.body);
@@ -458,51 +294,25 @@ describe('Security E2E — IDOR & Access Control', () => {
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // ENUM-01: ID enumeration — account não encontrada retorna 404, não 403
-  // (garante que atacante não consegue distinguir IDs existentes vs inexistentes
-  //  a partir do status code em endpoints protegidos por role)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
+  // INPUT-01: malformed UUIDs in non-existent routes return 404
+  // ===========================================================
 
-  describe('ENUM-01: ID enumeration via role-protected endpoints', () => {
-    it('GET /accounts/:id returns same 403 for existing and non-existing IDs (regular user)', async () => {
-      const victim = await createAccountAs(USER_PAYLOAD);
-
-      const [existingRes, nonExistingRes] = await Promise.all([
-        request(app.getHttpServer())
-          .get(`/accounts/${victim.id}`)
-          .set('x-test-auth', authHeader(ATTACKER_PAYLOAD)),
-        request(app.getHttpServer())
-          .get('/accounts/00000000-0000-0000-0000-000000000000')
-          .set('x-test-auth', authHeader(ATTACKER_PAYLOAD)),
-      ]);
-
-      // Both should be 403 — role check happens BEFORE resource lookup
-      expect(existingRes.status).toBe(403);
-      expect(nonExistingRes.status).toBe(403);
-    });
-  });
-
-  // ═══════════════════════════════════════════════════════════
-  // INPUT-01: UUID injection — IDs malformados não passam do ParseUUIDPipe
-  // ═══════════════════════════════════════════════════════════
-
-  describe('INPUT-01: malformed UUIDs are rejected before reaching business logic', () => {
+  describe('INPUT-01: no parameterized routes exist, random paths return 404', () => {
     const malformedIds = [
       'not-a-uuid',
       '../../../etc/passwd',
       '1; DROP TABLE accounts;--',
       '<script>alert(1)</script>',
-      '00000000-0000-0000-0000-00000000000g',
     ];
 
     for (const badId of malformedIds) {
-      it(`PATCH rejects "${badId}" with 400`, async () => {
+      it(`PATCH /accounts/${badId} returns 404 (no such route)`, async () => {
         await request(app.getHttpServer())
           .patch(`/accounts/${encodeURIComponent(badId)}`)
           .set('x-test-auth', authHeader(ATTACKER_PAYLOAD))
           .send({ name: 'Hacked' })
-          .expect(400);
+          .expect(404);
       });
     }
   });
