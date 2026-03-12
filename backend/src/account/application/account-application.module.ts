@@ -7,10 +7,7 @@ import { UpdatePhoneCommand } from './commands/update-phone.command';
 import { UpdateBirthDateCommand } from './commands/update-birth-date.command';
 import { UploadAccountPhotoCommand } from './commands/upload-account-photo.command';
 // Queries
-import { GetAccountByIdQuery } from './queries/get-account-by-id.query';
 import { GetMeQuery } from './queries/get-me.query';
-import { FindAccountByFieldQuery } from './queries/find-account-by-field.query';
-import { ListAccountsQuery } from './queries/list-accounts.query';
 
 @Module({
   imports: [AccountInfrastructureModule],
@@ -20,10 +17,7 @@ import { ListAccountsQuery } from './queries/list-accounts.query';
     UpdatePhoneCommand,
     UpdateBirthDateCommand,
     UploadAccountPhotoCommand,
-    GetAccountByIdQuery,
     GetMeQuery,
-    FindAccountByFieldQuery,
-    ListAccountsQuery,
   ],
   exports: [
     CreateAccountCommand,
@@ -31,10 +25,7 @@ import { ListAccountsQuery } from './queries/list-accounts.query';
     UpdatePhoneCommand,
     UpdateBirthDateCommand,
     UploadAccountPhotoCommand,
-    GetAccountByIdQuery,
     GetMeQuery,
-    FindAccountByFieldQuery,
-    ListAccountsQuery,
   ],
 })
 export class AccountApplicationModule {}

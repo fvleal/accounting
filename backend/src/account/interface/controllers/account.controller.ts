@@ -4,10 +4,7 @@ import {
   Post,
   Patch,
   Body,
-  Param,
-  Query,
   HttpCode,
-  ParseUUIDPipe,
   UseInterceptors,
   UploadedFile,
   ParseFilePipe,
@@ -17,26 +14,19 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  CurrentUser,
-  Roles,
-} from '../../../shared/infrastructure/auth/index.js';
+import { CurrentUser } from '../../../shared/infrastructure/auth/index.js';
 import type { JwtPayload } from '../../../shared/infrastructure/auth/index.js';
 import { CreateAccountDto } from '../dtos/create-account.dto.js';
 import { UpdateAccountDto } from '../dtos/update-account.dto.js';
 import { SendPhoneCodeDto } from '../dtos/send-phone-code.dto.js';
 import { VerifyPhoneDto } from '../dtos/verify-phone.dto.js';
-import { ListAccountsQueryDto } from '../dtos/list-accounts-query.dto.js';
 import { AccountResponseDto } from '../dtos/account-response.dto.js';
 import { CreateAccountCommand } from '../../application/commands/create-account.command.js';
 import { UpdateNameCommand } from '../../application/commands/update-name.command.js';
 import { UpdatePhoneCommand } from '../../application/commands/update-phone.command.js';
 import { UpdateBirthDateCommand } from '../../application/commands/update-birth-date.command.js';
 import { UploadAccountPhotoCommand } from '../../application/commands/upload-account-photo.command.js';
-import { GetAccountByIdQuery } from '../../application/queries/get-account-by-id.query.js';
 import { GetMeQuery } from '../../application/queries/get-me.query.js';
-import { FindAccountByFieldQuery } from '../../application/queries/find-account-by-field.query.js';
-import { ListAccountsQuery } from '../../application/queries/list-accounts.query.js';
 
 @Controller('accounts')
 export class AccountController {
@@ -46,10 +36,7 @@ export class AccountController {
     private readonly updatePhone: UpdatePhoneCommand,
     private readonly updateBirthDate: UpdateBirthDateCommand,
     private readonly uploadPhoto: UploadAccountPhotoCommand,
-    private readonly getById: GetAccountByIdQuery,
     private readonly getMe: GetMeQuery,
-    private readonly findByField: FindAccountByFieldQuery,
-    private readonly listAccounts: ListAccountsQuery,
   ) {}
 
   @Post()
@@ -70,39 +57,6 @@ export class AccountController {
   async me(@CurrentUser() user: JwtPayload): Promise<AccountResponseDto> {
     const output = await this.getMe.execute({ email: user.email });
     return AccountResponseDto.fromOutput(output);
-  }
-
-  @Get(':id')
-  @Roles('read:accounts')
-  async findById(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<AccountResponseDto> {
-    const output = await this.getById.execute({ id });
-    return AccountResponseDto.fromOutput(output);
-  }
-
-  @Get()
-  @Roles('read:accounts')
-  async list(@Query() query: ListAccountsQueryDto) {
-    if (query.cpf) {
-      const output = await this.findByField.execute({
-        field: 'cpf',
-        value: query.cpf,
-      });
-      return AccountResponseDto.fromOutput(output);
-    }
-
-    const output = await this.listAccounts.execute({
-      limit: query.limit ?? 20,
-      offset: query.offset ?? 0,
-    });
-
-    return {
-      data: output.data.map(AccountResponseDto.fromOutput),
-      total: output.total,
-      offset: query.offset ?? 0,
-      limit: query.limit ?? 20,
-    };
   }
 
   @Patch('me')
