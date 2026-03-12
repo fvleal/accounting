@@ -1,6 +1,9 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
-import { Navigate } from 'react-router';
+import { Box, Button, Typography } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Navigate } from "react-router";
+import illustrationProfile from "../assets/illustration-profile.svg";
+
+const companyName = import.meta.env.VITE_COMPANY_NAME || "Minha Conta";
 
 export function LoginPage() {
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
@@ -14,38 +17,41 @@ export function LoginPage() {
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#121212',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        backgroundColor: "#121212",
+        px: 3,
       }}
     >
-      <Paper
-        elevation={3}
-        sx={{
-          p: 5,
-          textAlign: 'center',
-          maxWidth: 400,
-          width: '100%',
-          mx: 2,
-        }}
+      <Box
+        component="img"
+        src={illustrationProfile}
+        alt="Gerencie sua conta"
+        sx={{ width: 300, maxWidth: "90%", mb: 5 }}
+      />
+      <Typography
+        variant="h4"
+        fontWeight={700}
+        color="white"
+        textAlign="center"
+        gutterBottom
       >
-        <Typography variant="h4" gutterBottom fontWeight={600}>
-          Minha Conta
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          Gerencie suas informacoes pessoais de forma simples e rapida.
-        </Typography>
-        <Button
-          variant="contained"
-          size="large"
-          fullWidth
-          onClick={() => loginWithRedirect()}
-        >
-          Entrar
-        </Button>
-      </Paper>
+        {companyName}
+      </Typography>
+      <Typography
+        variant="body1"
+        color="grey.400"
+        textAlign="center"
+        sx={{ maxWidth: 360, mb: 5 }}
+      >
+        Gerencie suas informações pessoais de forma simples e rápida.
+      </Typography>
+      <Button variant="contained" onClick={() => loginWithRedirect()}>
+        Entrar
+      </Button>
     </Box>
   );
 }
