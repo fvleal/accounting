@@ -30,7 +30,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Photo
 
-- [ ] **PHOT-01**: User can upload a profile photo with client-side 3x4 crop before submission
+- [x] **PHOT-01**: User can upload a profile photo with client-side 3x4 crop before submission
 - [ ] **PHOT-02**: User sees a preview of the cropped photo before confirming upload
 
 ### Layout & Theme
@@ -87,7 +87,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-02 | Phase 4 | Complete |
 | EDIT-03 | Phase 4 | Complete |
 | EDIT-04 | Phase 4 | Complete |
-| PHOT-01 | Phase 5 | Pending |
+| PHOT-01 | Phase 5 | Complete |
 | PHOT-02 | Phase 5 | Pending |
 | LAYO-01 | Phase 1 | Complete |
 | LAYO-02 | Phase 1 | Complete |
