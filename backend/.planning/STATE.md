@@ -55,7 +55,7 @@ None.
 | 6 | Add reconstitution validation tests for Account entity and AccountMapper | 2026-03-12 | 52c97fb | [6-ao-reconstituir-dados-do-banco-de-dados-](./quick/6-ao-reconstituir-dados-do-banco-de-dados-/) |
 | 7 | Restructure S3 bucket topology from account-photos to account | 2026-03-12 | 9c6d2fc | [7-restructure-s3-bucket-topology-from-acco](./quick/7-restructure-s3-bucket-topology-from-acco/) |
 | 8 | Fix API health to handle dependency service outages gracefully | 2026-03-12 | 8e994f1 | [8-fix-api-health-to-handle-dependency-serv](./quick/8-fix-api-health-to-handle-dependency-serv/) |
-| 9 | Configure Grafana + Loki via Docker Compose with structured logging | 2026-03-12 | 6512b09 | [9-configurar-grafana-loki-via-docker-compo](./quick/9-configurar-grafana-loki-via-docker-compo/) |
+| 9 | Configure Grafana + Loki via Docker Compose with structured logging | 2026-03-12 | 2fbfb09 | [9-configurar-grafana-loki-via-docker-compo](./quick/9-configurar-grafana-loki-via-docker-compo/) |
 
 ## Session Continuity
 
