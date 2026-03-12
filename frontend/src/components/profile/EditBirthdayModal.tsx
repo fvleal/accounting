@@ -37,9 +37,9 @@ export function EditBirthdayModal({
   const mutation = useUpdateAccount();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit, reset } = useForm<EditBirthdayFormData>({
+  const { control, handleSubmit, reset, formState: { isValid, isDirty } } = useForm<EditBirthdayFormData>({
     defaultValues: { birthDate: toDateInput(account.birthDate) },
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -99,6 +99,7 @@ export function EditBirthdayModal({
         <Button
           size="small"
           variant="contained"
+          disabled={!isDirty || !isValid}
           onClick={handleSubmit(onSubmit)}
           loading={mutation.isPending}
         >

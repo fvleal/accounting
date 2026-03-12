@@ -228,7 +228,7 @@ describe('EditNameModal', () => {
     await user.tab(); // trigger blur
 
     await waitFor(() => {
-      expect(screen.getByText('Nome deve ter no maximo 200 caracteres')).toBeInTheDocument();
+      expect(screen.getByText('Nome deve ter no máximo 200 caracteres')).toBeInTheDocument();
     });
   });
 

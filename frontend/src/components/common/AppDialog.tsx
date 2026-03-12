@@ -13,10 +13,7 @@ export function AppDialog({
   return (
     <Dialog
       {...rest}
-      onClose={(_event, reason) => {
-        if (reason === 'backdropClick') return;
-        onClose();
-      }}
+      onClose={() => onClose()}
       slotProps={{
         ...slotProps,
         paper: {

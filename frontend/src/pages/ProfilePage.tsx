@@ -54,7 +54,7 @@ export function ProfilePage() {
         onFileSelect={setCropImageUrl}
         isCropOpen={!!cropImageUrl}
       />
-      <ProfileSectionCard title="Informacões Básicas">
+      <ProfileSectionCard title="Informações Básicas">
         <ProfileFieldRow
           label="Nome Completo"
           value={account.name}

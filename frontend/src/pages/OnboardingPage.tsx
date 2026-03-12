@@ -21,9 +21,9 @@ interface OnboardingFormData {
 }
 
 const cpfRules = {
-  required: 'CPF e obrigatorio',
+  required: 'CPF é obrigatório',
   validate: (value: string) =>
-    cpf.isValid(unmaskCpf(value)) || 'CPF invalido',
+    cpf.isValid(unmaskCpf(value)) || 'CPF inválido',
 };
 
 export function OnboardingPage() {

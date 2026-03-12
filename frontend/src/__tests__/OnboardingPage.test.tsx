@@ -77,9 +77,9 @@ describe('OnboardingPage', () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Nome completo e obrigatorio')).toBeInTheDocument();
+      expect(screen.getByText('Nome completo é obrigatório')).toBeInTheDocument();
     });
-    expect(screen.getByText('CPF e obrigatorio')).toBeInTheDocument();
+    expect(screen.getByText('CPF é obrigatório')).toBeInTheDocument();
   });
 
   it('validates name requires two words', async () => {
@@ -117,7 +117,7 @@ describe('OnboardingPage', () => {
     await user.tab();
 
     await waitFor(() => {
-      expect(screen.getByText('CPF invalido')).toBeInTheDocument();
+      expect(screen.getByText('CPF inválido')).toBeInTheDocument();
     });
   });
 

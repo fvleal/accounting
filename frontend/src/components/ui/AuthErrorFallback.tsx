@@ -34,7 +34,7 @@ export function AuthErrorFallback({ error }: Props) {
         }}
       >
         <Typography variant="h5" gutterBottom>
-          Erro de Autenticacao
+          Erro de Autenticação
         </Typography>
         <Typography variant="body1" color="text.secondary">
           {error.message}

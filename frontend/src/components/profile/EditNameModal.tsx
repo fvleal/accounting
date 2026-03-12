@@ -28,9 +28,9 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
   const mutation = useUpdateAccount();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit, reset } = useForm<EditNameFormData>({
+  const { control, handleSubmit, reset, formState: { isValid, isDirty } } = useForm<EditNameFormData>({
     defaultValues: { name: account.name },
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -85,6 +85,7 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
         <Button
           size="small"
           variant="contained"
+          disabled={!isDirty || !isValid}
           onClick={handleSubmit(onSubmit)}
           loading={mutation.isPending}
         >

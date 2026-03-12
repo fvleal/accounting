@@ -182,7 +182,7 @@ describe('EditBirthdayModal', () => {
     await user.click(screen.getByRole('button', { name: /salvar/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('Data de nascimento e obrigatoria')).toBeInTheDocument();
+      expect(screen.getByText('Data de nascimento é obrigatória')).toBeInTheDocument();
     });
     expect(mockMutate).not.toHaveBeenCalled();
   });

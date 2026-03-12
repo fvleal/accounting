@@ -1,7 +1,7 @@
 export const nameRules = {
-  required: 'Nome completo e obrigatorio',
+  required: 'Nome completo é obrigatório',
   minLength: { value: 2, message: 'Nome deve ter pelo menos 2 caracteres' },
-  maxLength: { value: 200, message: 'Nome deve ter no maximo 200 caracteres' },
+  maxLength: { value: 200, message: 'Nome deve ter no máximo 200 caracteres' },
   validate: (value: string) => {
     const words = value.trim().split(/\s+/);
     if (words.length < 2) return 'Informe nome e sobrenome';
@@ -12,7 +12,7 @@ export const nameRules = {
 };
 
 export const birthDateRules = {
-  required: 'Data de nascimento e obrigatoria',
+  required: 'Data de nascimento é obrigatória',
   pattern: {
     value: /^\d{4}-\d{2}-\d{2}$/,
     message: 'Data deve estar no formato AAAA-MM-DD',

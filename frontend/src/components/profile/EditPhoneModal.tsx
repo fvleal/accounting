@@ -56,9 +56,9 @@ export function EditPhoneModal({
   const mutation = useSendPhoneCode();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit, reset } = useForm<EditPhoneFormData>({
+  const { control, handleSubmit, reset, formState: { isValid, isDirty } } = useForm<EditPhoneFormData>({
     defaultValues: { phone: maskFromRaw(account.phone) },
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -74,12 +74,12 @@ export function EditPhoneModal({
     mutation.mutate(digits, {
       onSuccess: () => {
         onClose();
-        enqueueSnackbar("Codigo enviado! Telefone salvo como nao verificado.", {
+        enqueueSnackbar("Código enviado! Telefone salvo como não verificado.", {
           variant: "success",
         });
       },
       onError: (error: any) => {
-        const msg = error?.response?.data?.message || "Erro ao enviar codigo.";
+        const msg = error?.response?.data?.message || "Erro ao enviar código.";
         enqueueSnackbar(msg, { variant: "error" });
       },
     });
@@ -93,10 +93,10 @@ export function EditPhoneModal({
           name="phone"
           control={control}
           rules={{
-            required: "Telefone e obrigatorio",
+            required: "Telefone é obrigatório",
             validate: (v) =>
               phonePattern.test(stripPhoneMask(v)) ||
-              "Telefone invalido. Use DDD + 8 ou 9 digitos (ex: 11987654321)",
+              "Telefone inválido. Use DDD + 8 ou 9 dígitos (ex: 11987654321)",
           }}
           render={({ field, fieldState }) => (
             <TextField
@@ -122,6 +122,7 @@ export function EditPhoneModal({
         <Button
           size="small"
           variant="contained"
+          disabled={!isDirty || !isValid}
           onClick={handleSubmit(onSubmit)}
           loading={mutation.isPending}
         >
