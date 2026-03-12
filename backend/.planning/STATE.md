@@ -5,7 +5,7 @@ milestone_name: Account Bounded Context
 status: completed
 stopped_at: "v1.0 milestone archived"
 last_updated: "2026-03-11T19:45:00.000Z"
-last_activity: 2026-03-11 -- v1.0 milestone completed and archived
+last_activity: 2026-03-11 - Completed quick task 1: Refatorar Account para remover auth0Sub e usar email como identificador principal
 progress:
   total_phases: 6
   completed_phases: 6
@@ -43,6 +43,12 @@ None.
 ### Blockers/Concerns
 
 None.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Refatorar Account para remover auth0Sub e usar email como identificador principal | 2026-03-11 | eb4de5c | [1-refatorar-account-para-remover-auth0sub-](./quick/1-refatorar-account-para-remover-auth0sub-/) |
 
 ## Session Continuity
 
