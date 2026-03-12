@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Account Bounded Context
 status: completed
 stopped_at: "v1.0 milestone archived"
-last_updated: "2026-03-12T19:20:05Z"
-last_activity: 2026-03-12 - Completed quick task 7: Restructure S3 bucket topology from account-photos to account
+last_updated: "2026-03-12T20:58:37Z"
+last_activity: 2026-03-12 - Completed quick task 8: Fix API health to handle dependency service outages gracefully
 progress:
   total_phases: 6
   completed_phases: 6
@@ -54,9 +54,10 @@ None.
 | 5 | Remove admin routes from controller, keep me-routes only | 2026-03-12 | b7f43f7 | [5-remover-rotas-admin-do-controller-manter](./quick/5-remover-rotas-admin-do-controller-manter/) |
 | 6 | Add reconstitution validation tests for Account entity and AccountMapper | 2026-03-12 | 52c97fb | [6-ao-reconstituir-dados-do-banco-de-dados-](./quick/6-ao-reconstituir-dados-do-banco-de-dados-/) |
 | 7 | Restructure S3 bucket topology from account-photos to account | 2026-03-12 | 9c6d2fc | [7-restructure-s3-bucket-topology-from-acco](./quick/7-restructure-s3-bucket-topology-from-acco/) |
+| 8 | Fix API health to handle dependency service outages gracefully | 2026-03-12 | 8e994f1 | [8-fix-api-health-to-handle-dependency-serv](./quick/8-fix-api-health-to-handle-dependency-serv/) |
 
 ## Session Continuity
 
 Last session: 2026-03-12
-Stopped at: Completed quick task 7
+Stopped at: Completed quick task 8
 Next step: /gsd:new-milestone for v2.0
