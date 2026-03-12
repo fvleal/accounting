@@ -11,16 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-
-function getInitials(name?: string): string {
-  if (!name) return '?';
-  return name
-    .split(' ')
-    .map((part) => part[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-}
+import { getInitials } from '../../utils/initials';
 
 export function Header() {
   const { user, logout } = useAuth0();
@@ -58,7 +49,7 @@ export function Header() {
               alt={user?.name || 'Usuario'}
               sx={{ width: 32, height: 32 }}
             >
-              {getInitials(user?.name)}
+              {getInitials(user?.name || '')}
             </Avatar>
           </IconButton>
 
