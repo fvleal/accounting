@@ -58,12 +58,10 @@ describe('GetMeQuery', () => {
   });
 
   it('should throw AccountNotFoundError when email has no account', async () => {
-    (mockRepo.findByEmail as ReturnType<typeof vi.fn>).mockResolvedValue(
-      null,
-    );
+    (mockRepo.findByEmail as ReturnType<typeof vi.fn>).mockResolvedValue(null);
 
-    await expect(query.execute({ email: 'unknown@example.com' })).rejects.toThrow(
-      AccountNotFoundError,
-    );
+    await expect(
+      query.execute({ email: 'unknown@example.com' }),
+    ).rejects.toThrow(AccountNotFoundError);
   });
 });

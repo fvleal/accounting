@@ -199,7 +199,7 @@ describe('Accounts API (e2e)', () => {
       expect(dbRecord!.name).toBe('John Doe');
     });
 
-    it('is idempotent — returns existing account on duplicate auth0Sub', async () => {
+    it('is idempotent — returns existing account on duplicate email', async () => {
       const first = await createAccount();
       const second = await createAccount();
 
@@ -210,8 +210,8 @@ describe('Accounts API (e2e)', () => {
       expect(count).toBe(1);
     });
 
-    it('returns 409 on duplicate email', async () => {
-      await createAccount();
+    it('is idempotent — returns existing account when same email from different provider', async () => {
+      const first = await createAccount();
 
       const otherUser = {
         ...USER_PAYLOAD,
@@ -221,9 +221,9 @@ describe('Accounts API (e2e)', () => {
         .post('/accounts')
         .set('x-test-auth', authHeader(otherUser))
         .send({ name: 'Other', cpf: CPF_2 })
-        .expect(409);
+        .expect(201);
 
-      expect(res.body.error).toBe('DUPLICATE_EMAIL');
+      expect(res.body.data.id).toBe(first.data.id);
     });
 
     it('returns 409 on duplicate CPF', async () => {
@@ -332,13 +332,115 @@ describe('Accounts API (e2e)', () => {
       expect(res.body.meta).toHaveProperty('timestamp');
     });
 
-    it('returns 404 when no account linked to auth0Sub', async () => {
+    it('returns 404 when no account exists for email', async () => {
       const res = await request(app.getHttpServer())
         .get('/accounts/me')
         .set('x-test-auth', authHeader(USER_PAYLOAD))
         .expect(404);
 
       expect(res.body.error).toBe('ACCOUNT_NOT_FOUND');
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  // IDENTITY: Multiple providers, same email → same account
+  // ═══════════════════════════════════════════════════════════
+
+  describe('IDENTITY: different subs with same verified email resolve to same account', () => {
+    const googleUser: typeof USER_PAYLOAD = {
+      ...USER_PAYLOAD,
+      sub: 'google-oauth2|111111',
+      email: 'john@example.com',
+    };
+
+    const emailCodeUser: typeof USER_PAYLOAD = {
+      ...USER_PAYLOAD,
+      sub: 'email|222222',
+      email: 'john@example.com',
+    };
+
+    const passwordUser: typeof USER_PAYLOAD = {
+      ...USER_PAYLOAD,
+      sub: 'auth0|333333',
+      email: 'john@example.com',
+    };
+
+    it('creates account with Google, then returns same account with email code login', async () => {
+      const created = await createAccount({ user: googleUser });
+
+      const res = await request(app.getHttpServer())
+        .get('/accounts/me')
+        .set('x-test-auth', authHeader(emailCodeUser))
+        .expect(200);
+
+      expect(res.body.data.id).toBe(created.data.id);
+      expect(res.body.data.email).toBe('john@example.com');
+    });
+
+    it('creates account with email code, then returns same account with Google login', async () => {
+      const created = await createAccount({ user: emailCodeUser });
+
+      const res = await request(app.getHttpServer())
+        .get('/accounts/me')
+        .set('x-test-auth', authHeader(googleUser))
+        .expect(200);
+
+      expect(res.body.data.id).toBe(created.data.id);
+    });
+
+    it('POST /accounts is idempotent across three different providers', async () => {
+      const first = await createAccount({ user: googleUser });
+
+      const second = await request(app.getHttpServer())
+        .post('/accounts')
+        .set('x-test-auth', authHeader(emailCodeUser))
+        .send({ name: 'John Doe', cpf: CPF_1 })
+        .expect(201);
+
+      const third = await request(app.getHttpServer())
+        .post('/accounts')
+        .set('x-test-auth', authHeader(passwordUser))
+        .send({ name: 'John Doe', cpf: CPF_1 })
+        .expect(201);
+
+      expect(first.data.id).toBe(second.body.data.id);
+      expect(first.data.id).toBe(third.body.data.id);
+
+      const count = await prisma.account.count();
+      expect(count).toBe(1);
+    });
+
+    it('allows update from any provider sub as long as email matches', async () => {
+      const created = await createAccount({ user: googleUser });
+
+      const res = await request(app.getHttpServer())
+        .patch(`/accounts/${created.data.id}`)
+        .set('x-test-auth', authHeader(emailCodeUser))
+        .send({ name: 'John Updated' })
+        .expect(200);
+
+      expect(res.body.data.name).toBe('John Updated');
+    });
+
+    it('blocks update when email does not match account owner', async () => {
+      const created = await createAccount({ user: googleUser });
+
+      const attackerUser: typeof USER_PAYLOAD = {
+        ...USER_PAYLOAD,
+        sub: 'google-oauth2|attacker',
+        email: 'attacker@example.com',
+      };
+
+      await request(app.getHttpServer())
+        .patch(`/accounts/${created.data.id}`)
+        .set('x-test-auth', authHeader(attackerUser))
+        .send({ name: 'Hacked' })
+        .expect(403);
+
+      const dbRecord = await prisma.account.findUnique({
+        where: { id: created.data.id },
+      });
+      expect(dbRecord!.name).toBe('John Doe');
     });
   });
 
@@ -570,17 +672,17 @@ describe('Accounts API (e2e)', () => {
       expect(res.body).toHaveProperty('details');
     });
 
-    it('maps DUPLICATE_EMAIL to 409', async () => {
-      await createAccount();
+    it('maps duplicate email to idempotent 201 (same account returned)', async () => {
+      const first = await createAccount();
 
       const otherUser = { ...USER_PAYLOAD, sub: 'auth0|other' };
       const res = await request(app.getHttpServer())
         .post('/accounts')
         .set('x-test-auth', authHeader(otherUser))
         .send({ name: 'Other', cpf: CPF_2 })
-        .expect(409);
+        .expect(201);
 
-      expect(res.body.error).toBe('DUPLICATE_EMAIL');
+      expect(res.body.data.id).toBe(first.data.id);
     });
 
     it('maps DUPLICATE_CPF to 409', async () => {
