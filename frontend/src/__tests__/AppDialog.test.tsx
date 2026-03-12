@@ -13,7 +13,7 @@ describe('AppDialog', () => {
     expect(screen.getByText('Hello Dialog')).toBeInTheDocument();
   });
 
-  it('applies minWidth, maxWidth, width and minHeight via PaperProps', () => {
+  it('applies minWidth, maxWidth, width and minHeight via slotProps.paper', () => {
     render(
       <AppDialog open onClose={vi.fn()} data-testid="app-dialog">
         <p>Content</p>
@@ -28,7 +28,7 @@ describe('AppDialog', () => {
     expect(paper.style.minWidth || styles.minWidth).toBeTruthy();
   });
 
-  it('does NOT call onClose on backdrop click', async () => {
+  it('calls onClose on backdrop click', async () => {
     const onClose = vi.fn();
     render(
       <AppDialog open onClose={onClose}>
@@ -42,7 +42,7 @@ describe('AppDialog', () => {
     const user = userEvent.setup();
     await user.click(backdrop);
 
-    expect(onClose).not.toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
   });
 
   it('exposes a simple onClose callback for consumers', () => {
@@ -57,12 +57,12 @@ describe('AppDialog', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it('merges consumer PaperProps.sx with defaults', () => {
+  it('merges consumer slotProps.paper.sx with defaults', () => {
     render(
       <AppDialog
         open
         onClose={vi.fn()}
-        PaperProps={{ sx: { borderRadius: 4 } }}
+        slotProps={{ paper: { sx: { borderRadius: 4 } } }}
       >
         <p>Content</p>
       </AppDialog>,

@@ -85,13 +85,13 @@ describe('ProfilePage', () => {
 
       render(<ProfilePage />, { wrapper: createWrapper() });
 
-      // Name appears in hero and in Nome field row
+      // Name appears only in Nome field row (hero shows avatar only)
       const nameElements = screen.getAllByText('Felipe Vieira');
-      expect(nameElements.length).toBeGreaterThanOrEqual(2);
+      expect(nameElements).toHaveLength(1);
 
-      // Email appears in hero and in Email field row
+      // Email appears only in Email field row (hero shows avatar only)
       const emailElements = screen.getAllByText('felipe@test.com');
-      expect(emailElements.length).toBeGreaterThanOrEqual(2);
+      expect(emailElements).toHaveLength(1);
 
       // Formatted CPF
       expect(screen.getByText('529.982.247-25')).toBeInTheDocument();
@@ -104,7 +104,7 @@ describe('ProfilePage', () => {
       expect(screen.getByText('(11) 98765-4321')).toBeInTheDocument();
     });
 
-    it('displays Nao informado for null fields', () => {
+    it('displays Inserir for null fields', () => {
       mockUseAccount.mockReturnValue({
         data: { ...fullAccount, birthDate: null, phone: null },
         isLoading: false,
@@ -114,9 +114,9 @@ describe('ProfilePage', () => {
 
       render(<ProfilePage />, { wrapper: createWrapper() });
 
-      // birthDate and phone can be null
-      const naoInformado = screen.getAllByText('Nao informado');
-      expect(naoInformado).toHaveLength(2);
+      // birthDate and phone can be null — ProfileFieldRow shows "Inserir"
+      const inserir = screen.getAllByText('Inserir');
+      expect(inserir).toHaveLength(2);
     });
 
     it('shows chevron for editable rows only', () => {

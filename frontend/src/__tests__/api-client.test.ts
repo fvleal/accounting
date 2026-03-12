@@ -3,7 +3,7 @@ import apiClient, { setTokenGetter } from '../api/client';
 
 describe('API Client', () => {
   it('has correct default baseURL', () => {
-    expect(apiClient.defaults.baseURL).toBe('http://localhost:3000');
+    expect(apiClient.defaults.baseURL).toBe('/api');
   });
 
   it('has at least one request interceptor registered', () => {

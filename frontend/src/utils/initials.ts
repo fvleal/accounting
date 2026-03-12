@@ -3,8 +3,8 @@ const AVATAR_COLORS = [
   '#c2185b', '#0097a7', '#f57c00', '#5d4037',
 ];
 
-export function getInitials(fullName: string): string {
-  const parts = fullName.trim().split(/\s+/);
+export function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
   if (parts.length === 0 || parts[0] === '') return '?';
   if (parts.length === 1) return parts[0][0].toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
