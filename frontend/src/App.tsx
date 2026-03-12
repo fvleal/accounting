@@ -4,7 +4,7 @@ import { ProtectedRoute } from './auth/ProtectedRoute';
 import { AccountGuard } from './auth/AccountGuard';
 import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
-import { HomePage } from './pages/HomePage';
+import { ProfilePage } from './pages/ProfilePage';
 import { OnboardingPage } from './pages/OnboardingPage';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
           {/* All other routes: require account */}
           <Route element={<AccountGuard />}>
             <Route path="/" element={<AppLayout />}>
-              <Route index element={<HomePage />} />
+              <Route index element={<ProfilePage />} />
             </Route>
           </Route>
         </Route>
