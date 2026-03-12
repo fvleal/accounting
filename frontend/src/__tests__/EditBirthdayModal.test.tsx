@@ -81,7 +81,7 @@ describe('EditBirthdayModal', () => {
     );
 
     expect(screen.getByText('Editar data de nascimento')).toBeInTheDocument();
-    expect(screen.getByLabelText(/data de nascimento/i)).toHaveValue('2000-01-15');
+    expect(screen.getByLabelText('Data de nascimento')).toHaveValue('2000-01-15');
   });
 
   it('Cancel button calls onClose', async () => {
@@ -102,7 +102,7 @@ describe('EditBirthdayModal', () => {
       { wrapper: createWrapper() },
     );
 
-    const dateInput = screen.getByLabelText(/data de nascimento/i);
+    const dateInput = screen.getByLabelText('Data de nascimento');
     await user.clear(dateInput);
     await user.type(dateInput, '1995-06-20');
 
@@ -193,6 +193,6 @@ describe('EditBirthdayModal', () => {
       { wrapper: createWrapper() },
     );
 
-    expect(screen.getByLabelText(/data de nascimento/i)).toHaveValue('');
+    expect(screen.getByLabelText('Data de nascimento')).toHaveValue('');
   });
 });
