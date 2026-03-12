@@ -12,7 +12,7 @@ Five phases that follow the natural dependency chain of this SPA. Auth must be s
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
+- [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
 - [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
 - [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
 - [ ] **Phase 4: Profile Editing** - Edit modals for name, date of birth, and phone with form validation and optimistic updates
@@ -45,7 +45,10 @@ Plans:
   2. User can submit full name and CPF on the onboarding form and is redirected to the profile page on success
   3. Submitting an invalid CPF shows an inline validation error without navigating away
   4. An existing user with an Account record is never shown the onboarding screen
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 02-01-PLAN.md — AccountGuard route wrapper, useAccount hook, accounts API, CPF utilities, routing skeleton
+- [ ] 02-02-PLAN.md — Onboarding form with name + CPF validation, account creation mutation, cache seeding
 
 ### Phase 3: Profile Display
 **Goal**: Authenticated users with an Account record can view all their personal information in a Google Personal Info-style read-only layout
@@ -88,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-11 |
-| 2. Onboarding | 0/TBD | Not started | - |
+| 2. Onboarding | 0/2 | Not started | - |
 | 3. Profile Display | 0/TBD | Not started | - |
 | 4. Profile Editing | 0/TBD | Not started | - |
 | 5. Photo Upload | 0/TBD | Not started | - |
