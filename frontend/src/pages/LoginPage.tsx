@@ -1,7 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router";
-import illustrationProfile from "../assets/illustration-profile.svg";
 
 const companyName = import.meta.env.VITE_COMPANY_NAME || "Minha Conta";
 const logoUrl = import.meta.env.VITE_LOGO_URL;

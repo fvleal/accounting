@@ -1,7 +1,7 @@
-import { Navigate, Outlet } from 'react-router';
-import { LoadingScreen } from '../components/ui/LoadingScreen';
-import { AccountErrorFallback } from '../components/ui/AccountErrorFallback';
-import { useAccount } from '../hooks/useAccount';
+import { Navigate, Outlet } from "react-router";
+import { LoadingScreen } from "../components/ui/LoadingScreen";
+import { AccountErrorFallback } from "../components/ui/AccountErrorFallback";
+import { useAccount } from "../hooks/useAccount";
 
 export function AccountGuard() {
   const { data: _account, isLoading, error, refetch } = useAccount();

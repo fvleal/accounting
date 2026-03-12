@@ -6,7 +6,10 @@ import { SnackbarProvider } from 'notistack';
 import { BrowserRouter } from 'react-router';
 import { theme } from './theme';
 import App from './App';
+import { validateEnv } from './env';
 import './index.css';
+
+validateEnv();
 
 const queryClient = new QueryClient({
   defaultOptions: {
