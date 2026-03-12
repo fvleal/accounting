@@ -1,5 +1,5 @@
 ---
-status: diagnosed
+status: resolved
 phase: 05-photo-upload
 source: [05-01-SUMMARY.md, 05-02-SUMMARY.md]
 started: 2026-03-12T18:00:00Z
@@ -63,7 +63,7 @@ skipped: 0
 ## Gaps
 
 - truth: "File picker opens and crop modal displays correctly without visual glitches"
-  status: failed
+  status: resolved
   reason: "User reported: abre mas fica todo fundo preto"
   severity: major
   test: 2
@@ -76,7 +76,7 @@ skipped: 0
   debug_session: ""
 
 - truth: "Crop interface uses react-image-crop with user-adjustable rectangle, not fixed frame with zoom slider"
-  status: failed
+  status: resolved
   reason: "User reported: quero que seja com react image crop nao com uma barrinha de amplia"
   severity: major
   test: 5
@@ -93,7 +93,7 @@ skipped: 0
   debug_session: ""
 
 - truth: "Crop area shows strong rectangle with darker overlay, no zoom slider needed"
-  status: failed
+  status: resolved
   reason: "User reported: quero que seja uma retangulo mais forte mostrando a imagem com o fundo mais escuro. o retangulo 3x4 define a imagem a ser cortada, nao precisa de zoom"
   severity: major
   test: 6
@@ -107,7 +107,7 @@ skipped: 0
   debug_session: ""
 
 - truth: "On upload error, modal stays open with error toast and crop state preserved for retry"
-  status: failed
+  status: resolved
   reason: "User reported: da certo, mas quando falha esta fechando o modal"
   severity: major
   test: 8
