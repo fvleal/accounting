@@ -138,9 +138,10 @@ Recent decisions affecting current work:
 | 3 | adiciona validacao em conformidade com o backend DTOs | 2026-03-12 | c6975ff | [3-adiciona-validacao-em-conformidade-com-o](./quick/3-adiciona-validacao-em-conformidade-com-o/) |
 | 4 | criar Dialog intermediario com tamanho fixo min-max e migrar todos os modais | 2026-03-12 | c5518f0 | [4-criar-dialog-intermediario-com-tamanho-f](./quick/4-criar-dialog-intermediario-com-tamanho-f/) |
 | 5 | readequar planejamentos anteriores apos mudancas manuais | 2026-03-12 | 8815370 | [5-readequar-planejamentos-anteriores-apos-](./quick/5-readequar-planejamentos-anteriores-apos-/) |
+| 6 | aceite imagens de qualquer tamanho e formato, comprima para JPEG under 5MB | 2026-03-12 | 9928abe | [6-aceite-imagens-de-qualquer-tamanho-e-for](./quick/6-aceite-imagens-de-qualquer-tamanho-e-for/) |
 
 ## Session Continuity
 
-Last session: 2026-03-12T18:33:49.158Z
-Stopped at: Completed 05-04-PLAN.md
+Last session: 2026-03-12T18:39:00.000Z
+Stopped at: Completed quick-6
 Resume file: None
