@@ -59,7 +59,10 @@ Plans:
   2. User sees skeleton placeholder cards while profile data is loading, with no blank-page flash
   3. User without a profile photo sees an avatar displaying their initials instead of a broken image
   4. User sees a toast notification confirming success or describing the error after any profile action
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 03-01-PLAN.md — Formatting utilities (initials, phone, date) with TDD tests, extract getInitials from Header
+- [ ] 03-02-PLAN.md — ProfilePage with hero, section cards, field rows, skeleton loading, error toast, routing
 
 ### Phase 4: Profile Editing
 **Goal**: Users can edit their mutable profile fields (name, date of birth, phone) via modals with validation, and see updated values immediately
@@ -86,12 +89,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-11 |
 | 2. Onboarding | 1/2 | In progress | - |
-| 3. Profile Display | 0/TBD | Not started | - |
+| 3. Profile Display | 0/2 | Not started | - |
 | 4. Profile Editing | 0/TBD | Not started | - |
 | 5. Photo Upload | 0/TBD | Not started | - |
