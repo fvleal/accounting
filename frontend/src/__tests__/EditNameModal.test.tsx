@@ -146,8 +146,7 @@ describe('EditNameModal', () => {
     const nameField = screen.getByLabelText(/nome completo/i);
     await user.clear(nameField);
     await user.type(nameField, 'Fulano');
-
-    await user.click(screen.getByRole('button', { name: /salvar/i }));
+    await user.tab(); // trigger blur to activate validation
 
     await waitFor(() => {
       expect(screen.getByText('Informe nome e sobrenome')).toBeInTheDocument();

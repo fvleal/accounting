@@ -30,7 +30,7 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
 
   const { control, handleSubmit, reset, formState: { isValid, isDirty } } = useForm<EditNameFormData>({
     defaultValues: { name: account.name },
-    mode: "onChange",
+    mode: "onTouched",
   });
 
   useEffect(() => {

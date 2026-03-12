@@ -56,9 +56,14 @@ export function EditPhoneModal({
   const mutation = useSendPhoneCode();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit, reset, formState: { isValid, isDirty } } = useForm<EditPhoneFormData>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isValid, isDirty },
+  } = useForm<EditPhoneFormData>({
     defaultValues: { phone: maskFromRaw(account.phone) },
-    mode: "onChange",
+    mode: "onTouched",
   });
 
   useEffect(() => {
@@ -74,7 +79,7 @@ export function EditPhoneModal({
     mutation.mutate(digits, {
       onSuccess: () => {
         onClose();
-        enqueueSnackbar("Código enviado! Telefone salvo como não verificado.", {
+        enqueueSnackbar("Celular alterado.", {
           variant: "success",
         });
       },

@@ -132,6 +132,10 @@ describe('EditBirthdayModal', () => {
       { wrapper: createWrapper() },
     );
 
+    const dateInput = screen.getByLabelText('Data de nascimento');
+    await user.clear(dateInput);
+    await user.type(dateInput, '1999-03-10');
+
     await user.click(screen.getByRole('button', { name: /salvar/i }));
 
     await waitFor(() => {
@@ -161,6 +165,10 @@ describe('EditBirthdayModal', () => {
       { wrapper: createWrapper() },
     );
 
+    const dateInput = screen.getByLabelText('Data de nascimento');
+    await user.clear(dateInput);
+    await user.type(dateInput, '1999-03-10');
+
     await user.click(screen.getByRole('button', { name: /salvar/i }));
 
     await waitFor(() => {
@@ -171,7 +179,7 @@ describe('EditBirthdayModal', () => {
     expect(mockOnClose).not.toHaveBeenCalled();
   });
 
-  it('shows validation error when submitting empty birthday', async () => {
+  it('shows validation error when blurring empty birthday', async () => {
     const user = userEvent.setup();
     const nullBirthdayAccount = { ...testAccount, birthDate: null };
     render(
@@ -179,7 +187,9 @@ describe('EditBirthdayModal', () => {
       { wrapper: createWrapper() },
     );
 
-    await user.click(screen.getByRole('button', { name: /salvar/i }));
+    const dateInput = screen.getByLabelText('Data de nascimento');
+    await user.click(dateInput);
+    await user.tab(); // trigger blur
 
     await waitFor(() => {
       expect(screen.getByText('Data de nascimento é obrigatória')).toBeInTheDocument();

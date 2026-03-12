@@ -39,7 +39,7 @@ export function EditBirthdayModal({
 
   const { control, handleSubmit, reset, formState: { isValid, isDirty } } = useForm<EditBirthdayFormData>({
     defaultValues: { birthDate: toDateInput(account.birthDate) },
-    mode: "onChange",
+    mode: "onTouched",
   });
 
   useEffect(() => {

@@ -80,21 +80,27 @@ export function ProfilePage() {
       </ProfileSectionCard>
       {account && (
         <>
-          <EditNameModal
-            open={editModal === "name"}
-            onClose={() => setEditModal(null)}
-            account={account}
-          />
-          <EditBirthdayModal
-            open={editModal === "birthday"}
-            onClose={() => setEditModal(null)}
-            account={account}
-          />
-          <EditPhoneModal
-            open={editModal === "phone"}
-            onClose={() => setEditModal(null)}
-            account={account}
-          />
+          {editModal === "name" && (
+            <EditNameModal
+              open
+              onClose={() => setEditModal(null)}
+              account={account}
+            />
+          )}
+          {editModal === "birthday" && (
+            <EditBirthdayModal
+              open
+              onClose={() => setEditModal(null)}
+              account={account}
+            />
+          )}
+          {editModal === "phone" && (
+            <EditPhoneModal
+              open
+              onClose={() => setEditModal(null)}
+              account={account}
+            />
+          )}
         </>
       )}
       {cropImageUrl && (
