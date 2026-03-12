@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: Account Bounded Context
 status: completed
 stopped_at: "v1.0 milestone archived"
-last_updated: "2026-03-11T19:45:00.000Z"
-last_activity: 2026-03-11 - Completed quick task 1: Refatorar Account para remover auth0Sub e usar email como identificador principal
+last_updated: "2026-03-12T01:27:28Z"
+last_activity: 2026-03-12 - Completed quick task 2: Simplify authorization - JWT-only user routes
 progress:
   total_phases: 6
   completed_phases: 6
@@ -49,9 +49,10 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Refatorar Account para remover auth0Sub e usar email como identificador principal | 2026-03-11 | eb4de5c | [1-refatorar-account-para-remover-auth0sub-](./quick/1-refatorar-account-para-remover-auth0sub-/) |
+| 2 | Simplify authorization -- JWT-only user routes | 2026-03-12 | a644b7e | [2-vamos-deixar-com-rotas-protegidas-apenas](./quick/2-vamos-deixar-com-rotas-protegidas-apenas/) |
 
 ## Session Continuity
 
-Last session: 2026-03-11
-Stopped at: v1.0 milestone archived
+Last session: 2026-03-12
+Stopped at: Completed quick task 2
 Next step: /gsd:new-milestone for v2.0
