@@ -34,7 +34,7 @@ export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalP
 
   const onSubmit = (values: EditBirthdayFormData) => {
     mutation.mutate(
-      { id: account.id, data: { birthDate: values.birthDate } },
+      { birthDate: values.birthDate },
       {
         onSuccess: () => {
           onClose();

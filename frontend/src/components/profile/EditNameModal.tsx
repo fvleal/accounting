@@ -35,7 +35,7 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
 
   const onSubmit = (values: EditNameFormData) => {
     mutation.mutate(
-      { id: account.id, data: { name: values.name.trim() } },
+      { name: values.name.trim() },
       {
         onSuccess: () => {
           onClose();

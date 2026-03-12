@@ -127,7 +127,7 @@ describe('EditNameModal', () => {
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalledWith(
-        { id: 'acc-1', data: { name: 'New Name' } },
+        { name: 'New Name' },
         expect.objectContaining({
           onSuccess: expect.any(Function),
           onError: expect.any(Function),

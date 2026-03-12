@@ -110,7 +110,7 @@ describe('EditBirthdayModal', () => {
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalledWith(
-        { id: 'acc-1', data: { birthDate: '1995-06-20' } },
+        { birthDate: '1995-06-20' },
         expect.objectContaining({
           onSuccess: expect.any(Function),
           onError: expect.any(Function),
