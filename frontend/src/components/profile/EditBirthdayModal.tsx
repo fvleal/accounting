@@ -1,16 +1,18 @@
-import { useForm, Controller } from 'react-hook-form';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import {
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
   Button,
-} from '@mui/material';
-import { AppDialog } from '../common/AppDialog';
-import { useSnackbar } from 'notistack';
-import { birthDateRules } from '../../utils/validation';
-import { useUpdateAccount } from '../../hooks/useUpdateAccount';
-import type { Account } from '../../types/account';
+} from "@mui/material";
+import { AppDialog } from "../common/AppDialog";
+import { useSnackbar } from "notistack";
+import { birthDateRules } from "../../utils/validation";
+import { useUpdateAccount } from "../../hooks/useUpdateAccount";
+import type { Account } from "../../types/account";
 
 interface EditBirthdayModalProps {
   open: boolean;
@@ -22,14 +24,29 @@ interface EditBirthdayFormData {
   birthDate: string;
 }
 
-export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalProps) {
+function toDateInput(iso: string | null): string {
+  if (!iso) return "";
+  return iso.split("T")[0];
+}
+
+export function EditBirthdayModal({
+  open,
+  onClose,
+  account,
+}: EditBirthdayModalProps) {
   const mutation = useUpdateAccount();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit } = useForm<EditBirthdayFormData>({
-    defaultValues: { birthDate: account.birthDate ?? '' },
-    mode: 'onBlur',
+  const { control, handleSubmit, reset } = useForm<EditBirthdayFormData>({
+    defaultValues: { birthDate: toDateInput(account.birthDate) },
+    mode: "onBlur",
   });
+
+  useEffect(() => {
+    if (open) {
+      reset({ birthDate: toDateInput(account.birthDate) });
+    }
+  }, [open, account.birthDate, reset]);
 
   if (!open) return null;
 
@@ -39,12 +56,15 @@ export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalP
       {
         onSuccess: () => {
           onClose();
-          enqueueSnackbar('Data de nascimento atualizada!', { variant: 'success' });
+          enqueueSnackbar("Data de nascimento atualizada!", {
+            variant: "success",
+          });
         },
         onError: (error: any) => {
           const msg =
-            error?.response?.data?.message || 'Erro ao atualizar data de nascimento.';
-          enqueueSnackbar(msg, { variant: 'error' });
+            error?.response?.data?.message ||
+            "Erro ao atualizar data de nascimento.";
+          enqueueSnackbar(msg, { variant: "error" });
         },
       },
     );
@@ -73,10 +93,11 @@ export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalP
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={mutation.isPending}>
+        <Button size="small" onClick={onClose} disabled={mutation.isPending}>
           Cancelar
         </Button>
         <Button
+          size="small"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
           loading={mutation.isPending}

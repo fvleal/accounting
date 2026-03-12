@@ -148,8 +148,9 @@ export function CropPhotoModal({
         </ReactCrop>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
+        <Button size="small" onClick={onClose}>Cancelar</Button>
         <Button
+          size="small"
           variant="contained"
           onClick={handleSave}
           loading={mutation.isPending}

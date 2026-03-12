@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   DialogTitle,
@@ -22,6 +23,29 @@ interface EditPhoneFormData {
   phone: string;
 }
 
+function applyPhoneMask(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return digits.length ? `(${digits}` : "";
+  const ddd = digits.slice(0, 2);
+  const rest = digits.slice(2);
+  if (rest.length <= 4) return `(${ddd}) ${rest}`;
+  // 9 digits: 5+4, 8 digits: 4+4
+  const splitAt = rest.length > 8 ? 5 : 4;
+  const part1 = rest.slice(0, splitAt);
+  const part2 = rest.slice(splitAt);
+  if (!part2) return `(${ddd}) ${part1}`;
+  return `(${ddd}) ${part1}-${part2}`;
+}
+
+function stripPhoneMask(masked: string): string {
+  return masked.replace(/\D/g, "");
+}
+
+function maskFromRaw(raw: string | null): string {
+  if (!raw) return "";
+  return applyPhoneMask(raw);
+}
+
 const phonePattern = /^[1-9]{2}[2-9]\d{7,8}$/;
 
 export function EditPhoneModal({
@@ -32,15 +56,22 @@ export function EditPhoneModal({
   const mutation = useSendPhoneCode();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit } = useForm<EditPhoneFormData>({
-    defaultValues: { phone: account.phone ?? "" },
+  const { control, handleSubmit, reset } = useForm<EditPhoneFormData>({
+    defaultValues: { phone: maskFromRaw(account.phone) },
     mode: "onBlur",
   });
+
+  useEffect(() => {
+    if (open) {
+      reset({ phone: maskFromRaw(account.phone) });
+    }
+  }, [open, account.phone, reset]);
 
   if (!open) return null;
 
   const onSubmit = (values: EditPhoneFormData) => {
-    mutation.mutate(values.phone, {
+    const digits = stripPhoneMask(values.phone);
+    mutation.mutate(digits, {
       onSuccess: () => {
         onClose();
         enqueueSnackbar("Codigo enviado! Telefone salvo como nao verificado.", {
@@ -63,18 +94,19 @@ export function EditPhoneModal({
           control={control}
           rules={{
             required: "Telefone e obrigatorio",
-            pattern: {
-              value: phonePattern,
-              message:
-                "Telefone invalido. Use DDD + 8 ou 9 digitos (ex: 11987654321)",
-            },
+            validate: (v) =>
+              phonePattern.test(stripPhoneMask(v)) ||
+              "Telefone invalido. Use DDD + 8 ou 9 digitos (ex: 11987654321)",
           }}
           render={({ field, fieldState }) => (
             <TextField
               {...field}
+              onChange={(e) => {
+                field.onChange(applyPhoneMask(e.target.value));
+              }}
               label="Telefone"
               type="tel"
-              placeholder="11987654321"
+              placeholder="(11) 98765-4321"
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
               fullWidth
@@ -84,10 +116,11 @@ export function EditPhoneModal({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={mutation.isPending}>
+        <Button size="small" onClick={onClose} disabled={mutation.isPending}>
           Cancelar
         </Button>
         <Button
+          size="small"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
           loading={mutation.isPending}

@@ -1,16 +1,18 @@
-import { useForm, Controller } from 'react-hook-form';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import {
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
   Button,
-} from '@mui/material';
-import { AppDialog } from '../common/AppDialog';
-import { useSnackbar } from 'notistack';
-import { nameRules } from '../../utils/validation';
-import { useUpdateAccount } from '../../hooks/useUpdateAccount';
-import type { Account } from '../../types/account';
+} from "@mui/material";
+import { AppDialog } from "../common/AppDialog";
+import { useSnackbar } from "notistack";
+import { nameRules } from "../../utils/validation";
+import { useUpdateAccount } from "../../hooks/useUpdateAccount";
+import type { Account } from "../../types/account";
 
 interface EditNameModalProps {
   open: boolean;
@@ -26,10 +28,16 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
   const mutation = useUpdateAccount();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit } = useForm<EditNameFormData>({
+  const { control, handleSubmit, reset } = useForm<EditNameFormData>({
     defaultValues: { name: account.name },
-    mode: 'onBlur',
+    mode: "onBlur",
   });
+
+  useEffect(() => {
+    if (open) {
+      reset({ name: account.name });
+    }
+  }, [open, account.name, reset]);
 
   if (!open) return null;
 
@@ -39,12 +47,12 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
       {
         onSuccess: () => {
           onClose();
-          enqueueSnackbar('Nome atualizado!', { variant: 'success' });
+          enqueueSnackbar("Nome atualizado!", { variant: "success" });
         },
         onError: (error: any) => {
           const msg =
-            error?.response?.data?.message || 'Erro ao atualizar nome.';
-          enqueueSnackbar(msg, { variant: 'error' });
+            error?.response?.data?.message || "Erro ao atualizar nome.";
+          enqueueSnackbar(msg, { variant: "error" });
         },
       },
     );
@@ -71,10 +79,11 @@ export function EditNameModal({ open, onClose, account }: EditNameModalProps) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={mutation.isPending}>
+        <Button size="small" onClick={onClose} disabled={mutation.isPending}>
           Cancelar
         </Button>
         <Button
+          size="small"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
           loading={mutation.isPending}
