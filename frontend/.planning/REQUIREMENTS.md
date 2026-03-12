@@ -12,7 +12,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **AUTH-01**: User can log in via Auth0 redirect flow and access protected pages
 - [x] **AUTH-02**: User can log out from any page and is redirected to login
 - [x] **AUTH-03**: User without an Account record is redirected to onboarding screen
-- [ ] **AUTH-04**: User can create an Account by submitting full name and CPF on onboarding screen
+- [x] **AUTH-04**: User can create an Account by submitting full name and CPF on onboarding screen
 
 ### Profile Display
 
@@ -78,7 +78,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-01 | Phase 1 | Complete |
 | AUTH-02 | Phase 1 | Complete |
 | AUTH-03 | Phase 2 | Complete |
-| AUTH-04 | Phase 2 | Pending |
+| AUTH-04 | Phase 2 | Complete |
 | PROF-01 | Phase 3 | Pending |
 | PROF-02 | Phase 3 | Pending |
 | PROF-03 | Phase 3 | Pending |
