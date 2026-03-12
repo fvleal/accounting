@@ -139,9 +139,10 @@ Recent decisions affecting current work:
 | 4 | criar Dialog intermediario com tamanho fixo min-max e migrar todos os modais | 2026-03-12 | c5518f0 | [4-criar-dialog-intermediario-com-tamanho-f](./quick/4-criar-dialog-intermediario-com-tamanho-f/) |
 | 5 | readequar planejamentos anteriores apos mudancas manuais | 2026-03-12 | 8815370 | [5-readequar-planejamentos-anteriores-apos-](./quick/5-readequar-planejamentos-anteriores-apos-/) |
 | 6 | aceite imagens de qualquer tamanho e formato, comprima para JPEG under 5MB | 2026-03-12 | 9928abe | [6-aceite-imagens-de-qualquer-tamanho-e-for](./quick/6-aceite-imagens-de-qualquer-tamanho-e-for/) |
+| 7 | adicione uma logo no header que vem de uma URL env var | 2026-03-12 | 91607bc | [7-adicione-uma-logo-no-header-que-vem-de-u](./quick/7-adicione-uma-logo-no-header-que-vem-de-u/) |
 
 ## Session Continuity
 
-Last session: 2026-03-12T18:39:00.000Z
-Stopped at: Completed quick-6
+Last session: 2026-03-12T19:15:00.000Z
+Stopped at: Completed quick-7
 Resume file: None
