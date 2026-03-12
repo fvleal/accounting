@@ -4,7 +4,6 @@ import { AccountRepositoryPort } from '../../domain/ports';
 import { Account } from '../../domain/entities/account.entity';
 import { AccountNotFoundError } from '../../domain/exceptions';
 
-const VALID_AUTH0_SUB = 'auth0|abc123';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 const VALID_CPF = '529.982.247-25';
@@ -16,14 +15,12 @@ function createMockRepo(): AccountRepositoryPort {
     findById: vi.fn(),
     findByEmail: vi.fn(),
     findByCpf: vi.fn(),
-    findByAuth0Sub: vi.fn(),
     findAll: vi.fn(),
   } as unknown as AccountRepositoryPort;
 }
 
 function createTestAccount(): Account {
   return Account.create({
-    auth0Sub: VALID_AUTH0_SUB,
     name: VALID_NAME,
     email: VALID_EMAIL,
     cpf: VALID_CPF,
@@ -39,16 +36,15 @@ describe('GetMeQuery', () => {
     query = new GetMeQuery(mockRepo);
   });
 
-  it('should return account output when found by auth0Sub', async () => {
+  it('should return account output when found by email', async () => {
     const account = createTestAccount();
-    (mockRepo.findByAuth0Sub as ReturnType<typeof vi.fn>).mockResolvedValue(
+    (mockRepo.findByEmail as ReturnType<typeof vi.fn>).mockResolvedValue(
       account,
     );
 
-    const output = await query.execute({ auth0Sub: VALID_AUTH0_SUB });
+    const output = await query.execute({ email: VALID_EMAIL });
 
     expect(output.id).toBe(account.id);
-    expect(output.auth0Sub).toBe(VALID_AUTH0_SUB);
     expect(output.name).toBe(VALID_NAME);
     expect(output.email).toBe(VALID_EMAIL);
     expect(output.cpf).toBe(NORMALIZED_CPF);
@@ -57,16 +53,16 @@ describe('GetMeQuery', () => {
     expect(output.photoUrl).toBeNull();
     expect(output.createdAt).toBeInstanceOf(Date);
     expect(output.updatedAt).toBeInstanceOf(Date);
-    expect(mockRepo.findByAuth0Sub).toHaveBeenCalledWith(VALID_AUTH0_SUB);
+    expect(mockRepo.findByEmail).toHaveBeenCalledWith(VALID_EMAIL);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
 
-  it('should throw AccountNotFoundError when auth0Sub has no account', async () => {
-    (mockRepo.findByAuth0Sub as ReturnType<typeof vi.fn>).mockResolvedValue(
+  it('should throw AccountNotFoundError when email has no account', async () => {
+    (mockRepo.findByEmail as ReturnType<typeof vi.fn>).mockResolvedValue(
       null,
     );
 
-    await expect(query.execute({ auth0Sub: 'auth0|unknown' })).rejects.toThrow(
+    await expect(query.execute({ email: 'unknown@example.com' })).rejects.toThrow(
       AccountNotFoundError,
     );
   });

@@ -11,7 +11,6 @@ export interface ListAccountsInput {
 
 export interface AccountSummary {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -52,7 +51,6 @@ export class ListAccountsQuery implements UseCase<
   private toOutput(account: Account): AccountSummary {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

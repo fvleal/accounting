@@ -13,14 +13,13 @@ import {
 
 export interface UploadAccountPhotoInput {
   accountId: string;
-  auth0Sub: string;
+  email: string;
   buffer: Buffer;
   contentType: string;
 }
 
 export interface UploadAccountPhotoOutput {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -48,7 +47,7 @@ export class UploadAccountPhotoCommand implements UseCase<
   ): Promise<UploadAccountPhotoOutput> {
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
-    if (account.auth0Sub !== input.auth0Sub)
+    if (account.email !== input.email)
       throw new AccountOwnershipError(input.accountId);
 
     if (account.photoUrl) {
@@ -68,7 +67,6 @@ export class UploadAccountPhotoCommand implements UseCase<
   private toOutput(account: Account): UploadAccountPhotoOutput {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

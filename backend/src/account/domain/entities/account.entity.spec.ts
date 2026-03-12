@@ -7,13 +7,11 @@ const VALID_CPF = '529.982.247-25';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 const VALID_PHONE = '11987654321';
-const VALID_AUTH0_SUB = 'auth0|abc123';
 
 describe('Account', () => {
   describe('create()', () => {
     it('should generate a UUID and return an Account instance', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -27,7 +25,6 @@ describe('Account', () => {
 
     it('should set name, email, and cpf from required fields', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -40,7 +37,6 @@ describe('Account', () => {
 
     it('should set optional fields to null by default', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -54,7 +50,6 @@ describe('Account', () => {
     it('should set createdAt and updatedAt dates', () => {
       const before = new Date();
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -73,7 +68,6 @@ describe('Account', () => {
 
     it('should collect exactly one AccountCreated event', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -86,7 +80,6 @@ describe('Account', () => {
 
     it('should include full snapshot in AccountCreated event', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -94,7 +87,6 @@ describe('Account', () => {
 
       const event = account.getEvents()[0] as AccountCreated;
       expect(event.accountId).toBe(account.id);
-      expect(event.auth0Sub).toBe(VALID_AUTH0_SUB);
       expect(event.name).toBe(VALID_NAME);
       expect(event.email).toBe(VALID_EMAIL.toLowerCase());
       expect(event.cpf).toBe('52998224725');
@@ -108,7 +100,6 @@ describe('Account', () => {
     it('should throw if name is invalid (single word)', () => {
       expect(() =>
         Account.create({
-          auth0Sub: VALID_AUTH0_SUB,
           name: 'John',
           email: VALID_EMAIL,
           cpf: VALID_CPF,
@@ -119,7 +110,6 @@ describe('Account', () => {
     it('should throw if email is invalid', () => {
       expect(() =>
         Account.create({
-          auth0Sub: VALID_AUTH0_SUB,
           name: VALID_NAME,
           email: 'invalid-email',
           cpf: VALID_CPF,
@@ -130,7 +120,6 @@ describe('Account', () => {
     it('should throw if CPF is invalid', () => {
       expect(() =>
         Account.create({
-          auth0Sub: VALID_AUTH0_SUB,
           name: VALID_NAME,
           email: VALID_EMAIL,
           cpf: '000.000.000-00',
@@ -144,7 +133,6 @@ describe('Account', () => {
       const id = 'existing-uuid-123';
       const now = new Date();
       const account = Account.reconstitute(id, {
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -162,7 +150,6 @@ describe('Account', () => {
       const now = new Date();
       const birthDate = new Date('1990-05-15');
       const account = Account.reconstitute('some-id', {
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -184,7 +171,6 @@ describe('Account', () => {
     it('should NOT collect any events', () => {
       const now = new Date();
       const account = Account.reconstitute('some-id', {
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -202,7 +188,6 @@ describe('Account', () => {
       const now = new Date();
       expect(() =>
         Account.reconstitute('some-id', {
-          auth0Sub: VALID_AUTH0_SUB,
           name: VALID_NAME,
           email: VALID_EMAIL,
           cpf: '000.000.000-00',
@@ -219,7 +204,6 @@ describe('Account', () => {
   describe('getters', () => {
     it('should expose all public getters', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -241,7 +225,6 @@ describe('Account', () => {
   describe('updateName()', () => {
     it('should update name and collect AccountUpdated event', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -264,7 +247,6 @@ describe('Account', () => {
 
     it('should throw if new name is invalid', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -277,7 +259,6 @@ describe('Account', () => {
   describe('updatePhone()', () => {
     it('should update phone and collect AccountUpdated event', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -299,7 +280,6 @@ describe('Account', () => {
 
     it('should throw if phone is invalid', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -312,7 +292,6 @@ describe('Account', () => {
   describe('updateBirthDate()', () => {
     it('should update birthDate and collect AccountUpdated event', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -335,7 +314,6 @@ describe('Account', () => {
 
     it('should throw if birthDate is in the future', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -350,7 +328,6 @@ describe('Account', () => {
   describe('updatePhoto()', () => {
     it('should update photoUrl and collect AccountUpdated event', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -373,7 +350,6 @@ describe('Account', () => {
 
     it('should throw if URL is invalid', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -386,7 +362,6 @@ describe('Account', () => {
   describe('multiple updates', () => {
     it('should collect multiple AccountUpdated events', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,
@@ -404,7 +379,6 @@ describe('Account', () => {
 
     it('should update updatedAt on each update', () => {
       const account = Account.create({
-        auth0Sub: VALID_AUTH0_SUB,
         name: VALID_NAME,
         email: VALID_EMAIL,
         cpf: VALID_CPF,

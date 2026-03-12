@@ -12,7 +12,6 @@ export interface FindAccountByFieldInput {
 
 export interface FindAccountByFieldOutput {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -56,7 +55,6 @@ export class FindAccountByFieldQuery implements UseCase<
   private toOutput(account: Account): FindAccountByFieldOutput {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

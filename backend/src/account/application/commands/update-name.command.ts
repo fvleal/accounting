@@ -10,13 +10,12 @@ import {
 
 export interface UpdateNameInput {
   accountId: string;
-  auth0Sub: string;
+  email: string;
   name: string;
 }
 
 export interface UpdateNameOutput {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -40,7 +39,7 @@ export class UpdateNameCommand implements UseCase<
   async execute(input: UpdateNameInput): Promise<UpdateNameOutput> {
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
-    if (account.auth0Sub !== input.auth0Sub)
+    if (account.email !== input.email)
       throw new AccountOwnershipError(input.accountId);
 
     account.updateName(input.name);
@@ -52,7 +51,6 @@ export class UpdateNameCommand implements UseCase<
   private toOutput(account: Account): UpdateNameOutput {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

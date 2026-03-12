@@ -9,7 +9,6 @@ import {
 } from '../../domain/exceptions';
 
 export interface CreateAccountInput {
-  auth0Sub: string;
   email: string;
   name: string;
   cpf: string;
@@ -17,7 +16,6 @@ export interface CreateAccountInput {
 
 export interface CreateAccountOutput {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -39,22 +37,18 @@ export class CreateAccountCommand implements UseCase<
   ) {}
 
   async execute(input: CreateAccountInput): Promise<CreateAccountOutput> {
-    // Idempotency: return existing if auth0Sub already linked
-    const existing = await this.accountRepo.findByAuth0Sub(input.auth0Sub);
-    if (existing) {
-      return this.toOutput(existing);
+    // Idempotency: return existing if email already linked
+    const byEmail = await this.accountRepo.findByEmail(input.email);
+    if (byEmail) {
+      return this.toOutput(byEmail);
     }
 
-    // Uniqueness checks
-    const byEmail = await this.accountRepo.findByEmail(input.email);
-    if (byEmail) throw new DuplicateEmailError(input.email);
-
+    // Uniqueness check
     const byCpf = await this.accountRepo.findByCpf(input.cpf);
     if (byCpf) throw new DuplicateCpfError(input.cpf);
 
     // Create and persist
     const account = Account.create({
-      auth0Sub: input.auth0Sub,
       name: input.name,
       email: input.email,
       cpf: input.cpf,
@@ -68,7 +62,6 @@ export class CreateAccountCommand implements UseCase<
   private toOutput(account: Account): CreateAccountOutput {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

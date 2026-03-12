@@ -60,7 +60,6 @@ export class AccountController {
     @Body() dto: CreateAccountDto,
   ): Promise<AccountResponseDto> {
     const output = await this.createAccount.execute({
-      auth0Sub: user.sub,
       email: user.email,
       name: dto.name,
       cpf: dto.cpf,
@@ -71,7 +70,7 @@ export class AccountController {
   @Get('me')
   @Roles('read:own-account')
   async me(@CurrentUser() user: JwtPayload): Promise<AccountResponseDto> {
-    const output = await this.getMe.execute({ auth0Sub: user.sub });
+    const output = await this.getMe.execute({ email: user.email });
     return AccountResponseDto.fromOutput(output);
   }
 
@@ -136,7 +135,7 @@ export class AccountController {
     if (dto.name) {
       lastOutput = await this.updateName.execute({
         accountId: id,
-        auth0Sub: user.sub,
+        email: user.email,
         name: dto.name,
       });
     }
@@ -144,7 +143,7 @@ export class AccountController {
     if (dto.birthDate) {
       lastOutput = await this.updateBirthDate.execute({
         accountId: id,
-        auth0Sub: user.sub,
+        email: user.email,
         birthDate: new Date(dto.birthDate),
       });
     }
@@ -162,7 +161,7 @@ export class AccountController {
   ): Promise<AccountResponseDto> {
     const output = await this.updatePhone.execute({
       accountId: id,
-      auth0Sub: user.sub,
+      email: user.email,
       phone: dto.phone,
     });
     return AccountResponseDto.fromOutput(output);
@@ -194,7 +193,7 @@ export class AccountController {
   ): Promise<AccountResponseDto> {
     const output = await this.uploadPhoto.execute({
       accountId: id,
-      auth0Sub: user.sub,
+      email: user.email,
       buffer: file.buffer,
       contentType: file.mimetype,
     });

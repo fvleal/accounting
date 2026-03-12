@@ -6,12 +6,11 @@ import { ACCOUNT_REPOSITORY_PORT } from '../../infrastructure/account-infrastruc
 import { AccountNotFoundError } from '../../domain/exceptions';
 
 export interface GetMeInput {
-  auth0Sub: string;
+  email: string;
 }
 
 export interface GetMeOutput {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -30,15 +29,14 @@ export class GetMeQuery implements UseCase<GetMeInput, GetMeOutput> {
   ) {}
 
   async execute(input: GetMeInput): Promise<GetMeOutput> {
-    const account = await this.accountRepo.findByAuth0Sub(input.auth0Sub);
-    if (!account) throw new AccountNotFoundError(input.auth0Sub);
+    const account = await this.accountRepo.findByEmail(input.email);
+    if (!account) throw new AccountNotFoundError(input.email);
     return this.toOutput(account);
   }
 
   private toOutput(account: Account): GetMeOutput {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,

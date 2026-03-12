@@ -7,7 +7,6 @@ import {
   AccountOwnershipError,
 } from '../../domain/exceptions';
 
-const VALID_AUTH0_SUB = 'auth0|abc123';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 const VALID_CPF = '529.982.247-25';
@@ -18,14 +17,12 @@ function createMockRepo(): AccountRepositoryPort {
     findById: vi.fn(),
     findByEmail: vi.fn(),
     findByCpf: vi.fn(),
-    findByAuth0Sub: vi.fn(),
     findAll: vi.fn(),
   } as unknown as AccountRepositoryPort;
 }
 
 function createTestAccount(): Account {
   return Account.create({
-    auth0Sub: VALID_AUTH0_SUB,
     name: VALID_NAME,
     email: VALID_EMAIL,
     cpf: VALID_CPF,
@@ -47,7 +44,7 @@ describe('UpdateNameCommand', () => {
 
     const output = await command.execute({
       accountId: account.id,
-      auth0Sub: VALID_AUTH0_SUB,
+      email: VALID_EMAIL,
       name: 'Jane Smith',
     });
 
@@ -63,21 +60,21 @@ describe('UpdateNameCommand', () => {
     await expect(
       command.execute({
         accountId: 'nonexistent-id',
-        auth0Sub: VALID_AUTH0_SUB,
+        email: VALID_EMAIL,
         name: 'Jane Smith',
       }),
     ).rejects.toThrow(AccountNotFoundError);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
 
-  it('should throw AccountOwnershipError when auth0Sub does not match', async () => {
+  it('should throw AccountOwnershipError when email does not match', async () => {
     const account = createTestAccount();
     (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(account);
 
     await expect(
       command.execute({
         accountId: account.id,
-        auth0Sub: 'auth0|other-user',
+        email: 'other@example.com',
         name: 'Jane Smith',
       }),
     ).rejects.toThrow(AccountOwnershipError);

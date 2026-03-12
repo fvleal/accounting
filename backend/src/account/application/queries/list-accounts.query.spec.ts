@@ -3,7 +3,6 @@ import { ListAccountsQuery } from './list-accounts.query';
 import { AccountRepositoryPort } from '../../domain/ports';
 import { Account } from '../../domain/entities/account.entity';
 
-const VALID_AUTH0_SUB = 'auth0|abc123';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 const VALID_CPF = '529.982.247-25';
@@ -15,14 +14,12 @@ function createMockRepo(): AccountRepositoryPort {
     findById: vi.fn(),
     findByEmail: vi.fn(),
     findByCpf: vi.fn(),
-    findByAuth0Sub: vi.fn(),
     findAll: vi.fn(),
   } as unknown as AccountRepositoryPort;
 }
 
 function createTestAccount(): Account {
   return Account.create({
-    auth0Sub: VALID_AUTH0_SUB,
     name: VALID_NAME,
     email: VALID_EMAIL,
     cpf: VALID_CPF,
@@ -49,7 +46,6 @@ describe('ListAccountsQuery', () => {
 
     expect(output.data).toHaveLength(1);
     expect(output.data[0].id).toBe(account.id);
-    expect(output.data[0].auth0Sub).toBe(VALID_AUTH0_SUB);
     expect(output.data[0].name).toBe(VALID_NAME);
     expect(output.data[0].email).toBe(VALID_EMAIL);
     expect(output.total).toBe(1);

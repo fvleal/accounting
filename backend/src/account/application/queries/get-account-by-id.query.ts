@@ -11,7 +11,6 @@ export interface GetAccountByIdInput {
 
 export interface GetAccountByIdOutput {
   id: string;
-  auth0Sub: string;
   name: string;
   email: string;
   cpf: string;
@@ -41,7 +40,6 @@ export class GetAccountByIdQuery implements UseCase<
   private toOutput(account: Account): GetAccountByIdOutput {
     return {
       id: account.id,
-      auth0Sub: account.auth0Sub,
       name: account.name,
       email: account.email,
       cpf: account.cpf,
