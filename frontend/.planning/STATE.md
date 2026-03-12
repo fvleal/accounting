@@ -5,7 +5,7 @@ milestone_name: milestone
 status: executing
 stopped_at: Completed 04-02-PLAN.md
 last_updated: "2026-03-12T14:06:28.215Z"
-last_activity: 2026-03-12 — Completed 04-02 (Birthday editing and modal wiring)
+last_activity: 2026-03-12 — Completed quick-1 (API route fix and phone field)
 progress:
   total_phases: 5
   completed_phases: 4
@@ -89,6 +89,7 @@ Recent decisions affecting current work:
 - [Phase 04]: disableEscapeKeyDown + backdropClick guard prevents accidental modal dismissal
 - [Phase 04]: Modal state as union type ('name' | 'birthday' | null) for scalable modal management
 - [Phase 04]: Phone field removed from ProfilePage render (phone editing deferred to v2)
+- [Quick-1]: All API routes migrated from /:id to /accounts/me; phone field with EditPhoneModal added to ProfilePage
 
 ### Pending Todos
 
@@ -98,10 +99,10 @@ Recent decisions affecting current work:
 
 - [Phase 1]: Auth0 dashboard access confirmed — Authorization Code grant enabled, login flow works
 - [Phase 5]: Backend FormData field name and file size limit for photo upload endpoint not yet confirmed — must check NestJS controller before building upload mutation
-- [Phase 4]: Brazilian phone format expected by backend not yet confirmed — must verify before building EditPhoneModal
+- [Phase 4]: Brazilian phone format confirmed and implemented — regex /^[1-9]{2}[2-9]\d{7,8}$/ matches backend SendPhoneCodeDto
 
 ## Session Continuity
 
 Last session: 2026-03-12T14:06:26.801Z
-Stopped at: Completed 04-02-PLAN.md
+Stopped at: Completed quick-1-PLAN.md
 Resume file: None
