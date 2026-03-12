@@ -5,7 +5,7 @@ milestone_name: milestone
 status: executing
 stopped_at: Completed 04-02-PLAN.md
 last_updated: "2026-03-12T14:06:28.215Z"
-last_activity: 2026-03-12 — Completed quick-1 (API route fix and phone field)
+last_activity: 2026-03-12 - Completed quick-1 (API route fix and phone field)
 progress:
   total_phases: 5
   completed_phases: 4
@@ -100,6 +100,12 @@ Recent decisions affecting current work:
 - [Phase 1]: Auth0 dashboard access confirmed — Authorization Code grant enabled, login flow works
 - [Phase 5]: Backend FormData field name and file size limit for photo upload endpoint not yet confirmed — must check NestJS controller before building upload mutation
 - [Phase 4]: Brazilian phone format confirmed and implemented — regex /^[1-9]{2}[2-9]\d{7,8}$/ matches backend SendPhoneCodeDto
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | corrija as rotas da api, analise o backend e implemente o campo telefone com sendCode que atualiza telefone como status nao verificado | 2026-03-12 | dfae9d8 | [1-corrija-as-rotas-da-api-analise-o-backen](./quick/1-corrija-as-rotas-da-api-analise-o-backen/) |
 
 ## Session Continuity
 
