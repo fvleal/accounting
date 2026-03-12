@@ -8,6 +8,7 @@ import {
   Button,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { birthDateRules } from '../../utils/validation';
 import { useUpdateAccount } from '../../hooks/useUpdateAccount';
 import type { Account } from '../../types/account';
 
@@ -62,11 +63,14 @@ export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalP
         <Controller
           name="birthDate"
           control={control}
-          render={({ field }) => (
+          rules={birthDateRules}
+          render={({ field, fieldState }) => (
             <TextField
               {...field}
               label="Data de nascimento"
               type="date"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
               slotProps={{ inputLabel: { shrink: true } }}
               fullWidth
               sx={{ mt: 1 }}
