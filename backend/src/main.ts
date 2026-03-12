@@ -1,13 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger } from 'nestjs-pino';
 import { Logger as NestLogger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { setupApp } from './setup-app.js';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create(AppModule);
 
-  app.useLogger(app.get(Logger));
   setupApp(app);
   app.enableShutdownHooks();
 

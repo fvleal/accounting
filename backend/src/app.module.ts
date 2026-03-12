@@ -5,7 +5,6 @@ import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
 import { AuthModule } from './shared/infrastructure/auth/index.js';
 import { AccountInterfaceModule } from './account/interface/account-interface.module.js';
 import { HealthModule } from './shared/infrastructure/health/health.module.js';
-import { LoggerModule } from './shared/infrastructure/logger/logger.module.js';
 import { envValidationSchema } from './shared/infrastructure/config/env.validation.js';
 
 @Module({
@@ -14,7 +13,6 @@ import { envValidationSchema } from './shared/infrastructure/config/env.validati
       validationSchema: envValidationSchema,
       validationOptions: { abortEarly: false },
     }),
-    LoggerModule,
     EventEmitterModule.forRoot(),
     PrismaModule,
     AuthModule,
