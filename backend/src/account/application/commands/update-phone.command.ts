@@ -3,14 +3,10 @@ import { UseCase } from '../../../shared/application/use-case.base';
 import { Account } from '../../domain/entities/account.entity';
 import type { AccountRepositoryPort } from '../../domain/ports';
 import { ACCOUNT_REPOSITORY_PORT } from '../../infrastructure/account-infrastructure.module';
-import {
-  AccountNotFoundError,
-  AccountOwnershipError,
-} from '../../domain/exceptions';
+import { AccountNotFoundError } from '../../domain/exceptions';
 
 export interface UpdatePhoneInput {
   accountId: string;
-  email: string;
   phone: string;
 }
 
@@ -39,8 +35,6 @@ export class UpdatePhoneCommand implements UseCase<
   async execute(input: UpdatePhoneInput): Promise<UpdatePhoneOutput> {
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
-    if (account.email !== input.email)
-      throw new AccountOwnershipError(input.accountId);
 
     account.updatePhone(input.phone);
     await this.accountRepo.save(account);

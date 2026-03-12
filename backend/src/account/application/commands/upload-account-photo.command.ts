@@ -6,14 +6,10 @@ import {
   ACCOUNT_REPOSITORY_PORT,
   STORAGE_PORT,
 } from '../../infrastructure/account-infrastructure.module';
-import {
-  AccountNotFoundError,
-  AccountOwnershipError,
-} from '../../domain/exceptions';
+import { AccountNotFoundError } from '../../domain/exceptions';
 
 export interface UploadAccountPhotoInput {
   accountId: string;
-  email: string;
   buffer: Buffer;
   contentType: string;
 }
@@ -47,8 +43,6 @@ export class UploadAccountPhotoCommand implements UseCase<
   ): Promise<UploadAccountPhotoOutput> {
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
-    if (account.email !== input.email)
-      throw new AccountOwnershipError(input.accountId);
 
     if (account.photoUrl) {
       const oldKey = `accounts/${account.id}/photo`;

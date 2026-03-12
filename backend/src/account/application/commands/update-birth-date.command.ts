@@ -3,14 +3,10 @@ import { UseCase } from '../../../shared/application/use-case.base';
 import { Account } from '../../domain/entities/account.entity';
 import type { AccountRepositoryPort } from '../../domain/ports';
 import { ACCOUNT_REPOSITORY_PORT } from '../../infrastructure/account-infrastructure.module';
-import {
-  AccountNotFoundError,
-  AccountOwnershipError,
-} from '../../domain/exceptions';
+import { AccountNotFoundError } from '../../domain/exceptions';
 
 export interface UpdateBirthDateInput {
   accountId: string;
-  email: string;
   birthDate: Date;
 }
 
@@ -39,8 +35,6 @@ export class UpdateBirthDateCommand implements UseCase<
   async execute(input: UpdateBirthDateInput): Promise<UpdateBirthDateOutput> {
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
-    if (account.email !== input.email)
-      throw new AccountOwnershipError(input.accountId);
 
     account.updateBirthDate(input.birthDate);
     await this.accountRepo.save(account);

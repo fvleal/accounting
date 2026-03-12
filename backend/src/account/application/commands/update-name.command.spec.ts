@@ -2,10 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UpdateNameCommand } from './update-name.command';
 import { AccountRepositoryPort } from '../../domain/ports';
 import { Account } from '../../domain/entities/account.entity';
-import {
-  AccountNotFoundError,
-  AccountOwnershipError,
-} from '../../domain/exceptions';
+import { AccountNotFoundError } from '../../domain/exceptions';
 
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
@@ -44,7 +41,6 @@ describe('UpdateNameCommand', () => {
 
     const output = await command.execute({
       accountId: account.id,
-      email: VALID_EMAIL,
       name: 'Jane Smith',
     });
 
@@ -60,24 +56,10 @@ describe('UpdateNameCommand', () => {
     await expect(
       command.execute({
         accountId: 'nonexistent-id',
-        email: VALID_EMAIL,
         name: 'Jane Smith',
       }),
     ).rejects.toThrow(AccountNotFoundError);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
 
-  it('should throw AccountOwnershipError when email does not match', async () => {
-    const account = createTestAccount();
-    (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(account);
-
-    await expect(
-      command.execute({
-        accountId: account.id,
-        email: 'other@example.com',
-        name: 'Jane Smith',
-      }),
-    ).rejects.toThrow(AccountOwnershipError);
-    expect(mockRepo.save).not.toHaveBeenCalled();
-  });
 });

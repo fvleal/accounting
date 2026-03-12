@@ -2,10 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UploadAccountPhotoCommand } from './upload-account-photo.command';
 import { AccountRepositoryPort, StoragePort } from '../../domain/ports';
 import { Account } from '../../domain/entities/account.entity';
-import {
-  AccountNotFoundError,
-  AccountOwnershipError,
-} from '../../domain/exceptions';
+import { AccountNotFoundError } from '../../domain/exceptions';
 
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
@@ -56,7 +53,6 @@ describe('UploadAccountPhotoCommand', () => {
 
     const output = await command.execute({
       accountId: account.id,
-      email: VALID_EMAIL,
       buffer,
       contentType,
     });
@@ -74,27 +70,10 @@ describe('UploadAccountPhotoCommand', () => {
     await expect(
       command.execute({
         accountId: 'nonexistent-id',
-        email: VALID_EMAIL,
         buffer: Buffer.from('data'),
         contentType: 'image/jpeg',
       }),
     ).rejects.toThrow(AccountNotFoundError);
-    expect(mockStorage.upload).not.toHaveBeenCalled();
-    expect(mockRepo.save).not.toHaveBeenCalled();
-  });
-
-  it('should throw AccountOwnershipError when email does not match', async () => {
-    const account = createTestAccount();
-    (mockRepo.findById as ReturnType<typeof vi.fn>).mockResolvedValue(account);
-
-    await expect(
-      command.execute({
-        accountId: account.id,
-        email: 'other@example.com',
-        buffer: Buffer.from('data'),
-        contentType: 'image/jpeg',
-      }),
-    ).rejects.toThrow(AccountOwnershipError);
     expect(mockStorage.upload).not.toHaveBeenCalled();
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
@@ -108,7 +87,7 @@ describe('UploadAccountPhotoCommand', () => {
 
     await command.execute({
       accountId: account.id,
-      email: VALID_EMAIL,
+
       buffer,
       contentType,
     });
@@ -129,7 +108,7 @@ describe('UploadAccountPhotoCommand', () => {
 
     await command.execute({
       accountId: account.id,
-      email: VALID_EMAIL,
+
       buffer,
       contentType,
     });
@@ -146,7 +125,7 @@ describe('UploadAccountPhotoCommand', () => {
 
     await command.execute({
       accountId: account.id,
-      email: VALID_EMAIL,
+
       buffer,
       contentType,
     });
