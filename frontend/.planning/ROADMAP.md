@@ -87,11 +87,12 @@ Plans:
   2. User sees a preview of the exact cropped result before the upload is sent to the server
   3. After confirming, the profile page shows the new photo without requiring a manual refresh
   4. Selecting a new photo for crop never causes a canvas security error (crop operates on local File/Blob only)
-**Plans:** 3 plans
+**Plans:** 4 plans
 Plans:
 - [x] 05-01-PLAN.md — Install react-easy-crop, getCroppedImg canvas utility, useUploadPhoto mutation hook with tests
 - [x] 05-02-PLAN.md — CropPhotoModal component, ProfileHero camera badge + file picker, ProfilePage wiring
-- [ ] 05-03-PLAN.md — Gap closure: replace react-easy-crop with react-image-crop, fix backdrop-click dismissal, fix object URL lifecycle
+- [x] 05-03-PLAN.md — Gap closure: replace react-easy-crop with react-image-crop, fix backdrop-click dismissal, fix object URL lifecycle
+- [ ] 05-04-PLAN.md — Gap closure: fix camera badge styling, initial crop rectangle, prevent file picker during crop
 
 ## Progress
 
@@ -104,4 +105,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Onboarding | 1/2 | In progress | - |
 | 3. Profile Display | 0/2 | Not started | - |
 | 4. Profile Editing | 2/2 | Complete   | 2026-03-12 |
-| 5. Photo Upload | 2/3 | Gap closure | - |
+| 5. Photo Upload | 3/4 | Gap closure | - |
