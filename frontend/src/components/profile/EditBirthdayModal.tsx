@@ -1,12 +1,12 @@
 import { useForm, Controller } from 'react-hook-form';
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
   Button,
 } from '@mui/material';
+import { AppDialog } from '../common/AppDialog';
 import { useSnackbar } from 'notistack';
 import { birthDateRules } from '../../utils/validation';
 import { useUpdateAccount } from '../../hooks/useUpdateAccount';
@@ -51,13 +51,7 @@ export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalP
   };
 
   return (
-    <Dialog
-      open
-      disableEscapeKeyDown
-      onClose={(_e, reason) => {
-        if (reason === 'backdropClick') return;
-      }}
-    >
+    <AppDialog open onClose={onClose}>
       <DialogTitle>Editar data de nascimento</DialogTitle>
       <DialogContent>
         <Controller
@@ -90,6 +84,6 @@ export function EditBirthdayModal({ open, onClose, account }: EditBirthdayModalP
           Salvar
         </Button>
       </DialogActions>
-    </Dialog>
+    </AppDialog>
   );
 }

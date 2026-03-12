@@ -1,12 +1,12 @@
 import { useForm, Controller } from 'react-hook-form';
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
   Button,
 } from '@mui/material';
+import { AppDialog } from '../common/AppDialog';
 import { useSnackbar } from 'notistack';
 import { useSendPhoneCode } from '../../hooks/useSendPhoneCode';
 import type { Account } from '../../types/account';
@@ -51,13 +51,7 @@ export function EditPhoneModal({ open, onClose, account }: EditPhoneModalProps) 
   };
 
   return (
-    <Dialog
-      open
-      disableEscapeKeyDown
-      onClose={(_e, reason) => {
-        if (reason === 'backdropClick') return;
-      }}
-    >
+    <AppDialog open onClose={onClose}>
       <DialogTitle>Editar telefone</DialogTitle>
       <DialogContent>
         <Controller
@@ -97,6 +91,6 @@ export function EditPhoneModal({ open, onClose, account }: EditPhoneModalProps) 
           Salvar
         </Button>
       </DialogActions>
-    </Dialog>
+    </AppDialog>
   );
 }
