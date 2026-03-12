@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 05-photo-upload
 source: [05-01-SUMMARY.md, 05-02-SUMMARY.md, 05-03-SUMMARY.md]
 started: 2026-03-12T19:00:00Z
@@ -66,13 +66,18 @@ skipped: 0
 
 ## Gaps
 
-- truth: "Camera badge positioned at bottom-right of avatar with appropriate styling"
+- truth: "Camera badge positioned centered at bottom of avatar with dark tones"
   status: failed
   reason: "User reported: passa, mas eu quero que fique centralizado em baixo com tons escuros, em vez de azul"
   severity: cosmetic
   test: 1
-  artifacts: []
-  missing: []
+  root_cause: "Badge uses anchorOrigin bottom-right with bgcolor primary.main (blue #1976d2). User wants bottom-center with dark gray tones."
+  artifacts:
+    - path: "src/components/profile/ProfileHero.tsx"
+      issue: "Line 59: anchorOrigin bottom-right instead of bottom-center. Line 66: bgcolor primary.main (blue) instead of dark gray."
+  missing:
+    - "Change anchorOrigin to { vertical: 'bottom', horizontal: 'center' } (line 59)"
+    - "Change bgcolor from 'primary.main' to dark gray like 'grey.800' or '#424242' (line 66)"
   debug_session: ""
 
 - truth: "Crop modal opens with 3x4 rectangle already visible and resizable, no need to click to create it"
@@ -80,24 +85,41 @@ skipped: 0
   reason: "User reported: abre a imagem corretamente, mas que quero que ja fique fixo mostrando o retangulo 3x4 em vez de ter que clicar criando o retangulo. Ele já se apresenta visível e eu posso redimensioná-lo"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "CropPhotoModal initializes crop state as undefined (line 29: useState<Crop>()). react-image-crop requires an initial Crop object to show the rectangle on load. Without it, user must click+drag to create one."
+  artifacts:
+    - path: "src/components/profile/CropPhotoModal.tsx"
+      issue: "Line 29: const [crop, setCrop] = useState<Crop>() — undefined initial crop means no rectangle visible on open"
+  missing:
+    - "Use react-image-crop's centerCrop + makeAspectCrop utilities to compute a centered 3:4 crop on image load (onLoad callback on img element)"
+    - "Set both crop and completedCrop in the onLoad handler so Salvar works immediately"
   debug_session: ""
 
-- truth: "Selecting oversized file shows error toast and does NOT open crop modal"
+- truth: "Selecting oversized file shows error toast and does NOT close crop modal"
   status: failed
   reason: "User reported: passa e esta fechando o crop modal"
   severity: major
   test: 4
-  artifacts: []
-  missing: []
+  root_cause: "ProfileHero validation logic correctly returns early without calling onFileSelect. But the crop modal is already open from a previous valid selection. The file input onChange fires, the error toast shows, but the native file dialog closing may trigger a blur/focus event that interacts with the AppDialog backdrop-click guard. Likely the file picker dialog overlay triggers a backdropClick event on the MUI Dialog when it closes."
+  artifacts:
+    - path: "src/components/profile/ProfileHero.tsx"
+      issue: "File input onChange validation is correct, but user can trigger file picker while crop modal is open by clicking avatar area"
+    - path: "src/components/common/AppDialog.tsx"
+      issue: "Backdrop-click guard blocks clicks but native file dialog closing may trigger unexpected close events"
+  missing:
+    - "Investigate if file picker closing triggers MUI Dialog close. May need to prevent file input from being clickable while crop modal is open, or guard the close handler more carefully"
   debug_session: ""
 
-- truth: "Selecting invalid file type shows error toast and does NOT open crop modal"
+- truth: "Selecting invalid file type shows error toast and does NOT close crop modal"
   status: failed
   reason: "User reported: passa, mostra o erro, mas está fechando o dialog"
   severity: major
   test: 3
-  artifacts: []
-  missing: []
+  root_cause: "Same root cause as test 4 — file picker dialog closing while crop modal is open may trigger an unintended close event on the crop modal"
+  artifacts:
+    - path: "src/components/profile/ProfileHero.tsx"
+      issue: "Same as test 4"
+    - path: "src/components/common/AppDialog.tsx"
+      issue: "Same as test 4"
+  missing:
+    - "Same fix as test 4 — prevent file selection interaction while crop modal is open"
   debug_session: ""
