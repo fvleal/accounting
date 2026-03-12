@@ -55,34 +55,36 @@ export function Header() {
           {companyName}
         </Typography>
 
-        <Box>
-          <IconButton onClick={handleOpen} size="small" aria-label="menu do usuario">
-            <Avatar
-              src={account?.photoUrl ?? undefined}
-              alt={account?.name || 'Usuario'}
-              sx={{ width: 32, height: 32, bgcolor: getAvatarColor(account?.name || '') }}
-            >
-              {getInitials(account?.name || '')}
-            </Avatar>
-          </IconButton>
+        {account && (
+          <Box>
+            <IconButton onClick={handleOpen} size="small" aria-label="menu do usuario">
+              <Avatar
+                src={account.photoUrl ?? undefined}
+                alt={account.name}
+                sx={{ width: 32, height: 32, bgcolor: getAvatarColor(account.name) }}
+              >
+                {getInitials(account.name)}
+              </Avatar>
+            </IconButton>
 
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <Box sx={{ px: 2, py: 1 }}>
-              <Typography variant="subtitle2">{account?.name}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {account?.email}
-              </Typography>
-            </Box>
-            <Divider />
-            <MenuItem onClick={handleLogout}>Sair</MenuItem>
-          </Menu>
-        </Box>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+              <Box sx={{ px: 2, py: 1 }}>
+                <Typography variant="subtitle2">{account.name}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {account.email}
+                </Typography>
+              </Box>
+              <Divider />
+              <MenuItem onClick={handleLogout}>Sair</MenuItem>
+            </Menu>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );
