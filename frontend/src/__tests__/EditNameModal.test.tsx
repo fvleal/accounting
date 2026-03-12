@@ -212,6 +212,26 @@ describe('EditNameModal', () => {
     expect(mockOnClose).not.toHaveBeenCalled();
   });
 
+  it('shows validation error for name longer than 200 characters on blur', async () => {
+    const user = userEvent.setup();
+    const longNameAccount = {
+      ...testAccount,
+      name: 'Abcdef '.repeat(34).trim(), // 237 chars, exceeds 200
+    };
+    render(
+      <EditNameModal open={true} onClose={mockOnClose} account={longNameAccount} />,
+      { wrapper: createWrapper() },
+    );
+
+    const nameField = screen.getByLabelText(/nome completo/i);
+    await user.click(nameField);
+    await user.tab(); // trigger blur
+
+    await waitFor(() => {
+      expect(screen.getByText('Nome deve ter no maximo 200 caracteres')).toBeInTheDocument();
+    });
+  });
+
   it('Save and Cancel buttons disabled when isPending', () => {
     mockUseUpdateAccount.mockReturnValue({
       mutate: mockMutate,

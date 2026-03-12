@@ -171,6 +171,22 @@ describe('EditBirthdayModal', () => {
     expect(mockOnClose).not.toHaveBeenCalled();
   });
 
+  it('shows validation error when submitting empty birthday', async () => {
+    const user = userEvent.setup();
+    const nullBirthdayAccount = { ...testAccount, birthDate: null };
+    render(
+      <EditBirthdayModal open={true} onClose={mockOnClose} account={nullBirthdayAccount} />,
+      { wrapper: createWrapper() },
+    );
+
+    await user.click(screen.getByRole('button', { name: /salvar/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Data de nascimento e obrigatoria')).toBeInTheDocument();
+    });
+    expect(mockMutate).not.toHaveBeenCalled();
+  });
+
   it('Save and Cancel buttons disabled when isPending', () => {
     mockUseUpdateAccount.mockReturnValue({
       mutate: mockMutate,
