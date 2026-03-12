@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getCroppedImg } from '../utils/cropImage';
-import type { Area } from 'react-easy-crop';
+import type { PixelCrop } from 'react-image-crop';
 
 // Mock canvas context
 const mockCtx = {
@@ -66,7 +66,7 @@ beforeEach(() => {
   } as unknown as typeof OriginalImage;
 });
 
-const cropArea: Area = { x: 10, y: 20, width: 200, height: 150 };
+const cropArea: PixelCrop = { x: 10, y: 20, width: 200, height: 150, unit: 'px' };
 
 describe('getCroppedImg', () => {
   it('returns a Blob of type image/jpeg', async () => {

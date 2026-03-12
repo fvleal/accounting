@@ -1,31 +1,33 @@
-import { Dialog, type DialogProps } from '@mui/material';
+import { Dialog, type DialogProps } from "@mui/material";
 
-interface AppDialogProps extends Omit<DialogProps, 'onClose'> {
+interface AppDialogProps extends Omit<DialogProps, "onClose"> {
   onClose: () => void;
 }
 
 export function AppDialog({
   onClose,
   children,
-  PaperProps,
+  slotProps,
   ...rest
 }: AppDialogProps) {
   return (
     <Dialog
       {...rest}
-      disableEscapeKeyDown
-      onClose={(_e, reason) => {
+      onClose={(_event, reason) => {
         if (reason === 'backdropClick') return;
         onClose();
       }}
-      PaperProps={{
-        ...PaperProps,
-        sx: {
-          minWidth: 360,
-          maxWidth: 480,
-          width: '100%',
-          minHeight: 120,
-          ...PaperProps?.sx,
+      slotProps={{
+        ...slotProps,
+        paper: {
+          ...slotProps?.paper,
+          sx: {
+            minWidth: 360,
+            maxWidth: 480,
+            width: "100%",
+            minHeight: 120,
+            ...(slotProps?.paper as { sx?: object })?.sx,
+          },
         },
       }}
     >
