@@ -5,17 +5,22 @@ interface ProfileFieldRowProps {
   label: string;
   value: string | null;
   editable?: boolean;
+  onClick?: () => void;
 }
 
-export function ProfileFieldRow({ label, value, editable }: ProfileFieldRowProps) {
+export function ProfileFieldRow({ label, value, editable, onClick }: ProfileFieldRowProps) {
   return (
     <Box
+      onClick={editable ? onClick : undefined}
+      role={editable ? 'button' : undefined}
+      tabIndex={editable ? 0 : undefined}
       sx={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         py: 1.5,
         px: 2,
+        cursor: editable ? 'pointer' : 'default',
       }}
     >
       <Typography variant="body2" color="text.secondary">
