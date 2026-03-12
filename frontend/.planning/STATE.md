@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-03-12T18:09:33.718Z"
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-03-12T18:33:49.162Z"
 last_activity: 2026-03-12 — Completed 05-02 (Photo upload UI)
 progress:
   total_phases: 5
   completed_phases: 5
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 13
+  completed_plans: 13
 ---
 
 ---
@@ -77,6 +77,7 @@ Progress: [██████████] 100%
 
 *Updated after each plan completion*
 | Phase 05 P03 | 4min | 2 tasks | 8 files |
+| Phase 05 P04 | 2min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -115,6 +116,8 @@ Recent decisions affecting current work:
 - [Phase 05]: Replaced react-easy-crop with react-image-crop for user-adjustable crop rectangle
 - [Phase 05]: Object URL lifecycle managed in parent (ProfilePage) not in consuming modal
 - [Phase 05]: AppDialog universally blocks backdrop-click dismissal for all modals
+- [Phase 05]: Replaced MUI Badge with absolute-positioned Box for bottom-center camera icon placement
+- [Phase 05]: Pre-set completedCrop as pixel values on image load so Salvar works without user drag
 
 ### Pending Todos
 
@@ -138,6 +141,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-12T18:05:17.409Z
-Stopped at: Completed 05-03-PLAN.md
+Last session: 2026-03-12T18:33:49.158Z
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None
