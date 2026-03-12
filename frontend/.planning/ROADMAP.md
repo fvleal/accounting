@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
 - [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
 - [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
-- [x] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates (completed 2026-03-12)
+- [x] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates (completed 2026-03-12)
 - [ ] **Phase 5: Photo Upload** - Client-side 3x4 crop and S3-backed photo upload
 
 ## Phase Details
@@ -87,7 +87,10 @@ Plans:
   2. User sees a preview of the exact cropped result before the upload is sent to the server
   3. After confirming, the profile page shows the new photo without requiring a manual refresh
   4. Selecting a new photo for crop never causes a canvas security error (crop operates on local File/Blob only)
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 05-01-PLAN.md — Install react-easy-crop, getCroppedImg canvas utility, useUploadPhoto mutation hook with tests
+- [ ] 05-02-PLAN.md — CropPhotoModal component, ProfileHero camera badge + file picker, ProfilePage wiring
 
 ## Progress
 
@@ -100,4 +103,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Onboarding | 1/2 | In progress | - |
 | 3. Profile Display | 0/2 | Not started | - |
 | 4. Profile Editing | 2/2 | Complete   | 2026-03-12 |
-| 5. Photo Upload | 0/TBD | Not started | - |
+| 5. Photo Upload | 0/2 | Not started | - |
