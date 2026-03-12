@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import ReactCrop from 'react-image-crop';
+import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
 import type { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import {
@@ -31,6 +31,30 @@ export function CropPhotoModal({
   const imgRef = useRef<HTMLImageElement>(null);
   const mutation = useUploadPhoto();
   const { enqueueSnackbar } = useSnackbar();
+
+  const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth, naturalHeight } = e.currentTarget;
+    const initialCrop = centerCrop(
+      makeAspectCrop(
+        { unit: '%', width: 70 },
+        3 / 4,
+        naturalWidth,
+        naturalHeight,
+      ),
+      naturalWidth,
+      naturalHeight,
+    );
+    setCrop(initialCrop);
+    // Convert percentage crop to pixel crop so Salvar works immediately
+    const pixelCrop: PixelCrop = {
+      unit: 'px',
+      x: (initialCrop.x / 100) * naturalWidth,
+      y: (initialCrop.y / 100) * naturalHeight,
+      width: (initialCrop.width / 100) * naturalWidth,
+      height: (initialCrop.height / 100) * naturalHeight,
+    };
+    setCompletedCrop(pixelCrop);
+  };
 
   if (!open) return null;
 
@@ -66,6 +90,7 @@ export function CropPhotoModal({
             ref={imgRef}
             src={imageUrl}
             alt="Crop preview"
+            onLoad={onImageLoad}
             style={{ maxHeight: 400, width: '100%', objectFit: 'contain' }}
           />
         </ReactCrop>
