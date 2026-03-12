@@ -105,15 +105,16 @@ export class AccountController {
     };
   }
 
-  @Patch(':id')
+  @Patch('me')
   async update(
     @CurrentUser() user: JwtPayload,
-    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateAccountDto,
   ): Promise<AccountResponseDto> {
     if (!dto.name && !dto.birthDate) {
       throw new BadRequestException('At least one field must be provided');
     }
+
+    const me = await this.getMe.execute({ email: user.email });
 
     let lastOutput:
       | {
@@ -131,16 +132,14 @@ export class AccountController {
 
     if (dto.name) {
       lastOutput = await this.updateName.execute({
-        accountId: id,
-        email: user.email,
+        accountId: me.id,
         name: dto.name,
       });
     }
 
     if (dto.birthDate) {
       lastOutput = await this.updateBirthDate.execute({
-        accountId: id,
-        email: user.email,
+        accountId: me.id,
         birthDate: new Date(dto.birthDate),
       });
     }
@@ -148,37 +147,32 @@ export class AccountController {
     return AccountResponseDto.fromOutput(lastOutput!);
   }
 
-  @Post(':id/phone/send-code')
+  @Post('me/phone/send-code')
   @HttpCode(200)
   async sendPhoneCode(
     @CurrentUser() user: JwtPayload,
-    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: SendPhoneCodeDto,
   ): Promise<AccountResponseDto> {
+    const me = await this.getMe.execute({ email: user.email });
     const output = await this.updatePhone.execute({
-      accountId: id,
-      email: user.email,
+      accountId: me.id,
       phone: dto.phone,
     });
     return AccountResponseDto.fromOutput(output);
   }
 
-  @Post(':id/phone/verify')
-  verifyPhone(
-    @Param('id', ParseUUIDPipe) _id: string,
-    @Body() _dto: VerifyPhoneDto,
-  ): never {
+  @Post('me/phone/verify')
+  verifyPhone(@Body() _dto: VerifyPhoneDto): never {
     throw new HttpException(
       'Phone verification not yet implemented',
       HttpStatus.NOT_IMPLEMENTED,
     );
   }
 
-  @Post(':id/photo')
+  @Post('me/photo')
   @UseInterceptors(FileInterceptor('file'))
   async uploadAccountPhoto(
     @CurrentUser() user: JwtPayload,
-    @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 })],
@@ -186,9 +180,9 @@ export class AccountController {
     )
     file: Express.Multer.File,
   ): Promise<AccountResponseDto> {
+    const me = await this.getMe.execute({ email: user.email });
     const output = await this.uploadPhoto.execute({
-      accountId: id,
-      email: user.email,
+      accountId: me.id,
       buffer: file.buffer,
       contentType: file.mimetype,
     });
