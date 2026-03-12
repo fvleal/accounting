@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17
+    image: postgres:15
     environment:
       POSTGRES_USER: account_user
       POSTGRES_PASSWORD: account_pass
@@ -48,15 +48,6 @@ services:
       - ./docker/loki-config.yml:/etc/loki/config.yaml
       - lokidata:/loki
     command: -config.file=/etc/loki/config.yaml
-
-  promtail:
-    image: grafana/promtail:3.4.2
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker/promtail-config.yml:/etc/promtail/config.yaml
-    command: -config.file=/etc/promtail/config.yaml
-    depends_on:
-      - loki
 
   grafana:
     image: grafana/grafana:11.5.2
