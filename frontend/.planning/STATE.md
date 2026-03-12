@@ -3,30 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-12T00:11:14.671Z"
-last_activity: 2026-03-11 — Completed 01-03 (Auth routing gap closure)
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-12T00:45:00Z"
+last_activity: 2026-03-12 — Completed 02-01 (Account guard and routing)
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
----
-
----
-gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: executing
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-03-11T23:40:00Z"
-last_activity: 2026-03-11 — Completed 01-03 (Auth routing gap closure)
-progress:
-  total_phases: 5
-  completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  total_plans: 5
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State
@@ -36,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-11)
 
 **Core value:** O usuario consegue manter suas informacoes pessoais atualizadas de forma simples e rapida
-**Current focus:** Phase 1 — Foundation (COMPLETE, gap closure done)
+**Current focus:** Phase 2 — Onboarding (in progress)
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation) - COMPLETE
-Plan: 3 of 3 in current phase (all complete)
-Status: Phase 1 complete (including gap closure), ready for Phase 2
-Last activity: 2026-03-11 — Completed 01-03 (Auth routing gap closure)
+Phase: 2 of 5 (Onboarding)
+Plan: 1 of 2 in current phase (02-01 complete)
+Status: 02-01 complete, ready for 02-02
+Last activity: 2026-03-12 — Completed 02-01 (Account guard and routing)
 
-Progress: [██████████] 100%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 4min
-- Total execution time: 12min
+- Total execution time: 15min
 
 **By Phase:**
 
@@ -61,9 +46,10 @@ Progress: [██████████] 100%
 | Phase 01 P01 | 4min | 3 tasks | 15 files |
 | Phase 01 P02 | 3min | 3 tasks | 11 files |
 | Phase 01 P03 | 5min | 2 tasks | 3 files |
+| Phase 02 P01 | 3min | 2 tasks | 11 files |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 3min, 5min
+- Last 5 plans: 4min, 3min, 5min, 3min
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -85,6 +71,10 @@ Recent decisions affecting current work:
 - [Phase 01]: Container maxWidth="sm" for centered content matching Google Personal Info layout
 - [Phase 01]: Replaced withAuthenticationRequired HOC with custom useAuth0() guard to preserve branded /login page
 - [Phase 01]: ProtectedRoute renders Outlet as layout route wrapper instead of accepting component prop
+- [Phase 02]: AccountGuard as separate layout route wrapper from ProtectedRoute -- auth vs account concerns separated
+- [Phase 02]: 404 from GET /accounts/me treated as "no account" signal, retry disabled for 404
+- [Phase 02]: /onboarding route outside AccountGuard but inside ProtectedRoute to avoid redirect loop
+- [Phase 02]: Vitest setupFiles configured with @testing-library/jest-dom for DOM matchers
 
 ### Pending Todos
 
@@ -98,6 +88,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-12T00:11:14.667Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-onboarding/02-CONTEXT.md
+Last session: 2026-03-12T00:45:00Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: .planning/phases/02-onboarding/02-02-PLAN.md

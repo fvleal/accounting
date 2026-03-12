@@ -47,7 +47,7 @@ Plans:
   4. An existing user with an Account record is never shown the onboarding screen
 **Plans:** 2 plans
 Plans:
-- [ ] 02-01-PLAN.md — AccountGuard route wrapper, useAccount hook, accounts API, CPF utilities, routing skeleton
+- [x] 02-01-PLAN.md — AccountGuard route wrapper, useAccount hook, accounts API, CPF utilities, routing skeleton
 - [ ] 02-02-PLAN.md — Onboarding form with name + CPF validation, account creation mutation, cache seeding
 
 ### Phase 3: Profile Display
@@ -91,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-11 |
-| 2. Onboarding | 0/2 | Not started | - |
+| 2. Onboarding | 1/2 | In progress | - |
 | 3. Profile Display | 0/TBD | Not started | - |
 | 4. Profile Editing | 0/TBD | Not started | - |
 | 5. Photo Upload | 0/TBD | Not started | - |
