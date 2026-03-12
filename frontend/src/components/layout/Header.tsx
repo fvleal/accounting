@@ -11,10 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import { getInitials } from '../../utils/initials';
+import { useAccount } from '../../hooks/useAccount';
+import { getAvatarColor, getInitials } from '../../utils/initials';
 
 export function Header() {
-  const { user, logout } = useAuth0();
+  const { logout } = useAuth0();
+  const { data: account } = useAccount();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -45,11 +47,11 @@ export function Header() {
         <Box>
           <IconButton onClick={handleOpen} size="small" aria-label="menu do usuario">
             <Avatar
-              src={user?.picture}
-              alt={user?.name || 'Usuario'}
-              sx={{ width: 32, height: 32 }}
+              src={account?.photoUrl ?? undefined}
+              alt={account?.name || 'Usuario'}
+              sx={{ width: 32, height: 32, bgcolor: getAvatarColor(account?.name || '') }}
             >
-              {getInitials(user?.name || '')}
+              {getInitials(account?.name || '')}
             </Avatar>
           </IconButton>
 
@@ -61,9 +63,9 @@ export function Header() {
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           >
             <Box sx={{ px: 2, py: 1 }}>
-              <Typography variant="subtitle2">{user?.name}</Typography>
+              <Typography variant="subtitle2">{account?.name}</Typography>
               <Typography variant="caption" color="text.secondary">
-                {user?.email}
+                {account?.email}
               </Typography>
             </Box>
             <Divider />
