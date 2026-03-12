@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
 - [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
 - [x] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates (completed 2026-03-12)
-- [x] **Phase 5: Photo Upload** - Client-side 3x4 crop and S3-backed photo upload (completed 2026-03-12)
+- [ ] **Phase 5: Photo Upload** - Client-side 3x4 crop and S3-backed photo upload (UAT gap closure in progress)
 
 ## Phase Details
 
@@ -83,14 +83,15 @@ Plans:
 **Depends on**: Phase 4
 **Requirements**: PHOT-01, PHOT-02
 **Success Criteria** (what must be TRUE):
-  1. User can select an image file, see a draggable/zoomable 3x4 crop interface, and adjust the crop before confirming
+  1. User can select an image file, see a user-adjustable 3x4 crop rectangle, and adjust the crop before confirming
   2. User sees a preview of the exact cropped result before the upload is sent to the server
   3. After confirming, the profile page shows the new photo without requiring a manual refresh
   4. Selecting a new photo for crop never causes a canvas security error (crop operates on local File/Blob only)
-**Plans:** 2/2 plans complete
+**Plans:** 3 plans
 Plans:
-- [ ] 05-01-PLAN.md — Install react-easy-crop, getCroppedImg canvas utility, useUploadPhoto mutation hook with tests
-- [ ] 05-02-PLAN.md — CropPhotoModal component, ProfileHero camera badge + file picker, ProfilePage wiring
+- [x] 05-01-PLAN.md — Install react-easy-crop, getCroppedImg canvas utility, useUploadPhoto mutation hook with tests
+- [x] 05-02-PLAN.md — CropPhotoModal component, ProfileHero camera badge + file picker, ProfilePage wiring
+- [ ] 05-03-PLAN.md — Gap closure: replace react-easy-crop with react-image-crop, fix backdrop-click dismissal, fix object URL lifecycle
 
 ## Progress
 
@@ -103,4 +104,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Onboarding | 1/2 | In progress | - |
 | 3. Profile Display | 0/2 | Not started | - |
 | 4. Profile Editing | 2/2 | Complete   | 2026-03-12 |
-| 5. Photo Upload | 2/2 | Complete   | 2026-03-12 |
+| 5. Photo Upload | 2/3 | Gap closure | - |
