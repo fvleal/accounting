@@ -7,14 +7,16 @@ import { ProfileFieldRow } from '../components/profile/ProfileFieldRow';
 import { ProfileSkeleton } from '../components/profile/ProfileSkeleton';
 import { EditNameModal } from '../components/profile/EditNameModal';
 import { EditBirthdayModal } from '../components/profile/EditBirthdayModal';
+import { EditPhoneModal } from '../components/profile/EditPhoneModal';
 import { maskCpf } from '../utils/cpf';
 import { formatBirthday } from '../utils/date';
+import { formatPhone } from '../utils/phone';
 
 export function ProfilePage() {
   const { data: account, isLoading, isError } = useAccount();
   const { enqueueSnackbar } = useSnackbar();
   const errorShownRef = useRef(false);
-  const [editModal, setEditModal] = useState<'name' | 'birthday' | null>(null);
+  const [editModal, setEditModal] = useState<'name' | 'birthday' | 'phone' | null>(null);
 
   useEffect(() => {
     if (isError && !errorShownRef.current) {
@@ -54,6 +56,12 @@ export function ProfilePage() {
           editable
           onClick={() => setEditModal('birthday')}
         />
+        <ProfileFieldRow
+          label="Telefone"
+          value={account.phone ? formatPhone(account.phone) : undefined}
+          editable
+          onClick={() => setEditModal('phone')}
+        />
       </ProfileSectionCard>
       {account && (
         <>
@@ -64,6 +72,11 @@ export function ProfilePage() {
           />
           <EditBirthdayModal
             open={editModal === 'birthday'}
+            onClose={() => setEditModal(null)}
+            account={account}
+          />
+          <EditPhoneModal
+            open={editModal === 'phone'}
             onClose={() => setEditModal(null)}
             account={account}
           />

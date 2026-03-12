@@ -35,6 +35,10 @@ vi.mock('../components/profile/EditBirthdayModal', () => ({
   EditBirthdayModal: ({ open }: { open: boolean }) =>
     open ? <div data-testid="edit-birthday-modal" /> : null,
 }));
+vi.mock('../components/profile/EditPhoneModal', () => ({
+  EditPhoneModal: ({ open }: { open: boolean }) =>
+    open ? <div data-testid="edit-phone-modal" /> : null,
+}));
 
 const fullAccount: Account = {
   id: '1',
@@ -95,14 +99,14 @@ describe('ProfilePage', () => {
       // Formatted birthday
       expect(screen.getByText('15/01/2000')).toBeInTheDocument();
 
-      // Phone field removed (deferred to v2)
-      expect(screen.queryByText('(11) 98765-4321')).not.toBeInTheDocument();
-      expect(screen.queryByText('Telefone')).not.toBeInTheDocument();
+      // Phone field displayed with formatted value
+      expect(screen.getByText('Telefone')).toBeInTheDocument();
+      expect(screen.getByText('(11) 98765-4321')).toBeInTheDocument();
     });
 
     it('displays Nao informado for null fields', () => {
       mockUseAccount.mockReturnValue({
-        data: { ...fullAccount, birthDate: null },
+        data: { ...fullAccount, birthDate: null, phone: null },
         isLoading: false,
         isError: false,
         error: null,
@@ -110,9 +114,9 @@ describe('ProfilePage', () => {
 
       render(<ProfilePage />, { wrapper: createWrapper() });
 
-      // Only birthDate can be null now (phone row removed)
+      // birthDate and phone can be null
       const naoInformado = screen.getAllByText('Nao informado');
-      expect(naoInformado).toHaveLength(1);
+      expect(naoInformado).toHaveLength(2);
     });
 
     it('shows chevron for editable rows only', () => {
@@ -126,8 +130,8 @@ describe('ProfilePage', () => {
       render(<ProfilePage />, { wrapper: createWrapper() });
 
       const chevrons = screen.getAllByTestId('chevron-icon');
-      // Nome, Nascimento = 2 editable rows (phone removed)
-      expect(chevrons).toHaveLength(2);
+      // Nome, Nascimento, Telefone = 3 editable rows
+      expect(chevrons).toHaveLength(3);
     });
   });
 
@@ -245,6 +249,27 @@ describe('ProfilePage', () => {
       await user.click(birthdayRow);
 
       expect(screen.getByTestId('edit-birthday-modal')).toBeInTheDocument();
+    });
+
+    it('clicking phone row opens EditPhoneModal', async () => {
+      const user = userEvent.setup();
+      mockUseAccount.mockReturnValue({
+        data: fullAccount,
+        isLoading: false,
+        isError: false,
+        error: null,
+      });
+
+      render(<ProfilePage />, { wrapper: createWrapper() });
+
+      // EditPhoneModal should not be visible initially
+      expect(screen.queryByTestId('edit-phone-modal')).not.toBeInTheDocument();
+
+      // Click the phone row
+      const phoneRow = screen.getByText('Telefone').closest('[role="button"]')!;
+      await user.click(phoneRow);
+
+      expect(screen.getByTestId('edit-phone-modal')).toBeInTheDocument();
     });
   });
 });
