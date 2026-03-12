@@ -40,31 +40,6 @@ services:
       echo 'Bucket account is now public (download)';
       "
 
-  loki:
-    image: grafana/loki:3.4.2
-    ports:
-      - "3100:3100"
-    volumes:
-      - ./docker/loki-config.yml:/etc/loki/config.yaml
-      - lokidata:/loki
-    command: -config.file=/etc/loki/config.yaml
-
-  grafana:
-    image: grafana/grafana:11.5.2
-    ports:
-      - "3200:3000"
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
-    volumes:
-      - ./docker/grafana/provisioning:/etc/grafana/provisioning
-      - grafanadata:/var/lib/grafana
-    depends_on:
-      - loki
-
 volumes:
   pgdata:
   miniodata:
-  lokidata:
-  grafanadata:
