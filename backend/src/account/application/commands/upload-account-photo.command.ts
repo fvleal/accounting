@@ -44,12 +44,15 @@ export class UploadAccountPhotoCommand implements UseCase<
     const account = await this.accountRepo.findById(input.accountId);
     if (!account) throw new AccountNotFoundError(input.accountId);
 
+    // TODO: Replace hardcoded companyId once Company entity is created and Account has a company relation
+    const companyId = 'default';
+
     if (account.photoUrl) {
-      const oldKey = `accounts/${account.id}/photo`;
+      const oldKey = `companies/${companyId}/accounts/${account.id}/photo`;
       await this.storage.delete(oldKey);
     }
 
-    const key = `accounts/${account.id}/photo`;
+    const key = `companies/${companyId}/accounts/${account.id}/photo`;
     const url = await this.storage.upload(key, input.buffer, input.contentType);
 
     account.updatePhoto(url);

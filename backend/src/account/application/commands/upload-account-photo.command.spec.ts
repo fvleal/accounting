@@ -7,7 +7,7 @@ import { AccountNotFoundError } from '../../domain/exceptions';
 const VALID_EMAIL = 'john@example.com';
 const VALID_NAME = 'John Doe';
 const VALID_CPF = '529.982.247-25';
-const PHOTO_URL = 'https://s3.example.com/accounts/some-id/photo';
+const PHOTO_URL = 'https://s3.example.com/companies/default/accounts/some-id/photo';
 
 function createMockRepo(): AccountRepositoryPort {
   return {
@@ -93,7 +93,7 @@ describe('UploadAccountPhotoCommand', () => {
     });
 
     expect(mockStorage.delete).toHaveBeenCalledWith(
-      `accounts/${account.id}/photo`,
+      `companies/default/accounts/${account.id}/photo`,
     );
     expect(mockStorage.delete).toHaveBeenCalledBefore(
       mockStorage.upload as ReturnType<typeof vi.fn>,
@@ -131,7 +131,7 @@ describe('UploadAccountPhotoCommand', () => {
     });
 
     expect(mockStorage.upload).toHaveBeenCalledWith(
-      `accounts/${account.id}/photo`,
+      `companies/default/accounts/${account.id}/photo`,
       buffer,
       contentType,
     );

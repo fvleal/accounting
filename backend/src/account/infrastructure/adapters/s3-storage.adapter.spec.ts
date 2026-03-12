@@ -7,7 +7,7 @@ function createMockConfigService() {
     S3_REGION: 'us-east-1',
     S3_ACCESS_KEY: 'minioadmin',
     S3_SECRET_KEY: 'minioadmin',
-    S3_BUCKET: 'account-photos',
+    S3_BUCKET: 'account',
   };
   return {
     get: vi.fn((key: string) => config[key]),
@@ -39,7 +39,7 @@ describe('S3StorageAdapter', () => {
       expect(command).toBeInstanceOf(PutObjectCommand);
       expect(command.input).toEqual(
         expect.objectContaining({
-          Bucket: 'account-photos',
+          Bucket: 'account',
           Key: 'photos/test.jpg',
           Body: buffer,
           ContentType: 'image/jpeg',
@@ -51,7 +51,7 @@ describe('S3StorageAdapter', () => {
       const buffer = Buffer.from('test-content');
       const url = await adapter.upload('photos/test.jpg', buffer, 'image/jpeg');
 
-      expect(url).toBe('http://localhost:9000/account-photos/photos/test.jpg');
+      expect(url).toBe('http://localhost:9000/account/photos/test.jpg');
     });
   });
 
@@ -64,7 +64,7 @@ describe('S3StorageAdapter', () => {
       expect(command).toBeInstanceOf(DeleteObjectCommand);
       expect(command.input).toEqual(
         expect.objectContaining({
-          Bucket: 'account-photos',
+          Bucket: 'account',
           Key: 'photos/test.jpg',
         }),
       );
