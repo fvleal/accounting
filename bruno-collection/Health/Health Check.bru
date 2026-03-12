@@ -1,0 +1,19 @@
+meta {
+  name: Health Check
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/health
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+}

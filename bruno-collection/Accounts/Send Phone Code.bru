@@ -1,0 +1,21 @@
+meta {
+  name: Send Phone Code
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/accounts/me/phone/send-code
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "phone": "11987654321"
+  }
+}
