@@ -14,6 +14,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useAccount } from '../../hooks/useAccount';
 import { getAvatarColor, getInitials } from '../../utils/initials';
 
+const logoUrl = import.meta.env.VITE_LOGO_URL;
+
 export function Header() {
   const { logout } = useAuth0();
   const { data: account } = useAccount();
@@ -36,6 +38,14 @@ export function Header() {
   return (
     <AppBar position="sticky" color="default" elevation={1}>
       <Toolbar>
+        {logoUrl && (
+          <Box
+            component="img"
+            src={logoUrl}
+            alt="Logo"
+            sx={{ height: 32, mr: 1.5 }}
+          />
+        )}
         <Typography
           variant="h6"
           component="div"
