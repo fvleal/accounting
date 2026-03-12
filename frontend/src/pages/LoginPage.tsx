@@ -4,6 +4,7 @@ import { Navigate } from "react-router";
 import illustrationProfile from "../assets/illustration-profile.svg";
 
 const companyName = import.meta.env.VITE_COMPANY_NAME || "Minha Conta";
+const logoUrl = import.meta.env.VITE_LOGO_URL;
 
 export function LoginPage() {
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
@@ -28,9 +29,9 @@ export function LoginPage() {
     >
       <Box
         component="img"
-        src={illustrationProfile}
+        src={logoUrl}
         alt="Gerencie sua conta"
-        sx={{ width: 300, maxWidth: "90%", mb: 5 }}
+        sx={{ width: 150, maxWidth: "80%", mb: 5 }}
       />
       <Typography
         variant="h4"
