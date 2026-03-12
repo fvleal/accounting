@@ -648,11 +648,11 @@ describe('Accounts API (e2e)', () => {
     it('GET /health returns 200 without auth', async () => {
       const res = await request(app.getHttpServer()).get('/health').expect(200);
 
-      // Terminus response is wrapped by ResponseEnvelopeInterceptor
-      const health = res.body.data;
+      // Controller uses @Res() so response is not wrapped by interceptor
+      const health = res.body;
       expect(health.status).toBe('ok');
-      expect(health.info.database).toBeDefined();
-      expect(health.info.storage).toBeDefined();
+      expect(health.services.database).toBeDefined();
+      expect(health.services.storage).toBeDefined();
     });
   });
 

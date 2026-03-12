@@ -62,5 +62,4 @@ describe('UpdateBirthDateCommand', () => {
     ).rejects.toThrow(AccountNotFoundError);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
-
 });

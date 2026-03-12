@@ -3,29 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-03-12T18:33:49.162Z"
-last_activity: 2026-03-12 — Completed 05-02 (Photo upload UI)
+stopped_at: All phases and plans complete
+last_updated: "2026-03-12T23:00:00.000Z"
+last_activity: 2026-03-12 — Reconciled non-GSD changes (12 commits)
 progress:
   total_phases: 5
   completed_phases: 5
   total_plans: 13
   completed_plans: 13
----
-
----
-gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: executing
-stopped_at: "Completed 05-02-PLAN.md"
-last_updated: "2026-03-12T17:29:55.331Z"
-last_activity: 2026-03-12 — Completed 05-01 (Photo upload utilities)
-progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 11
-  completed_plans: 11
   percent: 100
 ---
 
@@ -36,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-11)
 
 **Core value:** O usuario consegue manter suas informacoes pessoais atualizadas de forma simples e rapida
-**Current focus:** Phase 5 - Photo Upload
+**Current focus:** v1.0 complete — all phases delivered
 
 ## Current Position
 
-Phase: 5 of 5 (Photo Upload)
-Plan: 2 of 2 in current phase (05-02 complete)
-Status: All phases complete
-Last activity: 2026-03-12 — Completed 05-02 (Photo upload UI)
+Phase: 5 of 5 (all complete)
+Plan: All 13 plans complete across 5 phases
+Status: All phases complete + 12 non-GSD commits reconciled
+Last activity: 2026-03-12 — Reconciled manual changes
 
 Progress: [██████████] 100%
 
@@ -118,10 +103,21 @@ Recent decisions affecting current work:
 - [Phase 05]: AppDialog universally blocks backdrop-click dismissal for all modals
 - [Phase 05]: Replaced MUI Badge with absolute-positioned Box for bottom-center camera icon placement
 - [Phase 05]: Pre-set completedCrop as pixel values on image load so Salvar works without user drag
+- [Manual]: VITE_COMPANY_SLUG and VITE_COMPANY_NAME env vars for multi-tenant branding
+- [Manual]: env.ts validation module with Zod-like runtime checks on startup (env.test.ts)
+- [Manual]: Loading screen with pulsing company logo on dark backdrop
+- [Manual]: Company logo on login page via VITE_LOGO_URL
+- [Manual]: Onboarding redesigned — no card, corporate tone, responsive
+- [Manual]: Login page redesigned with improved styling
+- [Manual]: Responsive mobile layout with field spacing and footer
+- [Manual]: Portuguese accents corrected across UI
+- [Manual]: Modals reset state on open, phone mask added, birthDate input format fixed
+- [Manual]: AccountErrorFallback component for account-level error display
+- [Manual]: tsconfig.test.json added for separate test TypeScript config
 
 ### Pending Todos
 
-- Layout/styling improvements needed (user reported layout looks bad after login)
+- (resolved) Layout/styling improvements — addressed by commits be45eb6, 40a25af, d57dc3f
 
 ### Blockers/Concerns
 
@@ -141,8 +137,26 @@ Recent decisions affecting current work:
 | 6 | aceite imagens de qualquer tamanho e formato, comprima para JPEG under 5MB | 2026-03-12 | 9928abe | [6-aceite-imagens-de-qualquer-tamanho-e-for](./quick/6-aceite-imagens-de-qualquer-tamanho-e-for/) |
 | 7 | adicione uma logo no header que vem de uma URL env var | 2026-03-12 | 91607bc | [7-adicione-uma-logo-no-header-que-vem-de-u](./quick/7-adicione-uma-logo-no-header-que-vem-de-u/) |
 
+#### Non-GSD Manual Changes (reconciled 2026-03-12)
+
+| # | Commit | Description |
+|---|--------|-------------|
+| 8 | 5b11332 | add COMPANY_SLUG/COMPANY_NAME env vars, update profile UI and account types |
+| 9 | 294744b | correct crop scaling and bust photo cache after upload |
+| 10 | 8e81337 | reset modals on open, add phone mask, fix birthDate input format |
+| 11 | 40a25af | redesign login page and improve edit modals |
+| 12 | 4e5de95 | hide user avatar in header when no account exists |
+| 13 | c9f1353 | add proper Portuguese accents, disable save when form unchanged |
+| 14 | be45eb6 | responsive mobile layout, field spacing, and footer |
+| 15 | d57dc3f | redesign onboarding page without card, corporate tone |
+| 16 | fdd205a | prevent premature validation in edit dialogs |
+| 17 | 027bdf3 | use company logo from env var on login page |
+| 18 | c521c63 | loading screen with pulsing logo on dark backdrop |
+| 19 | 633d149 | add env validation and improve account error messages |
+
 ## Session Continuity
 
-Last session: 2026-03-12T19:15:00.000Z
-Stopped at: Completed quick-7
+Last session: 2026-03-12T23:00:00.000Z
+Stopped at: Reconciled 12 non-GSD manual commits into tracking
 Resume file: None
+Note: All v1.0 phases complete. 12 manual commits (5b11332..633d149) made outside GSD have been recorded above. Decisions from those changes added below.

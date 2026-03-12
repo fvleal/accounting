@@ -1,5 +1,3 @@
-import { Test } from '@nestjs/testing';
-import { TerminusModule, HealthCheckService } from '@nestjs/terminus';
 import { HealthController } from './health.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
@@ -23,94 +21,100 @@ function createMockPrismaService() {
   };
 }
 
+function createMockResponse() {
+  const res: any = {};
+  res.status = vi.fn().mockReturnValue(res);
+  res.json = vi.fn().mockReturnValue(res);
+  return res;
+}
+
 describe('HealthController', () => {
   let controller: HealthController;
   let mockPrisma: ReturnType<typeof createMockPrismaService>;
   let mockSend: ReturnType<typeof vi.fn>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.clearAllMocks();
     mockPrisma = createMockPrismaService();
     const configService = createMockConfigService();
 
-    const module = await Test.createTestingModule({
-      imports: [TerminusModule],
-      controllers: [HealthController],
-      providers: [
-        { provide: PrismaService, useValue: mockPrisma },
-        { provide: ConfigService, useValue: configService },
-      ],
-    }).compile();
+    controller = new HealthController(
+      mockPrisma as unknown as PrismaService,
+      configService as unknown as ConfigService,
+    );
 
-    controller = module.get<HealthController>(HealthController);
-
-    // Replace the internal s3Client.send with a mock
     mockSend = vi.fn().mockResolvedValue({});
     (controller as any).s3Client.send = mockSend;
   });
 
-  it('returns status ok with database up and storage up when all services healthy', async () => {
-    const result = await controller.check();
+  it('returns 200 with all services up', async () => {
+    const res = createMockResponse();
+    await controller.check(res);
 
-    expect(result).toEqual({
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
       status: 'ok',
-      info: {
-        database: { status: 'up' },
-        storage: { status: 'up' },
-      },
-      error: {},
-      details: {
+      services: {
         database: { status: 'up' },
         storage: { status: 'up' },
       },
     });
   });
 
-  it('returns 503 with database down when database throws', async () => {
-    mockPrisma.$queryRaw.mockRejectedValue(new Error('Connection refused'));
+  it('returns 503 with database down and extracts error code from Prisma error', async () => {
+    const prismaError = new Error('Invalid `prisma.$queryRaw()` invocation:');
+    (prismaError as any).code = 'ECONNREFUSED';
+    mockPrisma.$queryRaw.mockRejectedValue(prismaError);
+    const res = createMockResponse();
+    await controller.check(res);
 
-    try {
-      await controller.check();
-      // Should not reach here
-      expect.unreachable('Expected ServiceUnavailableException');
-    } catch (error: any) {
-      const response = error.getResponse();
-      expect(response.status).toBe('error');
-      expect(response.error.database.status).toBe('down');
-      expect(response.error.database.message).toBe('Connection refused');
-      expect(response.info.storage.status).toBe('up');
-    }
+    expect(res.status).toHaveBeenCalledWith(503);
+    const body = res.json.mock.calls[0][0];
+    expect(body.status).toBe('error');
+    expect(body.services.database).toEqual({
+      status: 'down',
+      message: 'ECONNREFUSED',
+    });
+    expect(body.services.storage).toEqual({ status: 'up' });
   });
 
-  it('returns 503 with storage down when S3 throws', async () => {
-    mockSend.mockRejectedValue(new Error('Connection refused'));
+  it('returns 503 with storage down and extracts AggregateError messages', async () => {
+    const aggError = new AggregateError([
+      new Error('connect ECONNREFUSED ::1:9000'),
+      new Error('connect ECONNREFUSED 127.0.0.1:9000'),
+    ]);
+    (aggError as any).code = 'ECONNREFUSED';
+    mockSend.mockRejectedValue(aggError);
+    const res = createMockResponse();
+    await controller.check(res);
 
-    try {
-      await controller.check();
-      expect.unreachable('Expected ServiceUnavailableException');
-    } catch (error: any) {
-      const response = error.getResponse();
-      expect(response.status).toBe('error');
-      expect(response.error.storage.status).toBe('down');
-      expect(response.error.storage.message).toBe('Connection refused');
-      expect(response.info.database.status).toBe('up');
-    }
+    expect(res.status).toHaveBeenCalledWith(503);
+    const body = res.json.mock.calls[0][0];
+    expect(body.status).toBe('error');
+    expect(body.services.storage).toEqual({
+      status: 'down',
+      message:
+        'connect ECONNREFUSED ::1:9000; connect ECONNREFUSED 127.0.0.1:9000',
+    });
+    expect(body.services.database).toEqual({ status: 'up' });
   });
 
-  it('returns 503 with both down when database and S3 both throw', async () => {
+  it('returns 503 with both services down and error messages', async () => {
     mockPrisma.$queryRaw.mockRejectedValue(new Error('Connection refused'));
-    mockSend.mockRejectedValue(new Error('Connection refused'));
+    mockSend.mockRejectedValue(new Error('ECONNREFUSED'));
+    const res = createMockResponse();
+    await controller.check(res);
 
-    try {
-      await controller.check();
-      expect.unreachable('Expected ServiceUnavailableException');
-    } catch (error: any) {
-      const response = error.getResponse();
-      expect(response.status).toBe('error');
-      expect(response.error.database.status).toBe('down');
-      expect(response.error.database.message).toBe('Connection refused');
-      expect(response.error.storage.status).toBe('down');
-      expect(response.error.storage.message).toBe('Connection refused');
-    }
+    expect(res.status).toHaveBeenCalledWith(503);
+    const body = res.json.mock.calls[0][0];
+    expect(body.status).toBe('error');
+    expect(body.services.database).toEqual({
+      status: 'down',
+      message: 'Connection refused',
+    });
+    expect(body.services.storage).toEqual({
+      status: 'down',
+      message: 'ECONNREFUSED',
+    });
   });
 });

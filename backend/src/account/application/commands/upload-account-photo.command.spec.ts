@@ -45,7 +45,9 @@ describe('UploadAccountPhotoCommand', () => {
   beforeEach(() => {
     mockRepo = createMockRepo();
     mockStorage = createMockStorage();
-    mockConfig = { get: vi.fn().mockReturnValue(COMPANY_SLUG) } as unknown as ConfigService;
+    mockConfig = {
+      get: vi.fn().mockReturnValue(COMPANY_SLUG),
+    } as unknown as ConfigService;
     command = new UploadAccountPhotoCommand(mockRepo, mockStorage, mockConfig);
   });
 

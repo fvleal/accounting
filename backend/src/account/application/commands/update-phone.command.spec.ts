@@ -62,5 +62,4 @@ describe('UpdatePhoneCommand', () => {
     ).rejects.toThrow(AccountNotFoundError);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
-
 });

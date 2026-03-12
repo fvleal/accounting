@@ -13,8 +13,8 @@ Five phases that follow the natural dependency chain of this SPA. Auth must be s
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
-- [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
-- [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
+- [x] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow (completed 2026-03-12)
+- [x] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system (completed 2026-03-12)
 - [x] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates (completed 2026-03-12)
 - [x] **Phase 5: Photo Upload** - Client-side 3x4 crop and S3-backed photo upload (UAT gap closure in progress) (completed 2026-03-12)
 
@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md — Scaffold Vite project, MUI dark theme + Tailwind CSS layers, Vitest setup
 - [x] 01-02-PLAN.md — Auth0 login/logout, API client, layout shell, pages, routing
-- [ ] 01-03-PLAN.md — Gap closure: fix routing redirect, Auth0 error handling, dashboard config
+- [x] 01-03-PLAN.md — Gap closure: fix routing redirect, Auth0 error handling, dashboard config
 
 ### Phase 2: Onboarding
 **Goal**: New users (authenticated in Auth0 but without a backend Account record) are caught and routed to account creation; existing users proceed to the profile page
@@ -45,10 +45,10 @@ Plans:
   2. User can submit full name and CPF on the onboarding form and is redirected to the profile page on success
   3. Submitting an invalid CPF shows an inline validation error without navigating away
   4. An existing user with an Account record is never shown the onboarding screen
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 02-01-PLAN.md — AccountGuard route wrapper, useAccount hook, accounts API, CPF utilities, routing skeleton
-- [ ] 02-02-PLAN.md — Onboarding form with name + CPF validation, account creation mutation, cache seeding
+- [x] 02-02-PLAN.md — Onboarding form with name + CPF validation, account creation mutation, cache seeding
 
 ### Phase 3: Profile Display
 **Goal**: Authenticated users with an Account record can view all their personal information in a Google Personal Info-style read-only layout
@@ -59,10 +59,10 @@ Plans:
   2. User sees skeleton placeholder cards while profile data is loading, with no blank-page flash
   3. User without a profile photo sees an avatar displaying their initials instead of a broken image
   4. User sees a toast notification confirming success or describing the error after any profile action
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
-- [ ] 03-01-PLAN.md — Formatting utilities (initials, phone, date) with TDD tests, extract getInitials from Header
-- [ ] 03-02-PLAN.md — ProfilePage with hero, section cards, field rows, skeleton loading, error toast, routing
+- [x] 03-01-PLAN.md — Formatting utilities (initials, phone, date) with TDD tests, extract getInitials from Header
+- [x] 03-02-PLAN.md — ProfilePage with hero, section cards, field rows, skeleton loading, error toast, routing
 
 ### Phase 4: Profile Editing
 **Goal**: Users can edit their mutable profile fields (name, date of birth) via modals with form validation, and see updated values immediately after saving. Phone editing deferred to v2.
@@ -75,8 +75,8 @@ Plans:
   4. If a save fails (network error, validation rejection), the modal stays open with an error toast and the user can retry or cancel
 **Plans:** 2/2 plans complete
 Plans:
-- [ ] 04-01-PLAN.md — Shared validation extraction, useUpdateAccount hook, ProfileFieldRow onClick, EditNameModal with tests
-- [ ] 04-02-PLAN.md — EditBirthdayModal with tests, ProfilePage modal wiring, phone field removal, test updates
+- [x] 04-01-PLAN.md — Shared validation extraction, useUpdateAccount hook, ProfileFieldRow onClick, EditNameModal with tests
+- [x] 04-02-PLAN.md — EditBirthdayModal with tests, ProfilePage modal wiring, phone field removal, test updates
 
 ### Phase 5: Photo Upload
 **Goal**: Users can upload a profile photo by selecting a file, cropping it client-side to 3x4 ratio, previewing the result, and confirming the upload
@@ -92,7 +92,7 @@ Plans:
 - [x] 05-01-PLAN.md — Install react-easy-crop, getCroppedImg canvas utility, useUploadPhoto mutation hook with tests
 - [x] 05-02-PLAN.md — CropPhotoModal component, ProfileHero camera badge + file picker, ProfilePage wiring
 - [x] 05-03-PLAN.md — Gap closure: replace react-easy-crop with react-image-crop, fix backdrop-click dismissal, fix object URL lifecycle
-- [ ] 05-04-PLAN.md — Gap closure: fix camera badge styling, initial crop rectangle, prevent file picker during crop
+- [x] 05-04-PLAN.md — Gap closure: fix camera badge styling, initial crop rectangle, prevent file picker during crop
 
 ## Progress
 
@@ -102,7 +102,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-11 |
-| 2. Onboarding | 1/2 | In progress | - |
-| 3. Profile Display | 0/2 | Not started | - |
+| 2. Onboarding | 2/2 | Complete   | 2026-03-12 |
+| 3. Profile Display | 2/2 | Complete   | 2026-03-12 |
 | 4. Profile Editing | 2/2 | Complete   | 2026-03-12 |
 | 5. Photo Upload | 4/4 | Complete   | 2026-03-12 |

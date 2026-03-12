@@ -61,5 +61,4 @@ describe('UpdateNameCommand', () => {
     ).rejects.toThrow(AccountNotFoundError);
     expect(mockRepo.save).not.toHaveBeenCalled();
   });
-
 });

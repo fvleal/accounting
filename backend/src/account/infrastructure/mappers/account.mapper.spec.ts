@@ -80,11 +80,15 @@ describe('AccountMapper', () => {
       }
 
       it('should throw when DB row has empty name', () => {
-        expect(() => AccountMapper.toDomain({ ...validRow(), name: '' })).toThrow();
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), name: '' }),
+        ).toThrow();
       });
 
       it('should throw when DB row has single-word name', () => {
-        expect(() => AccountMapper.toDomain({ ...validRow(), name: 'John' })).toThrow();
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), name: 'John' }),
+        ).toThrow();
       });
 
       it('should throw when DB row has invalid email', () => {
