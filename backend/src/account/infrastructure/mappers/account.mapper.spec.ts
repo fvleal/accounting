@@ -60,6 +60,64 @@ describe('AccountMapper', () => {
       expect(account.phone).toBeNull();
       expect(account.photoUrl).toBeNull();
     });
+
+    describe('rejects inconsistent DB data', () => {
+      const now = new Date();
+
+      function validRow() {
+        return {
+          id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+          name: VALID_NAME,
+          email: VALID_EMAIL,
+          cpf: VALID_CPF_NORMALIZED,
+          birthDate: null,
+          phone: null,
+          phoneVerified: false,
+          photoUrl: null,
+          createdAt: now,
+          updatedAt: now,
+        };
+      }
+
+      it('should throw when DB row has empty name', () => {
+        expect(() => AccountMapper.toDomain({ ...validRow(), name: '' })).toThrow();
+      });
+
+      it('should throw when DB row has single-word name', () => {
+        expect(() => AccountMapper.toDomain({ ...validRow(), name: 'John' })).toThrow();
+      });
+
+      it('should throw when DB row has invalid email', () => {
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), email: 'not-an-email' }),
+        ).toThrow();
+      });
+
+      it('should throw when DB row has invalid CPF', () => {
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), cpf: '00000000000' }),
+        ).toThrow();
+      });
+
+      it('should throw when DB row has invalid phone', () => {
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), phone: '123' }),
+        ).toThrow();
+      });
+
+      it('should throw when DB row has future birthDate', () => {
+        const futureDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), birthDate: futureDate }),
+        ).toThrow();
+      });
+
+      it('should throw when DB row has invalid photoUrl', () => {
+        expect(() =>
+          AccountMapper.toDomain({ ...validRow(), photoUrl: 'not-a-url' }),
+        ).toThrow();
+      });
+    });
   });
 
   describe('toPersistence', () => {
