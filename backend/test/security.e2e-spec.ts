@@ -267,12 +267,27 @@ describe('Security E2E — IDOR & Access Control', () => {
   // RBAC-02: M2M service (read-only) cannot mutate data
   // ═══════════════════════════════════════════════════════════
 
-  describe('RBAC-02: M2M service cannot create or mutate accounts', () => {
-    it('POST /accounts — returns 403 for M2M without create:account', async () => {
+  describe('RBAC-02: M2M service access control', () => {
+    it('POST /accounts — M2M can create accounts (only JWT required)', async () => {
       await request(app.getHttpServer())
         .post('/accounts')
         .set('x-test-auth', authHeader(M2M_PAYLOAD))
         .send({ name: 'Service Account', cpf: CPF_1 })
+        .expect(201);
+    });
+
+    it('GET /accounts — M2M with read:accounts can list accounts', async () => {
+      await request(app.getHttpServer())
+        .get('/accounts')
+        .set('x-test-auth', authHeader(M2M_PAYLOAD))
+        .expect(200);
+    });
+
+    it('GET /accounts — M2M without read:accounts cannot list accounts', async () => {
+      const m2mNoPerms = { ...M2M_PAYLOAD, permissions: [] as string[] };
+      await request(app.getHttpServer())
+        .get('/accounts')
+        .set('x-test-auth', authHeader(m2mNoPerms))
         .expect(403);
     });
   });
@@ -281,30 +296,30 @@ describe('Security E2E — IDOR & Access Control', () => {
   // RBAC-03: No permissions at all — blocked on every endpoint
   // ═══════════════════════════════════════════════════════════
 
-  describe('RBAC-03: user with no permissions is blocked everywhere', () => {
-    it('POST /accounts — returns 403', async () => {
+  describe('RBAC-03: user with no permissions — user routes accessible, admin routes blocked', () => {
+    it('POST /accounts — returns 201 (only JWT required)', async () => {
       await request(app.getHttpServer())
         .post('/accounts')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
-        .send({ name: 'Nobody', cpf: CPF_1 })
-        .expect(403);
+        .send({ name: 'Nobody User', cpf: CPF_1 })
+        .expect(201);
     });
 
-    it('GET /accounts/me — returns 403', async () => {
+    it('GET /accounts/me — returns 404 (no account for this email, but not 403)', async () => {
       await request(app.getHttpServer())
         .get('/accounts/me')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
-        .expect(403);
+        .expect(404);
     });
 
-    it('GET /accounts — returns 403', async () => {
+    it('GET /accounts — returns 403 (admin route)', async () => {
       await request(app.getHttpServer())
         .get('/accounts')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
         .expect(403);
     });
 
-    it('GET /accounts/:id — returns 403', async () => {
+    it('GET /accounts/:id — returns 403 (admin route)', async () => {
       await request(app.getHttpServer())
         .get('/accounts/00000000-0000-0000-0000-000000000000')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))

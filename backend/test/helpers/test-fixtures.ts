@@ -5,7 +5,7 @@ import type { JwtPayload } from '../../src/shared/infrastructure/auth/index.js';
 export const USER_PAYLOAD: JwtPayload = {
   sub: 'auth0|user-123',
   email: 'john@example.com',
-  permissions: ['create:account', 'read:own-account', 'update:own-account'],
+  permissions: [],
   iss: 'https://test.auth0.com/',
   aud: 'test-api',
   iat: Math.floor(Date.now() / 1000),
@@ -15,12 +15,7 @@ export const USER_PAYLOAD: JwtPayload = {
 export const ADMIN_PAYLOAD: JwtPayload = {
   sub: 'auth0|admin-456',
   email: 'admin@example.com',
-  permissions: [
-    'create:account',
-    'read:own-account',
-    'read:accounts',
-    'update:own-account',
-  ],
+  permissions: ['read:accounts'],
   iss: 'https://test.auth0.com/',
   aud: 'test-api',
   iat: Math.floor(Date.now() / 1000),

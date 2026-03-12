@@ -124,15 +124,15 @@ describe('Accounts API (e2e)', () => {
   // AUTH: Roles Guard (AUTH-02, AUTH-03, AUTH-04)
   // ═══════════════════════════════════════════════════════════
 
-  describe('AUTH-02: getMe requires read:own-account', () => {
-    it('returns 403 when user lacks read:own-account permission', async () => {
+  describe('AUTH-02: getMe requires only valid JWT', () => {
+    it('returns 404 when no account exists for user (no permissions needed)', async () => {
       await request(app.getHttpServer())
         .get('/accounts/me')
         .set('x-test-auth', authHeader(NO_PERMISSIONS_PAYLOAD))
-        .expect(403);
+        .expect(404);
     });
 
-    it('returns 200 when user has read:own-account permission', async () => {
+    it('returns 200 when account exists for user', async () => {
       await createAccount();
 
       const res = await request(app.getHttpServer())
@@ -778,7 +778,7 @@ describe('Accounts API (e2e)', () => {
       expect(head.ContentType).toBe('image/jpeg');
     });
 
-    it('returns 403 when caller lacks update:own-account permission', async () => {
+    it('returns 403 when caller is not the account owner', async () => {
       const created = await createAccount();
 
       const otherUser = {
