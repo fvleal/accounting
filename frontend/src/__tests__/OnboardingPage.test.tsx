@@ -126,9 +126,9 @@ describe('OnboardingPage', () => {
     render(<OnboardingPage />, { wrapper: createWrapper() });
 
     const cpfField = screen.getByLabelText(/cpf/i);
-    await user.type(cpfField, '12345678909');
+    await user.type(cpfField, '52998224725');
 
-    expect(cpfField).toHaveValue('123.456.789-09');
+    expect(cpfField).toHaveValue('529.982.247-25');
   });
 
   it('submits and redirects on success', async () => {
@@ -157,14 +157,14 @@ describe('OnboardingPage', () => {
     const cpfField = screen.getByLabelText(/cpf/i);
 
     await user.type(nameField, 'Fulano Silva');
-    await user.type(cpfField, '12345678909');
+    await user.type(cpfField, '52998224725');
 
     const submitButton = screen.getByRole('button', { name: /criar conta/i });
     await user.click(submitButton);
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalledWith(
-        { name: 'Fulano Silva', cpf: '12345678909' },
+        { name: 'Fulano Silva', cpf: '52998224725' },
         expect.objectContaining({
           onSuccess: expect.any(Function),
           onError: expect.any(Function),
@@ -178,7 +178,7 @@ describe('OnboardingPage', () => {
   it('shows toast on success', async () => {
     mockMutate.mockImplementation(
       (_data: { name: string; cpf: string }, options?: { onSuccess?: (account: any) => void }) => {
-        const account = { id: '1', fullName: 'Fulano Silva', email: 'test@example.com', cpf: '12345678909', dateOfBirth: null, phone: null, photoUrl: null, createdAt: '2026-01-01', updatedAt: '2026-01-01' };
+        const account = { id: '1', fullName: 'Fulano Silva', email: 'test@example.com', cpf: '52998224725', dateOfBirth: null, phone: null, photoUrl: null, createdAt: '2026-01-01', updatedAt: '2026-01-01' };
         options?.onSuccess?.(account);
       },
     );
@@ -187,7 +187,7 @@ describe('OnboardingPage', () => {
     render(<OnboardingPage />, { wrapper: createWrapper() });
 
     await user.type(screen.getByLabelText(/nome completo/i), 'Fulano Silva');
-    await user.type(screen.getByLabelText(/cpf/i), '12345678909');
+    await user.type(screen.getByLabelText(/cpf/i), '52998224725');
     await user.click(screen.getByRole('button', { name: /criar conta/i }));
 
     await waitFor(() => {
@@ -209,7 +209,7 @@ describe('OnboardingPage', () => {
     render(<OnboardingPage />, { wrapper: createWrapper() });
 
     await user.type(screen.getByLabelText(/nome completo/i), 'Fulano Silva');
-    await user.type(screen.getByLabelText(/cpf/i), '12345678909');
+    await user.type(screen.getByLabelText(/cpf/i), '52998224725');
     await user.click(screen.getByRole('button', { name: /criar conta/i }));
 
     await waitFor(() => {
@@ -228,6 +228,7 @@ describe('OnboardingPage', () => {
     render(<OnboardingPage />, { wrapper: createWrapper() });
 
     const submitButton = screen.getByRole('button', { name: /criar conta/i });
-    expect(submitButton).toHaveAttribute('data-loading', 'true');
+    expect(submitButton).toBeDisabled();
+    expect(submitButton).toHaveClass('MuiButton-loading');
   });
 });
