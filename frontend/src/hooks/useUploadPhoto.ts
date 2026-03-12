@@ -8,7 +8,10 @@ export function useUploadPhoto() {
   return useMutation({
     mutationFn: (file: File) => uploadPhoto(file),
     onSuccess: (account: Account) => {
-      queryClient.setQueryData(['account', 'me'], account);
+      const busted = account.photoUrl
+        ? { ...account, photoUrl: `${account.photoUrl}?t=${Date.now()}` }
+        : account;
+      queryClient.setQueryData(['account', 'me'], busted);
     },
   });
 }
