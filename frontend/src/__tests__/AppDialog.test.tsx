@@ -28,7 +28,7 @@ describe('AppDialog', () => {
     expect(paper.style.minWidth || styles.minWidth).toBeTruthy();
   });
 
-  it('calls onClose on backdrop click', async () => {
+  it('does not call onClose on backdrop click', async () => {
     const onClose = vi.fn();
     render(
       <AppDialog open onClose={onClose}>
@@ -42,7 +42,7 @@ describe('AppDialog', () => {
     const user = userEvent.setup();
     await user.click(backdrop);
 
-    expect(onClose).toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   it('exposes a simple onClose callback for consumers', () => {

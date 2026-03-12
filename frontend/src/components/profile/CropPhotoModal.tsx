@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import Cropper from 'react-easy-crop';
-import type { Area } from 'react-easy-crop';
+import { useRef, useState } from 'react';
+import ReactCrop from 'react-image-crop';
+import type { Crop, PixelCrop } from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import {
-  Box,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Slider,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { AppDialog } from '../common/AppDialog';
@@ -27,28 +26,18 @@ export function CropPhotoModal({
   onClose,
   onUploaded,
 }: CropPhotoModalProps) {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  const [crop, setCrop] = useState<Crop>();
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+  const imgRef = useRef<HTMLImageElement>(null);
   const mutation = useUploadPhoto();
   const { enqueueSnackbar } = useSnackbar();
-
-  const onCropComplete = useCallback((_: Area, areaPixels: Area) => {
-    setCroppedAreaPixels(areaPixels);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      URL.revokeObjectURL(imageUrl);
-    };
-  }, [imageUrl]);
 
   if (!open) return null;
 
   const handleSave = async () => {
-    if (!croppedAreaPixels) return;
+    if (!completedCrop) return;
 
-    const blob = await getCroppedImg(imageUrl, croppedAreaPixels);
+    const blob = await getCroppedImg(imageUrl, completedCrop);
     const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
 
     mutation.mutate(file, {
@@ -67,36 +56,19 @@ export function CropPhotoModal({
     <AppDialog open disableEscapeKeyDown onClose={onClose}>
       <DialogTitle>Recortar foto</DialogTitle>
       <DialogContent>
-        <Box
-          sx={{
-            position: 'relative',
-            height: 350,
-            width: '100%',
-            bgcolor: 'black',
-          }}
+        <ReactCrop
+          crop={crop}
+          onChange={(c) => setCrop(c)}
+          onComplete={(c) => setCompletedCrop(c)}
+          aspect={3 / 4}
         >
-          <Cropper
-            image={imageUrl}
-            crop={crop}
-            zoom={zoom}
-            aspect={3 / 4}
-            cropShape="rect"
-            showGrid
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropComplete={onCropComplete}
+          <img
+            ref={imgRef}
+            src={imageUrl}
+            alt="Crop preview"
+            style={{ maxHeight: 400, width: '100%', objectFit: 'contain' }}
           />
-        </Box>
-        <Box sx={{ px: 2, pt: 2 }}>
-          <Slider
-            min={1}
-            max={3}
-            step={0.01}
-            value={zoom}
-            onChange={(_, v) => setZoom(v as number)}
-            aria-label="Zoom"
-          />
-        </Box>
+        </ReactCrop>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>

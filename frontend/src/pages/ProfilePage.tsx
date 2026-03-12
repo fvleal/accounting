@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useAccount } from "../hooks/useAccount";
 import { ProfileHero } from "../components/profile/ProfileHero";
@@ -21,6 +21,13 @@ export function ProfilePage() {
     "name" | "birthday" | "phone" | null
   >(null);
   const [cropImageUrl, setCropImageUrl] = useState<string | null>(null);
+
+  const closeCropModal = useCallback(() => {
+    setCropImageUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+  }, []);
 
   useEffect(() => {
     if (isError && !errorShownRef.current) {
@@ -90,8 +97,8 @@ export function ProfilePage() {
         <CropPhotoModal
           open={!!cropImageUrl}
           imageUrl={cropImageUrl}
-          onClose={() => setCropImageUrl(null)}
-          onUploaded={() => setCropImageUrl(null)}
+          onClose={closeCropModal}
+          onUploaded={closeCropModal}
         />
       )}
     </>

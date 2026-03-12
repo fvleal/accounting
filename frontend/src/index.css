@@ -1,3 +1,8 @@
-@layer theme, mui, components, utilities;
-
-@import "tailwindcss";
+@layer components {
+  .ReactCrop__crop-selection {
+    border: 2px solid white !important;
+  }
+  .ReactCrop__overlay {
+    background-color: rgba(0, 0, 0, 0.65) !important;
+  }
+}

@@ -7,12 +7,17 @@ import React from 'react';
 import type { ReactNode } from 'react';
 import { CropPhotoModal } from '../components/profile/CropPhotoModal';
 
-// Mock react-easy-crop
-vi.mock('react-easy-crop', () => ({
+// Mock react-image-crop
+vi.mock('react-image-crop', () => ({
   default: (props: Record<string, unknown>) => (
-    <div data-testid="cropper" data-zoom={props.zoom} data-aspect={props.aspect} />
+    <div data-testid="cropper" data-aspect={props.aspect}>
+      {props.children}
+    </div>
   ),
 }));
+
+// Mock react-image-crop CSS import
+vi.mock('react-image-crop/dist/ReactCrop.css', () => ({}));
 
 // Mock utilities
 vi.mock('../utils/cropImage', () => ({
@@ -54,22 +59,20 @@ beforeEach(() => {
 });
 
 describe('CropPhotoModal', () => {
-  it('renders crop modal with Cropper when open', () => {
+  it('renders crop modal with ReactCrop when open', () => {
     render(<CropPhotoModal {...defaultProps} />, { wrapper: Wrapper });
 
     expect(screen.getByText('Recortar foto')).toBeInTheDocument();
     expect(screen.getByTestId('cropper')).toBeInTheDocument();
     expect(screen.getByText('Salvar')).toBeInTheDocument();
     expect(screen.getByText('Cancelar')).toBeInTheDocument();
-    expect(screen.getByRole('slider')).toBeInTheDocument();
   });
 
-  it('renders zoom slider with correct range', () => {
+  it('renders cropper with 3:4 aspect ratio', () => {
     render(<CropPhotoModal {...defaultProps} />, { wrapper: Wrapper });
 
-    const slider = screen.getByRole('slider');
-    expect(slider).toHaveAttribute('aria-valuemin', '1');
-    expect(slider).toHaveAttribute('aria-valuemax', '3');
+    const cropper = screen.getByTestId('cropper');
+    expect(cropper).toHaveAttribute('data-aspect', String(3 / 4));
   });
 
   it('calls onClose when Cancelar is clicked', async () => {
