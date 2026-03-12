@@ -1,11 +1,12 @@
 import type { Params } from 'nestjs-pino';
 
-export function pinoHttpConfig(): Params {
+export function pinoConfig(): Params {
   const isProduction = process.env.NODE_ENV === 'production';
+  const level = process.env.LOG_LEVEL || 'info';
 
   return {
     pinoHttp: {
-      level: process.env.LOG_LEVEL || 'info',
+      level,
       autoLogging: true,
       customProps: () => ({ context: 'HTTP' }),
       redact: ['req.headers.authorization', 'req.headers.cookie'],

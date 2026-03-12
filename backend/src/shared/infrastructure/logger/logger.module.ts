@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
-import { pinoHttpConfig } from './pino-http.config.js';
+import { pinoConfig } from './pino.config.js';
 
 @Module({
-  imports: [PinoLoggerModule.forRoot(pinoHttpConfig())],
+  imports: [PinoLoggerModule.forRoot(pinoConfig())],
   exports: [PinoLoggerModule],
 })
 export class LoggerModule {}
