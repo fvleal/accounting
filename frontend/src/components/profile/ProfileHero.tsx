@@ -1,5 +1,5 @@
 import { useRef, type ChangeEvent } from "react";
-import { Avatar, Badge, Box } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useSnackbar } from "notistack";
 import type { Account } from "../../types/account";
@@ -8,13 +8,15 @@ import { getInitials, getAvatarColor } from "../../utils/initials";
 interface ProfileHeroProps {
   account: Account;
   onFileSelect: (imageUrl: string) => void;
+  isCropOpen?: boolean;
 }
 
-export function ProfileHero({ account, onFileSelect }: ProfileHeroProps) {
+export function ProfileHero({ account, onFileSelect, isCropOpen }: ProfileHeroProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleAvatarClick = () => {
+    if (isCropOpen) return;
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
       fileInputRef.current.click();
@@ -53,38 +55,38 @@ export function ProfileHero({ account, onFileSelect }: ProfileHeroProps) {
         mt: 2,
       }}
     >
-      <Box onClick={handleAvatarClick} sx={{ cursor: "pointer" }}>
-        <Badge
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          badgeContent={
-            <Box
-              sx={{
-                width: 24,
-                height: 24,
-                borderRadius: "50%",
-                bgcolor: "primary.main",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <CameraAltIcon sx={{ fontSize: 14, color: "white" }} />
-            </Box>
-          }
+      <Box
+        onClick={handleAvatarClick}
+        sx={{ cursor: "pointer", position: "relative", display: "inline-flex" }}
+      >
+        <Avatar
+          src={account.photoUrl ?? undefined}
+          sx={{
+            width: 80,
+            height: 80,
+            bgcolor: getAvatarColor(account.name),
+            fontSize: "1.5rem",
+          }}
         >
-          <Avatar
-            src={account.photoUrl ?? undefined}
-            sx={{
-              width: 80,
-              height: 80,
-              bgcolor: getAvatarColor(account.name),
-              fontSize: "1.5rem",
-            }}
-          >
-            {getInitials(account.name)}
-          </Avatar>
-        </Badge>
+          {getInitials(account.name)}
+        </Avatar>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: -4,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 24,
+            height: 24,
+            borderRadius: "50%",
+            bgcolor: "grey.800",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CameraAltIcon sx={{ fontSize: 14, color: "white" }} />
+        </Box>
       </Box>
       <input
         ref={fileInputRef}

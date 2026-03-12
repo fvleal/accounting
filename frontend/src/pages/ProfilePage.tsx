@@ -49,7 +49,7 @@ export function ProfilePage() {
 
   return (
     <>
-      <ProfileHero account={account} onFileSelect={setCropImageUrl} />
+      <ProfileHero account={account} onFileSelect={setCropImageUrl} isCropOpen={!!cropImageUrl} />
       <ProfileSectionCard title="Informacões Básicas">
         <ProfileFieldRow
           label="Nome"
