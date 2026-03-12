@@ -199,6 +199,104 @@ describe('Account', () => {
         }),
       ).toThrow();
     });
+
+    it('should throw on invalid name (empty)', () => {
+      const now = new Date();
+      expect(() =>
+        Account.reconstitute('some-id', {
+          name: '',
+          email: VALID_EMAIL,
+          cpf: VALID_CPF,
+          birthDate: null,
+          phone: null,
+          photoUrl: null,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ).toThrow();
+    });
+
+    it('should throw on invalid name (single word)', () => {
+      const now = new Date();
+      expect(() =>
+        Account.reconstitute('some-id', {
+          name: 'John',
+          email: VALID_EMAIL,
+          cpf: VALID_CPF,
+          birthDate: null,
+          phone: null,
+          photoUrl: null,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ).toThrow();
+    });
+
+    it('should throw on invalid email', () => {
+      const now = new Date();
+      expect(() =>
+        Account.reconstitute('some-id', {
+          name: VALID_NAME,
+          email: 'not-an-email',
+          cpf: VALID_CPF,
+          birthDate: null,
+          phone: null,
+          photoUrl: null,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ).toThrow();
+    });
+
+    it('should throw on invalid phone', () => {
+      const now = new Date();
+      expect(() =>
+        Account.reconstitute('some-id', {
+          name: VALID_NAME,
+          email: VALID_EMAIL,
+          cpf: VALID_CPF,
+          birthDate: null,
+          phone: '123',
+          photoUrl: null,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ).toThrow();
+    });
+
+    it('should throw on future birthDate', () => {
+      const now = new Date();
+      const futureDate = new Date();
+      futureDate.setFullYear(futureDate.getFullYear() + 1);
+      expect(() =>
+        Account.reconstitute('some-id', {
+          name: VALID_NAME,
+          email: VALID_EMAIL,
+          cpf: VALID_CPF,
+          birthDate: futureDate,
+          phone: null,
+          photoUrl: null,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ).toThrow();
+    });
+
+    it('should throw on invalid photoUrl', () => {
+      const now = new Date();
+      expect(() =>
+        Account.reconstitute('some-id', {
+          name: VALID_NAME,
+          email: VALID_EMAIL,
+          cpf: VALID_CPF,
+          birthDate: null,
+          phone: null,
+          photoUrl: 'not-a-url',
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ).toThrow();
+    });
   });
 
   describe('getters', () => {
