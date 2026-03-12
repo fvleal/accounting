@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
 - [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
 - [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
-- [ ] **Phase 4: Profile Editing** - Edit modals for name, date of birth, and phone with form validation and optimistic updates
+- [ ] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates
 - [ ] **Phase 5: Photo Upload** - Client-side 3x4 crop and S3-backed photo upload
 
 ## Phase Details
@@ -65,15 +65,18 @@ Plans:
 - [ ] 03-02-PLAN.md — ProfilePage with hero, section cards, field rows, skeleton loading, error toast, routing
 
 ### Phase 4: Profile Editing
-**Goal**: Users can edit their mutable profile fields (name, date of birth, phone) via modals with validation, and see updated values immediately
+**Goal**: Users can edit their mutable profile fields (name, date of birth) via modals with form validation, and see updated values immediately after saving. Phone editing deferred to v2.
 **Depends on**: Phase 3
 **Requirements**: EDIT-01, EDIT-02, EDIT-03, EDIT-04
 **Success Criteria** (what must be TRUE):
   1. User can click a name card, edit full name in a modal with validation, save, and see the updated name on the profile page without a full reload
   2. User can click the birthday card, pick a date from a date picker modal, save, and see the updated birthday immediately
-  3. User can click the phone card, edit their phone number in a modal, and sees a "not verified" badge next to the phone field on the profile page
-  4. If a save fails (network error, validation rejection), the profile page rolls back to the previous value and a toast describes the error
-**Plans**: TBD
+  3. Phone field is hidden from the profile page (EDIT-03 deferred to v2)
+  4. If a save fails (network error, validation rejection), the modal stays open with an error toast and the user can retry or cancel
+**Plans:** 2 plans
+Plans:
+- [ ] 04-01-PLAN.md — Shared validation extraction, useUpdateAccount hook, ProfileFieldRow onClick, EditNameModal with tests
+- [ ] 04-02-PLAN.md — EditBirthdayModal with tests, ProfilePage modal wiring, phone field removal, test updates
 
 ### Phase 5: Photo Upload
 **Goal**: Users can upload a profile photo by selecting a file, cropping it client-side to 3x4 ratio, previewing the result, and confirming the upload
@@ -96,5 +99,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation | 3/3 | Complete   | 2026-03-11 |
 | 2. Onboarding | 1/2 | In progress | - |
 | 3. Profile Display | 0/2 | Not started | - |
-| 4. Profile Editing | 0/TBD | Not started | - |
+| 4. Profile Editing | 0/2 | Not started | - |
 | 5. Photo Upload | 0/TBD | Not started | - |
