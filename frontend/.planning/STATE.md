@@ -106,6 +106,7 @@ Recent decisions affecting current work:
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | corrija as rotas da api, analise o backend e implemente o campo telefone com sendCode que atualiza telefone como status nao verificado | 2026-03-12 | dfae9d8 | [1-corrija-as-rotas-da-api-analise-o-backen](./quick/1-corrija-as-rotas-da-api-analise-o-backen/) |
+| 2 | informacoes pessoais devem usar retorno de getMe em vez de user do auth0 | 2026-03-12 | d987c8f | [2-informacoes-pessoais-devem-usar-retorno-](./quick/2-informacoes-pessoais-devem-usar-retorno-/) |
 
 ## Session Continuity
 
