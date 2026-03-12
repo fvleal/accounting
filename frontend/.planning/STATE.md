@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-12T17:40:29.357Z"
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-03-12T18:05:17.414Z"
 last_activity: 2026-03-12 — Completed 05-02 (Photo upload UI)
 progress:
   total_phases: 5
   completed_phases: 5
-  total_plans: 11
-  completed_plans: 11
+  total_plans: 12
+  completed_plans: 12
 ---
 
 ---
@@ -76,6 +76,7 @@ Progress: [██████████] 100%
 - Trend: Stable
 
 *Updated after each plan completion*
+| Phase 05 P03 | 4min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,9 @@ Recent decisions affecting current work:
 - [Phase 05]: window.Image class override instead of vi.spyOn for jsdom canvas test mocking
 - [Phase 05]: disableEscapeKeyDown on CropPhotoModal to prevent accidental dismissal during crop
 - [Phase 05]: File input ref value reset before click to allow re-selecting same file
+- [Phase 05]: Replaced react-easy-crop with react-image-crop for user-adjustable crop rectangle
+- [Phase 05]: Object URL lifecycle managed in parent (ProfilePage) not in consuming modal
+- [Phase 05]: AppDialog universally blocks backdrop-click dismissal for all modals
 
 ### Pending Todos
 
@@ -134,6 +138,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-12T17:34:32Z
-Stopped at: Completed 05-02-PLAN.md
-Resume file: .planning/phases/05-photo-upload/05-02-SUMMARY.md
+Last session: 2026-03-12T18:05:17.409Z
+Stopped at: Completed 05-03-PLAN.md
+Resume file: None
