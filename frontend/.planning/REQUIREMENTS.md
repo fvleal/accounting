@@ -24,8 +24,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Profile Editing
 
 - [x] **EDIT-01**: User can edit their full name via modal with validation
-- [ ] **EDIT-02**: User can edit their date of birth via modal with date picker
-- [ ] **EDIT-03**: User can edit their phone number via modal (with "not verified" badge displayed)
+- [x] **EDIT-02**: User can edit their date of birth via modal with date picker
+- [x] **EDIT-03**: User can edit their phone number via modal (with "not verified" badge displayed)
 - [x] **EDIT-04**: User sees updated values immediately after saving (optimistic updates with rollback on error)
 
 ### Photo
@@ -84,8 +84,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROF-03 | Phase 3 | Complete |
 | PROF-04 | Phase 3 | Complete |
 | EDIT-01 | Phase 4 | Complete |
-| EDIT-02 | Phase 4 | Pending |
-| EDIT-03 | Phase 4 | Pending |
+| EDIT-02 | Phase 4 | Complete |
+| EDIT-03 | Phase 4 | Complete |
 | EDIT-04 | Phase 4 | Complete |
 | PHOT-01 | Phase 5 | Pending |
 | PHOT-02 | Phase 5 | Pending |

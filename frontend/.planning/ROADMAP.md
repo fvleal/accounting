@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold with Auth0, MUI + Tailwind dark theme, layout shell, and API client (completed 2026-03-11)
 - [ ] **Phase 2: Onboarding** - Account guard state machine and new-user account creation flow
 - [ ] **Phase 3: Profile Display** - Read-only profile page with skeleton loading, avatar fallback, and toast system
-- [ ] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates
+- [x] **Phase 4: Profile Editing** - Edit modals for name and date of birth with form validation and server-confirmed updates (completed 2026-03-12)
 - [ ] **Phase 5: Photo Upload** - Client-side 3x4 crop and S3-backed photo upload
 
 ## Phase Details
@@ -73,7 +73,7 @@ Plans:
   2. User can click the birthday card, pick a date from a date picker modal, save, and see the updated birthday immediately
   3. Phone field is hidden from the profile page (EDIT-03 deferred to v2)
   4. If a save fails (network error, validation rejection), the modal stays open with an error toast and the user can retry or cancel
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [ ] 04-01-PLAN.md — Shared validation extraction, useUpdateAccount hook, ProfileFieldRow onClick, EditNameModal with tests
 - [ ] 04-02-PLAN.md — EditBirthdayModal with tests, ProfilePage modal wiring, phone field removal, test updates
@@ -99,5 +99,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation | 3/3 | Complete   | 2026-03-11 |
 | 2. Onboarding | 1/2 | In progress | - |
 | 3. Profile Display | 0/2 | Not started | - |
-| 4. Profile Editing | 0/2 | Not started | - |
+| 4. Profile Editing | 2/2 | Complete   | 2026-03-12 |
 | 5. Photo Upload | 0/TBD | Not started | - |
