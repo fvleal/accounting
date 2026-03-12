@@ -1,22 +1,29 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Backdrop, Box } from '@mui/material';
+
+const logoUrl = import.meta.env.VITE_LOGO_URL;
 
 export function LoadingScreen() {
   return (
-    <Box
+    <Backdrop
+      open
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#121212',
-        gap: 2,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
-      <CircularProgress size={48} />
-      <Typography variant="body2" color="text.secondary">
-        Minha Conta
-      </Typography>
-    </Box>
+      <Box
+        component="img"
+        src={logoUrl}
+        alt=""
+        sx={{
+          width: 80,
+          '@keyframes pulse': {
+            '0%, 100%': { opacity: 0.3 },
+            '50%': { opacity: 1 },
+          },
+          animation: 'pulse 1.5s ease-in-out infinite',
+        }}
+      />
+    </Backdrop>
   );
 }
