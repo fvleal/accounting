@@ -19,7 +19,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **PROF-01**: User sees their personal info displayed in read-only cards (name, email, CPF, birthday, phone, photo)
 - [ ] **PROF-02**: User sees skeleton loading placeholders while profile data is being fetched
 - [ ] **PROF-03**: User sees toast notifications for success and error feedback after actions
-- [ ] **PROF-04**: User sees an initials-based avatar when no profile photo exists
+- [x] **PROF-04**: User sees an initials-based avatar when no profile photo exists
 
 ### Profile Editing
 
@@ -82,7 +82,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROF-01 | Phase 3 | Pending |
 | PROF-02 | Phase 3 | Pending |
 | PROF-03 | Phase 3 | Pending |
-| PROF-04 | Phase 3 | Pending |
+| PROF-04 | Phase 3 | Complete |
 | EDIT-01 | Phase 4 | Pending |
 | EDIT-02 | Phase 4 | Pending |
 | EDIT-03 | Phase 4 | Pending |
