@@ -3,12 +3,15 @@ import {
   ExceptionFilter,
   ArgumentsHost,
   HttpException,
+  Logger,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { DomainException } from '../../../shared/domain/exceptions/domain-exception.base.js';
 
 @Catch()
 export class DomainExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(DomainExceptionFilter.name);
+
   private static readonly CODE_TO_STATUS: Record<string, number> = {
     ACCOUNT_NOT_FOUND: 404,
     ACCOUNT_OWNERSHIP_VIOLATION: 403,
@@ -55,7 +58,12 @@ export class DomainExceptionFilter implements ExceptionFilter {
       return;
     }
 
-    console.error('Unhandled exception:', exception);
+    this.logger.error(
+      exception instanceof Error
+        ? exception.stack || exception.message
+        : String(exception),
+      'UnhandledException',
+    );
     response.status(500).json({
       statusCode: 500,
       error: 'INTERNAL_ERROR',
