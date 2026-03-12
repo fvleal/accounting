@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 import { SnackbarProvider } from 'notistack';
@@ -25,13 +26,24 @@ vi.mock('notistack', async () => {
   };
 });
 
+// Mock edit modals to avoid deep rendering
+vi.mock('../components/profile/EditNameModal', () => ({
+  EditNameModal: ({ open }: { open: boolean }) =>
+    open ? <div data-testid="edit-name-modal" /> : null,
+}));
+vi.mock('../components/profile/EditBirthdayModal', () => ({
+  EditBirthdayModal: ({ open }: { open: boolean }) =>
+    open ? <div data-testid="edit-birthday-modal" /> : null,
+}));
+
 const fullAccount: Account = {
   id: '1',
-  fullName: 'Felipe Vieira',
+  name: 'Felipe Vieira',
   email: 'felipe@test.com',
   cpf: '52998224725',
-  dateOfBirth: '2000-01-15',
+  birthDate: '2000-01-15',
   phone: '11987654321',
+  phoneVerified: false,
   photoUrl: null,
   createdAt: '2026-01-01',
   updatedAt: '2026-01-01',
@@ -83,13 +95,14 @@ describe('ProfilePage', () => {
       // Formatted birthday
       expect(screen.getByText('15/01/2000')).toBeInTheDocument();
 
-      // Formatted phone
-      expect(screen.getByText('(11) 98765-4321')).toBeInTheDocument();
+      // Phone field removed (deferred to v2)
+      expect(screen.queryByText('(11) 98765-4321')).not.toBeInTheDocument();
+      expect(screen.queryByText('Telefone')).not.toBeInTheDocument();
     });
 
     it('displays Nao informado for null fields', () => {
       mockUseAccount.mockReturnValue({
-        data: { ...fullAccount, dateOfBirth: null, phone: null },
+        data: { ...fullAccount, birthDate: null },
         isLoading: false,
         isError: false,
         error: null,
@@ -97,8 +110,9 @@ describe('ProfilePage', () => {
 
       render(<ProfilePage />, { wrapper: createWrapper() });
 
+      // Only birthDate can be null now (phone row removed)
       const naoInformado = screen.getAllByText('Nao informado');
-      expect(naoInformado).toHaveLength(2);
+      expect(naoInformado).toHaveLength(1);
     });
 
     it('shows chevron for editable rows only', () => {
@@ -112,8 +126,8 @@ describe('ProfilePage', () => {
       render(<ProfilePage />, { wrapper: createWrapper() });
 
       const chevrons = screen.getAllByTestId('chevron-icon');
-      // Nome, Nascimento, Telefone = 3 editable rows
-      expect(chevrons).toHaveLength(3);
+      // Nome, Nascimento = 2 editable rows (phone removed)
+      expect(chevrons).toHaveLength(2);
     });
   });
 
@@ -186,6 +200,51 @@ describe('ProfilePage', () => {
 
       const img = screen.getByRole('img');
       expect(img).toHaveAttribute('src', 'https://example.com/photo.jpg');
+    });
+  });
+
+  // EDIT: Modal opening tests
+  describe('EDIT - Modal wiring', () => {
+    it('clicking name row opens EditNameModal', async () => {
+      const user = userEvent.setup();
+      mockUseAccount.mockReturnValue({
+        data: fullAccount,
+        isLoading: false,
+        isError: false,
+        error: null,
+      });
+
+      render(<ProfilePage />, { wrapper: createWrapper() });
+
+      // EditNameModal should not be visible initially
+      expect(screen.queryByTestId('edit-name-modal')).not.toBeInTheDocument();
+
+      // Click the name row (has role="button" from ProfileFieldRow)
+      const nameRow = screen.getByText('Nome').closest('[role="button"]')!;
+      await user.click(nameRow);
+
+      expect(screen.getByTestId('edit-name-modal')).toBeInTheDocument();
+    });
+
+    it('clicking birthday row opens EditBirthdayModal', async () => {
+      const user = userEvent.setup();
+      mockUseAccount.mockReturnValue({
+        data: fullAccount,
+        isLoading: false,
+        isError: false,
+        error: null,
+      });
+
+      render(<ProfilePage />, { wrapper: createWrapper() });
+
+      // EditBirthdayModal should not be visible initially
+      expect(screen.queryByTestId('edit-birthday-modal')).not.toBeInTheDocument();
+
+      // Click the birthday row
+      const birthdayRow = screen.getByText('Nascimento').closest('[role="button"]')!;
+      await user.click(birthdayRow);
+
+      expect(screen.getByTestId('edit-birthday-modal')).toBeInTheDocument();
     });
   });
 });
