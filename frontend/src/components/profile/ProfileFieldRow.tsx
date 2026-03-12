@@ -23,12 +23,13 @@ export function ProfileFieldRow({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        gap: 2,
         py: 1.5,
         px: 2,
         cursor: editable ? "pointer" : "default",
       }}
     >
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="subtitle2" color="text.secondary">
         {label}
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
