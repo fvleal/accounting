@@ -37,7 +37,9 @@ services:
       mc alias set local http://minio:9000 minioadmin minioadmin;
       mc mb --ignore-existing local/account;
       mc anonymous set download local/account;
-      echo 'Bucket account is now public (download)';
+      mc mb --ignore-existing local/account-test;
+      mc anonymous set download local/account-test;
+      echo 'Buckets account and account-test are now public (download)';
       "
 
   backend:

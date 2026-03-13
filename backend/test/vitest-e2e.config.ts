@@ -14,5 +14,8 @@ export default defineConfig({
     root: './',
     include: ['test/**/*.e2e-spec.ts'],
     fileParallelism: false,
+    env: {
+      S3_BUCKET: 'account-test',
+    },
   },
 });
