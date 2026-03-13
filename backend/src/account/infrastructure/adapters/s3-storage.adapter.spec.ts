@@ -1,13 +1,17 @@
 import { S3StorageAdapter } from './s3-storage.adapter';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
-function createMockConfigService() {
-  const config: Record<string, string> = {
+function createMockConfigService(
+  overrides: Record<string, string | undefined> = {},
+) {
+  const config: Record<string, string | undefined> = {
     S3_ENDPOINT: 'http://localhost:9000',
     S3_REGION: 'us-east-1',
     S3_ACCESS_KEY: 'minioadmin',
     S3_SECRET_KEY: 'minioadmin',
     S3_BUCKET: 'account',
+    S3_PUBLIC_URL: 'http://cdn.example.com',
+    ...overrides,
   };
   return {
     get: vi.fn((key: string) => config[key]),
@@ -47,9 +51,27 @@ describe('S3StorageAdapter', () => {
       );
     });
 
-    it('should return constructed URL', async () => {
+    it('should return constructed URL using S3_PUBLIC_URL', async () => {
       const buffer = Buffer.from('test-content');
       const url = await adapter.upload('photos/test.jpg', buffer, 'image/jpeg');
+
+      expect(url).toBe('http://cdn.example.com/account/photos/test.jpg');
+    });
+
+    it('should fall back to S3_ENDPOINT when S3_PUBLIC_URL is not set', async () => {
+      const fallbackConfig = createMockConfigService({
+        S3_PUBLIC_URL: undefined,
+      });
+      const fallbackAdapter = new S3StorageAdapter(fallbackConfig as any);
+      const fallbackMockSend = vi.fn().mockResolvedValue({});
+      (fallbackAdapter as any).s3Client.send = fallbackMockSend;
+
+      const buffer = Buffer.from('test-content');
+      const url = await fallbackAdapter.upload(
+        'photos/test.jpg',
+        buffer,
+        'image/jpeg',
+      );
 
       expect(url).toBe('http://localhost:9000/account/photos/test.jpg');
     });
