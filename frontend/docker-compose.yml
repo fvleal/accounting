@@ -1,0 +1,13 @@
+services:
+  coe-pmesp-test:
+    build:
+      context: .
+      args:
+        VITE_AUTH0_DOMAIN: dev-76fy001c.us.auth0.com
+        VITE_AUTH0_CLIENT_ID: yUfSuFEiPXhnxpGDouQKZn9G6OuzFWPi
+        VITE_AUTH0_AUDIENCE: http://localhost:3000
+        VITE_API_URL: /api
+        VITE_LOGO_URL: http://localhost:9000/account/companies/test/logo/61df6e37df980313446ea8e11ef28ebd-1368609209.png
+        VITE_COMPANY_NAME: "COE PMESP"
+    ports:
+      - "8080:80"

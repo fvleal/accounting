@@ -1,16 +1,11 @@
-import { useForm, Controller } from 'react-hook-form';
-import { cpf } from 'cpf-cnpj-validator';
-import { maskCpf, unmaskCpf } from '../utils/cpf';
-import { nameRules } from '../utils/validation';
-import { useCreateAccount } from '../hooks/useCreateAccount';
-import { useNavigate } from 'react-router';
-import { useSnackbar } from 'notistack';
-import {
-  Typography,
-  TextField,
-  Button,
-  Box,
-} from '@mui/material';
+import { useForm, Controller } from "react-hook-form";
+import { cpf } from "cpf-cnpj-validator";
+import { maskCpf, unmaskCpf } from "../utils/cpf";
+import { nameRules } from "../utils/validation";
+import { useCreateAccount } from "../hooks/useCreateAccount";
+import { useNavigate } from "react-router";
+import { useSnackbar } from "notistack";
+import { Typography, TextField, Button, Box } from "@mui/material";
 
 interface OnboardingFormData {
   name: string;
@@ -18,15 +13,14 @@ interface OnboardingFormData {
 }
 
 const cpfRules = {
-  required: 'CPF é obrigatório',
-  validate: (value: string) =>
-    cpf.isValid(unmaskCpf(value)) || 'CPF inválido',
+  required: "CPF é obrigatório",
+  validate: (value: string) => cpf.isValid(unmaskCpf(value)) || "CPF inválido",
 };
 
 export function OnboardingPage() {
   const { control, handleSubmit, setError } = useForm<OnboardingFormData>({
-    defaultValues: { name: '', cpf: '' },
-    mode: 'onBlur',
+    defaultValues: { name: "", cpf: "" },
+    mode: "onBlur",
   });
 
   const mutation = useCreateAccount();
@@ -38,23 +32,20 @@ export function OnboardingPage() {
       { name: data.name.trim(), cpf: unmaskCpf(data.cpf) },
       {
         onSuccess: () => {
-          enqueueSnackbar('Conta criada!', { variant: 'success' });
-          navigate('/', { replace: true });
+          enqueueSnackbar("Conta criada!", { variant: "success" });
+          navigate("/", { replace: true });
         },
         onError: (error: any) => {
           const status = error?.response?.status;
           const message = error?.response?.data?.message;
 
-          if (
-            status === 409 ||
-            (message && /cpf/i.test(message))
-          ) {
-            setError('cpf', {
-              message: message || 'CPF já cadastrado',
+          if (status === 409 || (message && /cpf/i.test(message))) {
+            setError("cpf", {
+              message: message || "CPF já cadastrado",
             });
           } else {
-            enqueueSnackbar('Erro inesperado. Tente novamente.', {
-              variant: 'error',
+            enqueueSnackbar("Erro inesperado. Tente novamente.", {
+              variant: "error",
             });
           }
         },
@@ -68,13 +59,14 @@ export function OnboardingPage() {
         Primeiro acesso
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Verificamos que este é seu primeiro acesso. Preencha os dados abaixo para criar sua conta.
+        Verificamos que este é seu primeiro acesso. Preencha os dados abaixo
+        para criar sua conta.
       </Typography>
 
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
       >
         <Controller
           name="name"
@@ -83,6 +75,7 @@ export function OnboardingPage() {
           render={({ field, fieldState }) => (
             <TextField
               {...field}
+              size="small"
               label="Nome completo"
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
@@ -97,6 +90,7 @@ export function OnboardingPage() {
           rules={cpfRules}
           render={({ field, fieldState }) => (
             <TextField
+              size="small"
               {...field}
               onChange={(e) => field.onChange(maskCpf(e.target.value))}
               label="CPF"
