@@ -20,6 +20,7 @@
     "@tanstack/react-query": "^5.90.21",
     "axios": "^1.13.6",
     "cpf-cnpj-validator": "^1.0.3",
+    "heic2any": "^0.0.4",
     "notistack": "^3.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
