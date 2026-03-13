@@ -5,6 +5,7 @@ export const envValidationSchema = Joi.object({
   AUTH0_DOMAIN: Joi.string().required(),
   AUTH0_AUDIENCE: Joi.string().required(),
   S3_ENDPOINT: Joi.string().required(),
+  S3_PUBLIC_URL: Joi.string().optional(),
   S3_BUCKET: Joi.string().required(),
   S3_REGION: Joi.string().required(),
   S3_ACCESS_KEY: Joi.string().required(),

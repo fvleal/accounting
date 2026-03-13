@@ -12,10 +12,13 @@ export class S3StorageAdapter implements StoragePort {
   private readonly s3Client: S3Client;
   private readonly bucket: string;
   private readonly endpoint: string;
+  private readonly publicUrl: string;
 
   constructor(private readonly configService: ConfigService) {
     this.endpoint = this.configService.get<string>('S3_ENDPOINT')!;
     this.bucket = this.configService.get<string>('S3_BUCKET')!;
+    this.publicUrl =
+      this.configService.get<string>('S3_PUBLIC_URL') || this.endpoint;
 
     this.s3Client = new S3Client({
       endpoint: this.endpoint,
@@ -42,7 +45,7 @@ export class S3StorageAdapter implements StoragePort {
       }),
     );
 
-    return `${this.endpoint}/${this.bucket}/${key}`;
+    return `${this.publicUrl}/${this.bucket}/${key}`;
   }
 
   async delete(key: string): Promise<void> {

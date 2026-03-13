@@ -6,11 +6,11 @@ services:
       POSTGRES_PASSWORD: account_pass
       POSTGRES_DB: account_db
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U account_user -d account_db"]
+      test: ['CMD-SHELL', 'pg_isready -U account_user -d account_db']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -22,8 +22,8 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - '9000:9000'
+      - '9001:9001'
     volumes:
       - miniodata:/data
 
@@ -39,6 +39,28 @@ services:
       mc anonymous set download local/account;
       echo 'Bucket account is now public (download)';
       "
+
+  backend:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql://account_user:account_pass@postgres:5432/account_db?schema=public
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_URL: http://localhost:9000
+      S3_REGION: us-east-1
+      S3_BUCKET: account
+      S3_ACCESS_KEY: minioadmin
+      S3_SECRET_KEY: minioadmin
+      COMPANY_SLUG: test
+      AUTH0_DOMAIN: dev-76fy001c.us.auth0.com
+      AUTH0_AUDIENCE: http://localhost:3000
+      PORT: '3000'
+    ports:
+      - '3000:3000'
 
 volumes:
   pgdata:
