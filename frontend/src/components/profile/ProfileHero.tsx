@@ -11,18 +11,14 @@ interface ProfileHeroProps {
   isCropOpen?: boolean;
 }
 
-function isHeic(file: File): boolean {
-  if (
-    file.type === "image/heic" ||
-    file.type === "image/heif"
-  ) {
-    return true;
-  }
-  // Some browsers don't set MIME for HEIC; fall back to extension
-  if (!file.type || file.type === "application/octet-stream") {
-    return /\.heic$/i.test(file.name) || /\.heif$/i.test(file.name);
-  }
-  return false;
+/** Try loading a blob URL in an Image to check browser support. */
+function canBrowserRender(url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
 }
 
 export function ProfileHero({
@@ -46,28 +42,32 @@ export function ProfileHero({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (isHeic(file)) {
-      setConverting(true);
-      try {
-        const heic2any = (await import("heic2any")).default;
-        const jpegBlob = await heic2any({
-          blob: file,
-          toType: "image/jpeg",
-          quality: 0.9,
-        });
-        const result = Array.isArray(jpegBlob) ? jpegBlob[0] : jpegBlob;
-        const url = URL.createObjectURL(result);
-        onFileSelect(url);
-      } catch {
-        enqueueSnackbar("Erro ao processar imagem.", { variant: "error" });
-      } finally {
-        setConverting(false);
-      }
+    const url = URL.createObjectURL(file);
+    const supported = await canBrowserRender(url);
+
+    if (supported) {
+      onFileSelect(url);
       return;
     }
 
-    const url = URL.createObjectURL(file);
-    onFileSelect(url);
+    // Browser can't render it — try converting with heic2any
+    URL.revokeObjectURL(url);
+    setConverting(true);
+    try {
+      const heic2any = (await import("heic2any")).default;
+      const jpegBlob = await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+        quality: 0.9,
+      });
+      const result = Array.isArray(jpegBlob) ? jpegBlob[0] : jpegBlob;
+      const convertedUrl = URL.createObjectURL(result);
+      onFileSelect(convertedUrl);
+    } catch {
+      enqueueSnackbar("Formato de imagem não suportado.", { variant: "error" });
+    } finally {
+      setConverting(false);
+    }
   };
 
   return (
