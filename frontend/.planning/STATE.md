@@ -136,6 +136,7 @@ Recent decisions affecting current work:
 | 5 | readequar planejamentos anteriores apos mudancas manuais | 2026-03-12 | 8815370 | [5-readequar-planejamentos-anteriores-apos-](./quick/5-readequar-planejamentos-anteriores-apos-/) |
 | 6 | aceite imagens de qualquer tamanho e formato, comprima para JPEG under 5MB | 2026-03-12 | 9928abe | [6-aceite-imagens-de-qualquer-tamanho-e-for](./quick/6-aceite-imagens-de-qualquer-tamanho-e-for/) |
 | 7 | adicione uma logo no header que vem de uma URL env var | 2026-03-12 | 91607bc | [7-adicione-uma-logo-no-header-que-vem-de-u](./quick/7-adicione-uma-logo-no-header-que-vem-de-u/) |
+| 8 | quando inserido uma imagem HEIC o dialog nao renderiza | 2026-03-13 | b1132ce | [8-quando-inserido-uma-imagem-heic-o-dialog](./quick/8-quando-inserido-uma-imagem-heic-o-dialog/) |
 
 #### Non-GSD Manual Changes (reconciled 2026-03-12)
 
@@ -156,7 +157,7 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-12T23:00:00.000Z
-Stopped at: Reconciled 12 non-GSD manual commits into tracking
+Last session: 2026-03-13T00:59:00.000Z
+Stopped at: Completed quick-8 HEIC image conversion plan
 Resume file: None
 Note: All v1.0 phases complete. 12 manual commits (5b11332..633d149) made outside GSD have been recorded above. Decisions from those changes added below.
