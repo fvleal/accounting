@@ -61,6 +61,11 @@ export function CropPhotoModal({
   const mutation = useUploadPhoto();
   const { enqueueSnackbar } = useSnackbar();
 
+  const onImageError = () => {
+    enqueueSnackbar("Formato de imagem não suportado.", { variant: "error" });
+    onClose();
+  };
+
   const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = e.currentTarget;
     const initialCrop = centerCrop(
@@ -143,6 +148,7 @@ export function CropPhotoModal({
             src={imageUrl}
             alt="Crop preview"
             onLoad={onImageLoad}
+            onError={onImageError}
             style={{ maxHeight: 400, width: "100%", objectFit: "contain" }}
           />
         </ReactCrop>
